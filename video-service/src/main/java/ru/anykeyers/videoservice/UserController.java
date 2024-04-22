@@ -1,5 +1,6 @@
 package ru.anykeyers.videoservice;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
@@ -18,12 +19,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    private TokenDTO registerUser(@RequestBody RegisterDTO registerDTO) {
+    private TokenDTO registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         return userService.registerUser(registerDTO);
     }
 
     @PostMapping("/sign-in")
-    private TokenDTO loginUser(@RequestBody AuthDTO authDTO) {
+    private TokenDTO loginUser(@RequestBody @Valid AuthDTO authDTO) {
         return userService.authUser(authDTO);
     }
 

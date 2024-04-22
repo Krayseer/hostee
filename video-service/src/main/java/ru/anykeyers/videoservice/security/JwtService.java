@@ -56,11 +56,19 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
+    /**
+     * Получить секретный ключ
+     */
     private Key getSignInKey() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(applicationConfig.getJwtSecretKey()));
+        String secretKey = applicationConfig.getJwtSecretKey();
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
 }

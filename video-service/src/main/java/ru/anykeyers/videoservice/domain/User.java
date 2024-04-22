@@ -41,6 +41,12 @@ public class User implements UserDetails {
     private String password;
 
     /**
+     * Почтовый адрес
+     */
+    @Column(name = "email")
+    private String email;
+
+    /**
      * Роль
      */
     @ElementCollection(
@@ -52,11 +58,11 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id")
     )
     @Enumerated(EnumType.STRING)
-    private Set<Role> role;
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role;
+        return roles;
     }
 
     @Override
