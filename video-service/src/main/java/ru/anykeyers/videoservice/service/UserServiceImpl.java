@@ -2,6 +2,9 @@ package ru.anykeyers.videoservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.videoservice.UserRepository;
 import ru.anykeyers.videoservice.domain.User;
@@ -27,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final AuthenticationManager authenticationManager;
+
     @Override
     public TokenDTO registerUser(RegisterDTO registerDTO) {
         if (userRepository.findByUsername(registerDTO.getUsername()) != null) {
@@ -41,6 +46,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenDTO authUser(AuthDTO authDTO) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authDTO.getUsername(), authDTO.getPassword())
+            );
+        } catch (AuthenticationException ex) {
+            throw new RuntimeException("Authentication failed");
+        }
         if (userRepository.findByUsername(authDTO.getUsername()) == null) {
             throw new UserNotFoundException(authDTO.getUsername());
         }

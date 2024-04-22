@@ -1,0 +1,31 @@
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../service/UserService";
+
+@Component({
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrl: './registration.component.css'
+})
+export class RegistrationComponent implements OnInit {
+
+  userForm!: FormGroup;
+
+  constructor(private fb: FormBuilder,
+              private userService: UserService) {
+  }
+
+  ngOnInit() {
+    this.userForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      email: ['', Validators.required]
+    });
+  }
+
+  onSubmit() {
+    const userData = JSON.stringify(this.userForm.value);
+    this.userService.registerUser(userData);
+  }
+
+}

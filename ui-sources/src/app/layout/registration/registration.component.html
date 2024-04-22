@@ -1,0 +1,17 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <div class="register-labels">
+    <div class="register-label">
+      <label for="username">Имя пользователя:</label>
+      <input type="text" id="username" formControlName="username">
+    </div>
+    <div class="register-label">
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" formControlName="password">
+    </div>
+    <div class="register-label">
+      <label for="email">Почта:</label>
+      <input type="text" id="email" formControlName="email">
+    </div>
+    <button type="submit">Зарегистрироваться</button>
+  </div>
+</form>
