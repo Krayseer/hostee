@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.anykeyers.videoservice.domain.dto.ErrorDTO;
+import ru.krayseer.ApiError;
 
 import java.nio.charset.StandardCharsets;
 
@@ -85,7 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(new ErrorDTO<>("JWT authentication error")));
+        response.getWriter().write(objectMapper.writeValueAsString(new ApiError<>("JWT authentication error")));
     }
 
 }
