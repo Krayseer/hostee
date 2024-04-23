@@ -1,4 +1,4 @@
-package ru.anykeyers.videoservice.service;
+package ru.anykeyers.storageservice.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Сервис обработчика ошибок приложения
+ * Сервис обработки ошибок приложения
  */
 @Slf4j
 @ControllerAdvice
@@ -42,4 +42,3 @@ public class ExceptionHandlerService {
     }
 
 }
-

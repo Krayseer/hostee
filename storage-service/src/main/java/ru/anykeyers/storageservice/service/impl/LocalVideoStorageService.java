@@ -8,6 +8,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.storageservice.ApplicationConfig;
 import ru.anykeyers.storageservice.domain.VideoFile;
+import ru.anykeyers.storageservice.exception.VideoUploadError;
 import ru.anykeyers.storageservice.service.CacheStorageService;
 import ru.anykeyers.storageservice.service.VideoStorageService;
 
@@ -37,7 +38,7 @@ public class LocalVideoStorageService implements VideoStorageService {
         try {
             return new UrlResource(videoPath.toUri());
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error getting video");
+            throw new VideoUploadError(uuid);
         }
     }
 
@@ -56,7 +57,7 @@ public class LocalVideoStorageService implements VideoStorageService {
             Path videoPath = Path.of(applicationConfig.getStoragePath() + videoFile.getFileName() + ".mp4");
             Files.write(videoPath.toFile().toPath(), videoFile.getContent());
         } catch (IOException ex) {
-            log.error("Error videoFile upload: {}", ex.getMessage());
+            throw new VideoUploadError(videoFile.getFileName());
         }
         return videoFile.getFileName();
     }
