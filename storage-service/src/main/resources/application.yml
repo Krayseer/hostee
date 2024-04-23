@@ -1,0 +1,22 @@
+application:
+  storage-path: ${STORAGE_PATH}
+  storage-cache-process-delay-ms: 40000
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: storage-service
+
+  cassandra:
+    keyspace-name: ${CASSANDRA_KEYSPACE}
+    contact-points: ${CASSANDRA_HOST}
+    port: ${CASSANDRA_PORT}
+    local-datacenter: datacenter1
+    schema-action: create_if_not_exists
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
