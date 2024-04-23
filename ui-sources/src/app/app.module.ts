@@ -8,12 +8,17 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "./service/UserService";
 import {HttpClientModule} from "@angular/common/http";
 import { AuthorizationComponent } from './layout/authorization/authorization.component';
+import { ChannelComponent } from './layout/channel/channel.component';
+import { UserComponent } from './layout/user/user.component';
+import {ChannelService} from "./service/ChannelService";
 
 @NgModule({
   declarations: [
     AppComponent,
     RegistrationComponent,
-    AuthorizationComponent
+    AuthorizationComponent,
+    ChannelComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +26,7 @@ import { AuthorizationComponent } from './layout/authorization/authorization.com
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [UserService],
+  providers: [UserService, ChannelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

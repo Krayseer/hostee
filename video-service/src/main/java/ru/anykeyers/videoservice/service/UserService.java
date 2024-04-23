@@ -1,5 +1,6 @@
 package ru.anykeyers.videoservice.service;
 
+import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
@@ -24,5 +25,7 @@ public interface UserService {
      * @return JWT токен пользователя
      */
     TokenDTO authUser(AuthDTO authDTO);
+
+    User getUser(String username);
 
 }

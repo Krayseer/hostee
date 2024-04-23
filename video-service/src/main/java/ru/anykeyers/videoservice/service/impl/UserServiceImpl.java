@@ -1,4 +1,4 @@
-package ru.anykeyers.videoservice.service;
+package ru.anykeyers.videoservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,15 +6,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.videoservice.UserRepository;
+import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
-import ru.anykeyers.videoservice.UserFactory;
+import ru.anykeyers.videoservice.factory.UserFactory;
 import ru.anykeyers.videoservice.exception.UserAlreadyExistsException;
 import ru.anykeyers.videoservice.exception.UserNotFoundException;
 import ru.anykeyers.videoservice.security.JwtService;
+import ru.anykeyers.videoservice.service.UserService;
 
 /**
  * Реализация сервиса для работы с пользователями
@@ -59,6 +60,11 @@ public class UserServiceImpl implements UserService {
         String jwtToken = jwtService.generateToken(authDTO.getUsername());
         log.info("Successful authorize user: {}. JWT token: {}", authDTO.getUsername(), jwtToken);
         return new TokenDTO(jwtToken);
+    }
+
+    @Override
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
 
 }

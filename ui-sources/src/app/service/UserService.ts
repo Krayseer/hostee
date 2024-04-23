@@ -1,7 +1,9 @@
 import {FormGroup} from "@angular/forms";
-import {take} from "rxjs";
+import {Observable, take} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import {User} from "../models/user";
+import {Channel} from "../models/channel";
 
 @Injectable()
 export class UserService {
@@ -48,5 +50,9 @@ export class UserService {
           localStorage.setItem('token', next.jwtToken);
         }
       });
+  }
+
+  public getUser():Observable<User> {
+    return this.http.get<User>("api/user");
   }
 }

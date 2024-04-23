@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import ru.anykeyers.videoservice.UserFactory;
-import ru.anykeyers.videoservice.UserRepository;
+import ru.anykeyers.videoservice.factory.UserFactory;
+import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.domain.Role;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
@@ -18,6 +18,7 @@ import ru.anykeyers.videoservice.domain.dto.TokenDTO;
 import ru.anykeyers.videoservice.exception.UserAlreadyExistsException;
 import ru.anykeyers.videoservice.exception.UserNotFoundException;
 import ru.anykeyers.videoservice.security.JwtService;
+import ru.anykeyers.videoservice.service.impl.UserServiceImpl;
 
 import java.util.Set;
 

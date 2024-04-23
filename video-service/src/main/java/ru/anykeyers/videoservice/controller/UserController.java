@@ -1,12 +1,15 @@
-package ru.anykeyers.videoservice;
+package ru.anykeyers.videoservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
 import ru.anykeyers.videoservice.service.UserService;
+
+import java.security.Principal;
 
 /**
  * REST контроллер для работы с пользователями
@@ -26,6 +29,11 @@ public class UserController {
     @PostMapping("/sign-in")
     private TokenDTO loginUser(@RequestBody @Valid AuthDTO authDTO) {
         return userService.authUser(authDTO);
+    }
+
+    @GetMapping
+    private User getUser(Principal user) {
+        return userService.getUser(user.getName());
     }
 
 }

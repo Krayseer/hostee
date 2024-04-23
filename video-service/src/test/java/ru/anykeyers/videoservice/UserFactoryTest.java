@@ -11,10 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.anykeyers.videoservice.domain.Role;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
+import ru.anykeyers.videoservice.factory.UserFactory;
 
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Тесты для фабрики {@link UserFactory}

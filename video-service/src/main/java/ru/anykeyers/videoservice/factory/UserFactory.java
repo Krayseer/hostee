@@ -1,4 +1,4 @@
-package ru.anykeyers.videoservice;
+package ru.anykeyers.videoservice.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
