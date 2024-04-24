@@ -1,4 +1,4 @@
-package ru.anykeyers.videoservice;
+package ru.anykeyers.videoservice.factory;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
