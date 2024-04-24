@@ -5,9 +5,17 @@ import ru.anykeyers.videoservice.domain.Channel;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
 
+/**
+ * Фабрика для создания канала
+ */
 @Component
 public class ChannelFactory {
 
+    /**
+     * Создать канал на основе запроса DTO
+     * @param createChannelDTO запрос
+     * @param user текущий пользователь
+     */
     public Channel createChannelFromDTO(CreateChannelDTO createChannelDTO, User user) {
         return Channel.builder()
                 .name(createChannelDTO.getName())

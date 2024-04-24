@@ -9,6 +9,9 @@ import ru.anykeyers.videoservice.service.ChannelService;
 
 import java.security.Principal;
 
+/**
+ * REST контроллер для работы с каналами
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/channel")

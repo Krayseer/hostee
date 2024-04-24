@@ -13,6 +13,9 @@ import ru.anykeyers.videoservice.service.ChannelService;
 
 import java.security.Principal;
 
+/**
+ * Реализация сервиса для работы с каналами
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

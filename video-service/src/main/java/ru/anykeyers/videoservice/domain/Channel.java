@@ -3,6 +3,9 @@ package ru.anykeyers.videoservice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Сущность канала
+ */
 @Entity
 @Getter
 @Setter
@@ -23,7 +26,7 @@ public class Channel {
      * Ссылка на владельца канала
      */
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "users_id")
     private User user;
 
     /**

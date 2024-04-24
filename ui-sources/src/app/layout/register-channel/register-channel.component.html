@@ -1,0 +1,13 @@
+<form [formGroup]="registerChannelForm" (ngSubmit)="onSubmit()">
+  <div class="register-labels">
+    <div class="register-label">
+      <label for="name">Название канала:</label>
+      <input type="text" id="name" formControlName="name">
+    </div>
+    <div class="register-label">
+      <label for="description">Описание канала:</label>
+      <input type="text" id="description" formControlName="description">
+    </div>
+    <button type="submit">Зарегистрироваться</button>
+  </div>
+</form>

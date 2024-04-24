@@ -6,6 +6,9 @@ import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
 
 import java.security.Principal;
 
+/**
+ * Сервис для работы с каналами
+ */
 public interface ChannelService {
 
     /**
@@ -20,7 +23,15 @@ public interface ChannelService {
      */
     Channel registerChannel(CreateChannelDTO createChannelDTO, Principal user);
 
+    /**
+     * Удалить канал
+     * @param id id канала
+     */
     Channel deleteChannel(Long id);
 
+    /**
+     * Изменить канал
+     * @param channel новый канал
+     */
     Channel updateChannel(Channel channel);
 }

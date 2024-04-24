@@ -11,6 +11,7 @@ import { AuthorizationComponent } from './layout/authorization/authorization.com
 import { ChannelComponent } from './layout/channel/channel.component';
 import { UserComponent } from './layout/user/user.component';
 import {ChannelService} from "./service/ChannelService";
+import { RegisterChannelComponent } from './layout/register-channel/register-channel.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {ChannelService} from "./service/ChannelService";
     RegistrationComponent,
     AuthorizationComponent,
     ChannelComponent,
-    UserComponent
+    UserComponent,
+    RegisterChannelComponent
   ],
   imports: [
     BrowserModule,

@@ -11,4 +11,8 @@ export class ChannelService {
   public getChannel(): Observable<Channel> {
     return this.http.get<Channel>("api/channel");
 }
+
+  public registerChannel(userData: string) {
+    this.http.post("api/channel", userData);
+  }
 }

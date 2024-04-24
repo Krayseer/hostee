@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.anykeyers.videoservice.domain.Channel;
 import ru.anykeyers.videoservice.domain.User;
 
+/**
+ * DAO для работы с таблицей каналов
+ */
 @Repository
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
