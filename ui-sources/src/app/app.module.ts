@@ -12,6 +12,7 @@ import { ChannelComponent } from './layout/channel/channel.component';
 import { UserComponent } from './layout/user/user.component';
 import {ChannelService} from "./service/ChannelService";
 import { RegisterChannelComponent } from './layout/register-channel/register-channel.component';
+import { VideoComponent } from './layout/video/video.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { RegisterChannelComponent } from './layout/register-channel/register-cha
     AuthorizationComponent,
     ChannelComponent,
     UserComponent,
-    RegisterChannelComponent
+    RegisterChannelComponent,
+    UserComponent,
+    VideoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import {Injectable, Optional} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, take} from "rxjs";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Channel} from "../models/channel";
 
 @Injectable()
@@ -16,5 +16,9 @@ export class ChannelService {
     this.http.post("api/channel", userData, {
       headers: {'Content-Type': 'application/json'}
     }).pipe(take(1)).subscribe();
+  }
+
+  uploadVideo(formData: FormData): void {
+    this.http.post("api/video", formData);
   }
 }

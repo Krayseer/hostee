@@ -3,4 +3,19 @@
   <p>Channel Name: {{ channel.channelName }}</p>
   <p>Description: {{ channel.description }}</p>
   <!-- Другие поля, которые вы хотите отобразить -->
+  <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Название видео:</label>
+      <input type="text" id="name" formControlName="name">
+    </div>
+    <div>
+      <label for="description">Описание:</label>
+      <input type="text" id="description" formControlName="description">
+    </div>
+    <div>
+      <label for="file">Файл видео:</label>
+      <input type="file" id="file" (change)="onFileChange($event)" accept="video/*" formControlName="file">
+    </div>
+    <button type="submit" [disabled]="uploadForm.invalid">Отправить</button>
+  </form>
 </div>
