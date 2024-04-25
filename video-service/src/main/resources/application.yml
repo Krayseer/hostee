@@ -1,6 +1,8 @@
 application:
   jwt-secret-key: ${JWT_SECRET_KEY}
   jwt-token-lifecycle: ${JWT_TOKEN_LIFECYCLE}
+  storage-service-url: http://localhost:8081/
+
 
 spring:
   application:

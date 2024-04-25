@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(registerDTO.getUsername());
         }
         User userFromDTO = userFactory.createUser(registerDTO);
-        User user = userRepository.save(userFromDTO);
+        userRepository.save(userFromDTO);
         String jwtToken = jwtService.generateToken(registerDTO.getUsername());
         log.info("Successful registration of user: {}. JWT token: {}", registerDTO.getUsername(), jwtToken);
         return new TokenDTO(jwtToken);

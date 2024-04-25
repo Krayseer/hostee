@@ -16,9 +16,9 @@ import java.security.Principal;
 /**
  * Реализация сервиса для работы с каналами
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelRepository channelRepository;
@@ -34,7 +34,6 @@ public class ChannelServiceImpl implements ChannelService {
         if (channel == null) {
             throw new RuntimeException("Channel doesn't exist");
         }
-
         return channel;
     }
 
@@ -51,21 +50,21 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel deleteChannel(Long id) {
-        Channel channel = channelRepository.findChannelById(id);
-        if (channel == null) {
-            throw new RuntimeException("Channel doesn't exist");
-        }
-
-        channelRepository.delete(channel);
-        log.info("Deleted channel with id: {}", channel.getId());
-        return channel;
-    }
-
-    @Override
     public Channel updateChannel(Channel channel) {
         channelRepository.save(channel);
         log.info("Channel with id: {}, updated", channel.getId());
         return channel;
     }
+
+    @Override
+    public Channel deleteChannel(Long id) {
+        Channel channel = channelRepository.findChannelById(id);
+        if (channel == null) {
+            throw new RuntimeException("Channel doesn't exist");
+        }
+        channelRepository.delete(channel);
+        log.info("Deleted channel with id: {}", channel.getId());
+        return channel;
+    }
+
 }

@@ -31,4 +31,5 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
      * @param id id канала
      */
     Channel findChannelById(Long id);
+
 }

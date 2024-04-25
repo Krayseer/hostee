@@ -10,14 +10,17 @@ import org.springframework.web.multipart.MultipartFile;
 public interface RemoteVideoStorageService {
 
     /**
+     * Получить видео из хранилища
+     *
+     * @param uuid идентификатор видео
+     */
+    Resource getVideoFile(String uuid);
+
+    /**
      * Загрузить видео в хранилище
+     *
      * @param video видео
      */
     ResponseEntity<String> uploadVideoFile(MultipartFile video);
 
-    /**
-     * Получить видео из хранилища
-     * @param uuid идентификатор видео
-     */
-    Resource getVideoFile(String uuid);
 }

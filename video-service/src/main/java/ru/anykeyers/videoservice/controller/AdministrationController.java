@@ -6,7 +6,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.service.AdministrationService;
-import ru.anykeyers.videoservice.service.impl.AdministrationServiceImpl;
 
 import java.util.List;
 

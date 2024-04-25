@@ -13,8 +13,8 @@ public class ChannelFactory {
 
     /**
      * Создать канал на основе запроса DTO
-     * @param createChannelDTO запрос
-     * @param user текущий пользователь
+     *
+     * @param createChannelDTO запрос с данными о канале
      */
     public Channel createChannelFromDTO(CreateChannelDTO createChannelDTO, User user) {
         return Channel.builder()
@@ -23,4 +23,5 @@ public class ChannelFactory {
                 .description(createChannelDTO.getDescription())
                 .build();
     }
+
 }

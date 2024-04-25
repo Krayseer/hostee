@@ -24,14 +24,17 @@ public interface ChannelService {
     Channel registerChannel(CreateChannelDTO createChannelDTO, Principal user);
 
     /**
+     * Изменить канал
+     *
+     * @param channel обновленные данные о канале
+     */
+    Channel updateChannel(Channel channel);
+
+    /**
      * Удалить канал
-     * @param id id канала
+     *
+     * @param id идентификатор канала
      */
     Channel deleteChannel(Long id);
 
-    /**
-     * Изменить канал
-     * @param channel новый канал
-     */
-    Channel updateChannel(Channel channel);
 }

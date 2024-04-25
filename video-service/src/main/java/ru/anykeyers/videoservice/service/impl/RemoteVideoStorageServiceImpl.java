@@ -12,6 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.videoservice.ApplicationConfig;
 import ru.anykeyers.videoservice.service.RemoteVideoStorageService;
 
 import java.io.File;
@@ -24,32 +25,27 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RemoteVideoStorageServiceImpl implements RemoteVideoStorageService {
 
-    /**
-     * Endpoint к сервису хранилища
-     */
-    private final String url = "http://localhost:8081/video";
+    private final ApplicationConfig applicationConfig;
 
     private final RestTemplate restTemplate;
 
     @Override
-    public ResponseEntity<String> uploadVideoFile(MultipartFile video) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", new FileSystemResource(convert(video)));
-
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-        return restTemplate.postForEntity(url, requestEntity, String.class);
-    }
-
-    @Override
     public Resource getVideoFile(String uuid) {
-        ResponseEntity<Resource> response = restTemplate.getForEntity(url + "/" + uuid, Resource.class);
+        String url = String.format("%s/video/%s", applicationConfig.getStorageServiceUrl(), uuid);
+        ResponseEntity<Resource> response = restTemplate.getForEntity(url, Resource.class);
         return response.getBody();
     }
 
+    @Override
+    public ResponseEntity<String> uploadVideoFile(MultipartFile video) {
+        String url = String.format("%s/video", applicationConfig.getStorageServiceUrl());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", new FileSystemResource(convert(video)));
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        return restTemplate.postForEntity(url, requestEntity, String.class);
+    }
 
     /**
      * Ковертировать {@link MultipartFile} в {@link File}

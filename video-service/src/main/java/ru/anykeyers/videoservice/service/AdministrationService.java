@@ -16,6 +16,7 @@ public interface AdministrationService {
 
     /**
      * Заблокировать пользователя
+     *
      * @param id id пользователя
      * @return заблокированный пользователь
      */
@@ -23,7 +24,9 @@ public interface AdministrationService {
 
     /**
      * Удалить видео
+     *
      * @param uuid uuid видео
      */
     void deleteVideo(String uuid);
+
 }

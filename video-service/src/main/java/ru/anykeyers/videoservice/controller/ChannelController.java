@@ -1,6 +1,5 @@
 package ru.anykeyers.videoservice.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.Channel;
@@ -34,8 +33,9 @@ public class ChannelController {
         return channelService.updateChannel(channel);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public Channel deleteChannel(@PathVariable("id") Long id) {
         return channelService.deleteChannel(id);
     }
+
 }

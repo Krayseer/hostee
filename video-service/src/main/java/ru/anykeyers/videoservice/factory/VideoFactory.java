@@ -13,6 +13,7 @@ public class VideoFactory {
 
     /**
      * Создать видео на основе данных из DTO и канала пользователя
+     *
      * @param uploadVideoDTO данные для создания видео
      * @param channel канал пользователя
      */

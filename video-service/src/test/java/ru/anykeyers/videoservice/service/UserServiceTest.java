@@ -69,7 +69,7 @@ class UserServiceTest {
     void registerUserSuccessfully() {
         RegisterDTO registerDTO = new RegisterDTO("user1", "pass", "email@email.com");
         User testUser = new User(
-                0L, "user1", "pass", "email@email.com", Set.of(Role.USER)
+                0L, "user1", "pass", "email@email.com", false, Set.of(Role.USER)
         );
         Mockito.when(userRepository.findByUsername(registerDTO.getUsername())).thenReturn(null);
         Mockito.when(jwtService.generateToken("user1")).thenReturn("testToken");

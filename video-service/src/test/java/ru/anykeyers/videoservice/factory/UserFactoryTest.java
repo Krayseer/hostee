@@ -37,7 +37,7 @@ class UserFactoryTest {
         User user = userFactory.createUser(registerDTO);
 
         User expectedUser = new User(
-                null, "user1", "encodePass", "email@email.com", Set.of(Role.USER)
+                null, "user1", "encodePass", "email@email.com", false, Set.of(Role.USER)
         );
         Assertions.assertEquals(expectedUser.getUsername(), user.getUsername());
         Assertions.assertEquals(expectedUser.getPassword(), user.getPassword());

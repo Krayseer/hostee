@@ -22,25 +22,27 @@ public class VideoController {
     private final VideoService videoService;
 
     /**
-     * Загрузить видео
-     * @param file видео
-     * @param user текуший пользователь
-     */
-    @PostMapping
-    public void uploadVideo(@RequestParam("file") MultipartFile file, Principal user) {
-        // TODO: доделать, когда напишем фронт
-        UploadVideoDTO uploadVideoDTO = new UploadVideoDTO("some video", "some descr");
-        videoService.uploadVideo(uploadVideoDTO, file, user.getName());
-    }
-
-    /**
      * Получить видео по его id в хранилище
+     *
      * @param uuid id видео в сервисе хранилища
      */
     @GetMapping("/{uuid}")
     public ResponseEntity<Resource> getVideo(@PathVariable("uuid") String uuid) {
         Resource videoResource = videoService.getVideo(uuid);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("video/mp4")).body(videoResource);
+    }
+
+    /**
+     * Загрузить видео
+     *
+     * @param file видео
+     * @param user текуший пользователь
+     */
+    @PostMapping
+    public void uploadVideo(@RequestParam("file") MultipartFile file, Principal user) {
+        // TODO: Разобраться, почему нельзя принять MultipartFile и DTO с данными одновременно
+        UploadVideoDTO uploadVideoDTO = new UploadVideoDTO("some video", "some descr");
+        videoService.uploadVideo(uploadVideoDTO, file, user.getName());
     }
 
 }

@@ -31,7 +31,7 @@ public class AdministrationServiceImpl implements AdministrationService {
     @Override
     public User blockUser(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             throw new UserNotFoundException(id);
         }
 
@@ -46,4 +46,5 @@ public class AdministrationServiceImpl implements AdministrationService {
     public void deleteVideo(String uuid) {
         videoRepository.deleteByVideoUuid(uuid);
     }
+
 }

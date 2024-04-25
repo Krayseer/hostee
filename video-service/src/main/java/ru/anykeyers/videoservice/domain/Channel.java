@@ -40,4 +40,5 @@ public class Channel {
      */
     @Column(name = "description")
     private String description;
+
 }
