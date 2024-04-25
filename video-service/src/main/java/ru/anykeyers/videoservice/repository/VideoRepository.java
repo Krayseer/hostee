@@ -9,4 +9,5 @@ import ru.anykeyers.videoservice.domain.Video;
  */
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
+    void deleteByVideoUuid(String uuid);
 }

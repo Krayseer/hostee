@@ -29,6 +29,7 @@ public final class UserFactory {
                 .username(registerDTO.getUsername())
                 .password(passwordEncoder.encode(registerDTO.getPassword()))
                 .email(registerDTO.getEmail())
+                .isBlocked(false)
                 .roles(Set.of(Role.USER))
                 .build();
     }

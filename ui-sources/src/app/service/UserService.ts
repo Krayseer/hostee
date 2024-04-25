@@ -55,4 +55,14 @@ export class UserService {
   public getUser():Observable<User> {
     return this.http.get<User>("api/user");
   }
+
+  public getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>("api/admin/users");
+  }
+
+  blockUser(userId: number): Observable<any> {
+    return this.http.post(`api/admin/block/` + userId, null, {
+      headers: {'Content-Type': 'application/json'}
+    });
+  }
 }

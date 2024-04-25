@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "blocked")
+    private boolean isBlocked;
+
     /**
      * Роль
      */
@@ -92,7 +95,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !isBlocked;
     }
 
 }

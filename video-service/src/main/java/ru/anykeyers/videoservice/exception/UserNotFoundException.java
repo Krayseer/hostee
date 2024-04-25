@@ -9,4 +9,8 @@ public class UserNotFoundException extends RuntimeException {
         super(String.format("User with username '%s' not found", username));
     }
 
+    public UserNotFoundException(Long id) {
+        super(String.format("User with id '%d' not found", id));
+    }
+
 }
