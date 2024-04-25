@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.videoservice.domain.Role;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
+import ru.anykeyers.videoservice.domain.dto.UserDTO;
 
 import java.util.Set;
 
@@ -30,6 +31,15 @@ public final class UserFactory {
                 .email(registerDTO.getEmail())
                 .roles(Set.of(Role.USER))
                 .build();
+    }
+
+    /**
+     * Создать DTO с данными о пользователе
+     *
+     * @param user пользователь
+     */
+    public UserDTO createUserDTO(User user) {
+        return new UserDTO(user.getId(), user.getUsername(), user.getEmail());
     }
 
 }

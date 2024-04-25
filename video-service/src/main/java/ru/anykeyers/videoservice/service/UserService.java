@@ -1,14 +1,24 @@
 package ru.anykeyers.videoservice.service;
 
-import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
+import ru.anykeyers.videoservice.domain.Role;
+import ru.anykeyers.videoservice.domain.dto.UserDTO;
+
+import java.util.List;
 
 /**
  * Сервис для работы с пользователями
  */
 public interface UserService {
+
+    /**
+     * Получить данные о пользователе
+     *
+     * @param username имя пользователя
+     */
+    UserDTO getUser(String username);
 
     /**
      * Зарегистрировать пользователя
@@ -26,6 +36,12 @@ public interface UserService {
      */
     TokenDTO authUser(AuthDTO authDTO);
 
-    User getUser(String username);
+    /**
+     * Установить пользователю роли
+     *
+     * @param username  имя пользователя
+     * @param roles     список ролей
+     */
+    void setUserRoles(String username, List<Role> roles);
 
 }

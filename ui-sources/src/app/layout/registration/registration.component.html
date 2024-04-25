@@ -1,17 +1,20 @@
+<app-header></app-header>
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <div class="register-labels">
-    <div class="register-label">
-      <label for="username">Имя пользователя:</label>
-      <input type="text" id="username" formControlName="username">
+  <div class="register-window">
+    <div class="register-labels">
+      <div class="register-label">
+        <label for="username">Имя пользователя</label>
+        <input type="text" id="username" formControlName="username">
+      </div>
+      <div class="register-label">
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" formControlName="password">
+      </div>
+      <div class="register-label">
+        <label for="email">Почта:</label>
+        <input type="text" id="email" formControlName="email">
+      </div>
     </div>
-    <div class="register-label">
-      <label for="password">Пароль:</label>
-      <input type="password" id="password" formControlName="password">
-    </div>
-    <div class="register-label">
-      <label for="email">Почта:</label>
-      <input type="text" id="email" formControlName="email">
-    </div>
-    <button type="submit">Зарегистрироваться</button>
+    <button class="btn-new" style="width: 350px; margin-top: 10px" type="submit">Зарегистрироваться</button>
   </div>
 </form>

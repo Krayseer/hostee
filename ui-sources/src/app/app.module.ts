@@ -11,6 +11,9 @@ import { AuthorizationComponent } from './layout/authorization/authorization.com
 import { ChannelComponent } from './layout/channel/channel.component';
 import { UserComponent } from './layout/user/user.component';
 import {ChannelService} from "./service/ChannelService";
+import { ReportComponent } from './layout/report/report.component';
+import {ReportService} from "./service/ReportService";
+import { HeaderComponent } from './components/header/header.component';
 import { RegisterChannelComponent } from './layout/register-channel/register-channel.component';
 import { VideoComponent } from './layout/video/video.component';
 
@@ -20,6 +23,9 @@ import { VideoComponent } from './layout/video/video.component';
     RegistrationComponent,
     AuthorizationComponent,
     ChannelComponent,
+    UserComponent,
+    ReportComponent,
+    HeaderComponent,
     UserComponent,
     RegisterChannelComponent,
     UserComponent,
@@ -31,7 +37,7 @@ import { VideoComponent } from './layout/video/video.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [UserService, ChannelService],
+  providers: [UserService, ChannelService, ReportService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

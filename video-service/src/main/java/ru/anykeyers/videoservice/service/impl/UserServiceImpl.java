@@ -6,6 +6,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+import ru.anykeyers.videoservice.domain.Role;
+import ru.anykeyers.videoservice.domain.dto.UserDTO;
+import ru.anykeyers.videoservice.exception.UserAuthenticateException;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
@@ -16,6 +19,9 @@ import ru.anykeyers.videoservice.exception.UserAlreadyExistsException;
 import ru.anykeyers.videoservice.exception.UserNotFoundException;
 import ru.anykeyers.videoservice.security.JwtService;
 import ru.anykeyers.videoservice.service.UserService;
+
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Реализация сервиса для работы с пользователями
@@ -32,6 +38,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final AuthenticationManager authenticationManager;
+
+    @Override
+    public UserDTO getUser(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException(username);
+        }
+        return userFactory.createUserDTO(user);
+    }
 
     @Override
     public TokenDTO registerUser(RegisterDTO registerDTO) {
@@ -52,7 +67,7 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(authDTO.getUsername(), authDTO.getPassword())
             );
         } catch (AuthenticationException ex) {
-            throw new RuntimeException("Authentication failed");
+            throw new UserAuthenticateException(authDTO.getUsername());
         }
         if (userRepository.findByUsername(authDTO.getUsername()) == null) {
             throw new UserNotFoundException(authDTO.getUsername());
@@ -63,8 +78,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String username) {
-        return userRepository.findByUsername(username);
+    public void setUserRoles(String username, List<Role> roles) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException(username);
+        }
+        user.setRoles(new HashSet<>(roles));
+        userRepository.save(user);
     }
 
 }

@@ -1,12 +1,18 @@
 .register-labels {
+  width: 350px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  align-items: center;
+  gap: 10px;
 }
 
 .register-label {
   display: flex;
-  align-items: flex-end;
-  gap: 10px;
+  justify-content: space-between;
+}
+
+.register-window {
+  align-items: center;
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
 }

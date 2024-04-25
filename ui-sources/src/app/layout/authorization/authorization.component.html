@@ -1,13 +1,16 @@
+<app-header></app-header>
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <div>
-    <div>
-      <label for="username">Имя пользователя:</label>
-      <input type="text" id="username" formControlName="username">
+  <div class="auth-window">
+    <div class="auth-labels">
+      <div class="auth-label">
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" formControlName="username">
+      </div>
+      <div class="auth-label">
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" formControlName="password">
+      </div>
     </div>
-    <div>
-      <label for="password">Пароль:</label>
-      <input type="password" id="password" formControlName="password">
-    </div>
+    <button class="btn-new" style="width: 350px; margin-top: 10px" type="submit">Войти</button>
   </div>
-  <button type="submit" [disabled]="userForm.invalid">Submit</button>
 </form>

@@ -3,13 +3,15 @@ package ru.anykeyers.videoservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
+import ru.anykeyers.videoservice.domain.Role;
+import ru.anykeyers.videoservice.domain.dto.UserDTO;
 import ru.anykeyers.videoservice.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * REST контроллер для работы с пользователями
@@ -21,19 +23,30 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping
+    public UserDTO getUser(Principal user) {
+        return userService.getUser(user.getName());
+    }
+
+    @GetMapping("/{username}")
+    public UserDTO getUser(@PathVariable String username) {
+        return userService.getUser(username);
+    }
+
     @PostMapping("/sign-up")
-    private TokenDTO registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
+    public TokenDTO registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         return userService.registerUser(registerDTO);
     }
 
     @PostMapping("/sign-in")
-    private TokenDTO loginUser(@RequestBody @Valid AuthDTO authDTO) {
+    public TokenDTO loginUser(@RequestBody @Valid AuthDTO authDTO) {
         return userService.authUser(authDTO);
     }
 
-    @GetMapping
-    private User getUser(Principal user) {
-        return userService.getUser(user.getName());
+    @PostMapping("/set-roles/{username}")
+    public void setUserRoles(@PathVariable String username,
+                             @RequestBody List<Role> roles) {
+        userService.setUserRoles(username, roles);
     }
 
 }

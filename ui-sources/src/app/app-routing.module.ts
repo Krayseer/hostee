@@ -6,6 +6,7 @@ import {RegistrationComponent} from "./layout/registration/registration.componen
 import {AuthorizationComponent} from "./layout/authorization/authorization.component";
 import {ChannelComponent} from "./layout/channel/channel.component";
 import {UserComponent} from "./layout/user/user.component";
+import {ReportComponent} from "./layout/report/report.component";
 import {RegisterChannelComponent} from "./layout/register-channel/register-channel.component";
 
 const routes: Routes = [
@@ -13,6 +14,8 @@ const routes: Routes = [
   {path: 'sign-up', component: RegistrationComponent},
   {path: 'sign-in', component: AuthorizationComponent},
   {path: 'channel', component: ChannelComponent},
+  {path: 'user', component: UserComponent},
+  {path: 'report', component: ReportComponent},
   {path: 'user', component: UserComponent},
   {path: 'register-channel', component: RegisterChannelComponent}
 ];

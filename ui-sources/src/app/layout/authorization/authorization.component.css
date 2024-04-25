@@ -1,0 +1,18 @@
+.auth-labels {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.auth-window {
+  align-items: center;
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+}

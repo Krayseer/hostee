@@ -1,0 +1,18 @@
+<app-header></app-header>
+<div class="reports">
+  <div *ngFor="let report of reports$ | async">
+    <div class="report" [ngStyle]="{ 'border-color': getReportColor(report.reportState) }">
+
+      <span>ID заявки: {{ report.id }}</span>
+      <span>Пользователь, на которого отправлена жалоба: {{ report.userTarget.username }}</span>
+      <span>Отправитель жалобы: {{ report.userSender.username }}</span>
+      <span>Статус обработки: {{ report.reportState }}</span>
+      <span>Текст жалобы: {{ report.text }}</span>
+
+      <span *ngIf="report.reportState !== 'WAIT_PROCESS' ">Администратор, решающий проблему: {{ report.solver }}</span>
+      <span *ngIf="report.reportState === 'PROCESSED' ">Ответ администратора: {{ report.solveResult }}</span>
+
+      <button *ngIf="report.reportState !== 'PROCESSED'" (click)="process(report.id, report.reportState)" >{{ getButtonText(report.reportState) }}</button>
+    </div>
+  </div>
+</div>

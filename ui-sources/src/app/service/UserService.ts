@@ -17,7 +17,7 @@ export class UserService {
    * @param userData данные о пользователе
    */
   public registerUser(userData: string) {
-    localStorage.removeItem('token');
+    localStorage.clear();
     this.http.post<{ jwtToken: string }>(
       'api/user/sign-up',
       userData,
@@ -36,7 +36,7 @@ export class UserService {
    * @param authData данные для авторизации пользователя
    */
   public authenticateUser(authData: string) {
-    localStorage.removeItem('token');
+    localStorage.clear();
     this.http.post<{ jwtToken: string }>(
       'api/user/sign-in',
       authData,

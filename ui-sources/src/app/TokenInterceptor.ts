@@ -29,6 +29,8 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((error: any) => {
         if (error.error.errorCode === "AUTHENTICATION_ERROR") {
           localStorage.clear();
+        } else if (error.error.message === "Access Denied") {
+          alert("У вас недостаточно прав для просмотра этой страницы");
         }
         return of();
       })
