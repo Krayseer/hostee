@@ -1,6 +1,6 @@
 import {Injectable, Optional} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable, take} from "rxjs";
 import {Channel} from "../models/channel";
 
 @Injectable()
@@ -13,6 +13,8 @@ export class ChannelService {
 }
 
   public registerChannel(userData: string) {
-    this.http.post("api/channel", userData);
+    this.http.post("api/channel", userData, {
+      headers: {'Content-Type': 'application/json'}
+    }).pipe(take(1)).subscribe();
   }
 }

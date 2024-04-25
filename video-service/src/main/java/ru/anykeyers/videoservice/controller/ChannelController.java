@@ -25,7 +25,7 @@ public class ChannelController {
     }
 
     @PostMapping
-    public Channel registerChannel(@RequestBody @Valid CreateChannelDTO createChannelDTO, Principal user) {
+    public Channel registerChannel(@RequestBody CreateChannelDTO createChannelDTO, Principal user) {
         return channelService.registerChannel(createChannelDTO, user);
     }
 
