@@ -1,4 +1,4 @@
-package ru.anykeyers.videoservice.domain.dto;
+package ru.krayseer.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +26,10 @@ public class UserDTO {
      * Почта
      */
     private String email;
+
+    /**
+     * Настройки уведомлений
+     */
+    private NotificationSettingDTO notificationSettingUser;
 
 }

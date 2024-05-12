@@ -4,7 +4,8 @@ import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
 import ru.anykeyers.videoservice.domain.Role;
-import ru.anykeyers.videoservice.domain.dto.UserDTO;
+import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.UserDTO;
 
 import java.util.List;
 
@@ -35,6 +36,14 @@ public interface UserService {
      * @return JWT токен пользователя
      */
     TokenDTO authUser(AuthDTO authDTO);
+
+    /**
+     * Установить настройки уведомлений
+     *
+     * @param username                  имя пользователя
+     * @param notificationSettingDTO    данные о настройках уведомлений
+     */
+    void setNotificationSetting(String username, NotificationSettingDTO notificationSettingDTO);
 
     /**
      * Установить пользователю роли

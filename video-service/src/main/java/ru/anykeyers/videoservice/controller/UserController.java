@@ -7,7 +7,8 @@ import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
 import ru.anykeyers.videoservice.domain.Role;
-import ru.anykeyers.videoservice.domain.dto.UserDTO;
+import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.UserDTO;
 import ru.anykeyers.videoservice.service.UserService;
 
 import java.security.Principal;
@@ -41,6 +42,12 @@ public class UserController {
     @PostMapping("/sign-in")
     public TokenDTO loginUser(@RequestBody @Valid AuthDTO authDTO) {
         return userService.authUser(authDTO);
+    }
+
+    @PostMapping("/notification-setting")
+    public void setNotificationSetting(@RequestBody NotificationSettingDTO notificationSetting,
+                                       Principal user) {
+        userService.setNotificationSetting(user.getName(), notificationSetting);
     }
 
     @PostMapping("/set-roles/{username}")

@@ -7,7 +7,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.videoservice.domain.Role;
-import ru.anykeyers.videoservice.domain.dto.UserDTO;
+import ru.anykeyers.videoservice.domain.setting.NotificationSetting;
+import ru.anykeyers.videoservice.domain.setting.UserSetting;
+import ru.anykeyers.videoservice.repository.NotificationUserSettingRepository;
+import ru.anykeyers.videoservice.repository.UserSettingRepository;
+import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.UserDTO;
 import ru.anykeyers.videoservice.exception.UserAuthenticateException;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.domain.User;
@@ -37,7 +42,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final UserSettingRepository userSettingRepository;
+
     private final AuthenticationManager authenticationManager;
+
+    private final NotificationUserSettingRepository notificationUserSettingRepository;
 
     @Override
     public UserDTO getUser(String username) {
@@ -75,6 +84,26 @@ public class UserServiceImpl implements UserService {
         String jwtToken = jwtService.generateToken(authDTO.getUsername());
         log.info("Successful authorize user: {}. JWT token: {}", authDTO.getUsername(), jwtToken);
         return new TokenDTO(jwtToken);
+    }
+
+    @Override
+    public void setNotificationSetting(String username, NotificationSettingDTO notificationSettingDTO) {
+        User user = userRepository.findByUsername(username);
+        UserSetting userSetting = userSettingRepository.findByUser(user);
+        userSetting = userSetting == null ? new UserSetting() : userSetting;
+        if (userSetting.getNotificationSetting() == null) {
+            NotificationSetting notificationSetting = NotificationSetting.builder()
+                    .pushEnabled(notificationSettingDTO.isPushEnabled())
+                    .emailEnabled(notificationSettingDTO.isEmailEnabled())
+                    .build();
+            notificationUserSettingRepository.save(notificationSetting);
+            userSetting.setUser(user);
+            userSetting.setNotificationSetting(notificationSetting);
+        }
+        NotificationSetting userNotificationSetting = userSetting.getNotificationSetting();
+        userNotificationSetting.setPushEnabled(notificationSettingDTO.isPushEnabled());
+        userNotificationSetting.setEmailEnabled(notificationSettingDTO.isEmailEnabled());
+        userSettingRepository.save(userSetting);
     }
 
     @Override

@@ -3,7 +3,7 @@ package ru.anykeyers.videoservice.domain.report;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.anykeyers.videoservice.domain.dto.UserDTO;
+import ru.krayseer.domain.dto.UserDTO;
 
 /**
  * Данные для передачи ответа по жалобе

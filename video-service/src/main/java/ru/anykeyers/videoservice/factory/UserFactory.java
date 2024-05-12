@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.videoservice.domain.Role;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
-import ru.anykeyers.videoservice.domain.dto.UserDTO;
+import ru.anykeyers.videoservice.domain.setting.UserSetting;
+import ru.anykeyers.videoservice.repository.UserSettingRepository;
+import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.UserDTO;
 
 import java.util.Set;
 
@@ -18,6 +21,8 @@ import java.util.Set;
 public final class UserFactory {
 
     private final PasswordEncoder passwordEncoder;
+
+    private final UserSettingRepository userSettingRepository;
 
     /**
      * Создать пользователя на основе данных из DTO
@@ -40,7 +45,14 @@ public final class UserFactory {
      * @param user пользователь
      */
     public UserDTO createUserDTO(User user) {
-        return new UserDTO(user.getId(), user.getUsername(), user.getEmail());
+        UserSetting userSetting = userSettingRepository.findByUser(user);
+        NotificationSettingDTO notificationSettingDTO = new NotificationSettingDTO(
+                userSetting.getNotificationSetting().isPushEnabled(),
+                userSetting.getNotificationSetting().isEmailEnabled()
+        );
+        return new UserDTO(
+                user.getId(), user.getUsername(), user.getEmail(), notificationSettingDTO
+        );
     }
 
 }

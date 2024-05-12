@@ -19,6 +19,13 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
     Channel findChannelByUser(User user);
 
     /**
+     * Получить канал по пользователю пользователя
+     *
+     * @param username имя пользователя
+     */
+    Channel findChannelByUserUsername(String username);
+
+    /**
      * Найти канал по имени
      *
      * @param name имя канала

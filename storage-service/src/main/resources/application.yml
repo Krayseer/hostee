@@ -3,7 +3,7 @@ application:
   storage-cache-process-delay-ms: 40000
 
 server:
-  port: 8081
+  port: ${STORAGE_SERVICE_PORT}
 
 spring:
   application:
