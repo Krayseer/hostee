@@ -30,9 +30,10 @@
   </properties>
 
   <modules>
+    <module>commons-api</module>
     <module>video-service</module>
     <module>storage-service</module>
-    <module>commons-api</module>
+    <module>notification-service</module>
   </modules>
 
   <dependencyManagement>
