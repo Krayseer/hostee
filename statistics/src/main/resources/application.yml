@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: statistics
+
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+    template:
+      default-topic: topic
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${NOTIFICATION_SERVICE_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+
+server:
+  port: 8082
