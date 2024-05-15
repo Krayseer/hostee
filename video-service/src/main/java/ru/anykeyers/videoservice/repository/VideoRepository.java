@@ -22,4 +22,11 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      */
     List<Video> findByChannel(Channel channel);
 
+    /**
+     * Получить видео по идентификатору
+     *
+     * @param videoUuid идентификатор видео
+     */
+    Video findByVideoUuid(String videoUuid);
+
 }

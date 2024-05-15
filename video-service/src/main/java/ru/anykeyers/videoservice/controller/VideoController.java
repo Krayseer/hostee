@@ -6,7 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.videoservice.domain.History;
 import ru.anykeyers.videoservice.domain.dto.UploadVideoDTO;
+import ru.anykeyers.videoservice.service.HistoryService;
 import ru.anykeyers.videoservice.service.VideoService;
 
 import java.security.Principal;
@@ -21,15 +23,31 @@ public class VideoController {
 
     private final VideoService videoService;
 
+    private final HistoryService historyService;
+
     /**
      * Получить видео по его id в хранилище
      *
      * @param uuid id видео в сервисе хранилища
      */
     @GetMapping("/{uuid}")
-    public ResponseEntity<Resource> getVideo(@PathVariable("uuid") String uuid) {
+    public ResponseEntity<Resource> getVideo(@PathVariable("uuid") String uuid,
+                                             Principal principal) {
         Resource videoResource = videoService.getVideo(uuid);
+        if (principal != null) {
+            historyService.addHistory(principal.getName(), uuid);
+        }
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("video/mp4")).body(videoResource);
+    }
+
+    /**
+     * Получить историю просмотренных видео пользователя
+     *
+     * @param principal данные об атворизованном пользователе
+     */
+    @GetMapping("/history")
+    public History getUserHistory(Principal principal) {
+        return historyService.getHistory(principal.getName());
     }
 
     /**
