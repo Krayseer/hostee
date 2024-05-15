@@ -36,6 +36,11 @@
             <groupId>ru.anykeyers</groupId>
             <artifactId>commons-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.429</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

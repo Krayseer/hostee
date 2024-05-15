@@ -1,4 +1,4 @@
-package ru.anykeyers.storageservice;
+package ru.anykeyers.storageservice.controller;
 
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Qualifier;

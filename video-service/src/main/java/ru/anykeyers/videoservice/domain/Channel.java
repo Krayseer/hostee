@@ -41,4 +41,10 @@ public class Channel {
     @Column(name = "description")
     private String description;
 
+    /**
+     * Фотография канала
+     */
+    @Column(name = "photo_url")
+    private String photoUrl;
+
 }

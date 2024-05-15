@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
-import ru.anykeyers.storageservice.ApplicationConfig;
+import ru.anykeyers.storageservice.context.ApplicationConfig;
 import ru.anykeyers.storageservice.domain.VideoFile;
 
 import java.util.Queue;

@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.storageservice.ApplicationConfig;
+import ru.anykeyers.storageservice.context.ApplicationConfig;
 import ru.anykeyers.storageservice.domain.VideoFile;
 import ru.anykeyers.storageservice.exception.VideoUploadError;
 import ru.anykeyers.storageservice.service.CacheStorageService;

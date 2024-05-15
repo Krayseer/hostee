@@ -15,6 +15,7 @@ import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.anykeyers.videoservice.service.VideoService;
+import ru.anykeyers.videoservice.service.remote.RemoteStorageService;
 import ru.krayseer.MessageQueue;
 
 /**
@@ -26,7 +27,7 @@ public class VideoServiceImpl implements VideoService {
 
     private final VideoRepository videoRepository;
 
-    private final RemoteVideoStorageServiceImpl remoteVideoStorageServiceImpl;
+    private final RemoteStorageService remoteStorageService;
 
     private final UserRepository userRepository;
 
@@ -43,7 +44,7 @@ public class VideoServiceImpl implements VideoService {
         if (channel == null) {
             throw new RuntimeException("channel doesn't exist");
         }
-        ResponseEntity<String> video_uuid = remoteVideoStorageServiceImpl.uploadVideoFile(video);
+        ResponseEntity<String> video_uuid = remoteStorageService.uploadVideoFile(video);
         Video currentVideo = videoFactory.createVideoFromDto(uploadVideoDTO, channel);
         currentVideo.setVideoUuid(video_uuid.getBody());
         videoRepository.save(currentVideo);
@@ -52,7 +53,7 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public Resource getVideo(String uuid) {
         kafkaTemplate.send(MessageQueue.WATCHING_VIDEO, uuid);
-        return remoteVideoStorageServiceImpl.getVideoFile(uuid);
+        return remoteStorageService.getVideoFile(uuid);
     }
 
 }

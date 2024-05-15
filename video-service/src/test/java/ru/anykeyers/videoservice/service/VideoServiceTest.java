@@ -17,8 +17,8 @@ import ru.anykeyers.videoservice.factory.VideoFactory;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
-import ru.anykeyers.videoservice.service.impl.RemoteVideoStorageServiceImpl;
 import ru.anykeyers.videoservice.service.impl.VideoServiceImpl;
+import ru.anykeyers.videoservice.service.remote.RemoteStorageService;
 
 import static org.mockito.Mockito.*;
 
@@ -38,7 +38,7 @@ public class VideoServiceTest {
     private VideoRepository videoRepository;
 
     @Mock
-    private RemoteVideoStorageServiceImpl remoteVideoStorageServiceImpl;
+    private RemoteStorageService remoteStorageService;
 
     @Mock
     private VideoFactory videoFactory;
@@ -60,14 +60,14 @@ public class VideoServiceTest {
 
         when(userRepository.findByUsername(anyString())).thenReturn(mockUser);
         when(channelRepository.findChannelByUser(any(User.class))).thenReturn(mockChannel);
-        when(remoteVideoStorageServiceImpl.uploadVideoFile(any(MultipartFile.class))).thenReturn(mockResponseEntity);
+        when(remoteStorageService.uploadVideoFile(any(MultipartFile.class))).thenReturn(mockResponseEntity);
         when(videoFactory.createVideoFromDto(any(UploadVideoDTO.class), any(Channel.class))).thenReturn(mockVideo);
 
         videoService.uploadVideo(uploadVideoDTO, mockMultipartFile, "username");
 
         verify(userRepository, times(1)).findByUsername("username");
         verify(channelRepository, times(1)).findChannelByUser(mockUser);
-        verify(remoteVideoStorageServiceImpl, times(1)).uploadVideoFile(mockMultipartFile);
+        verify(remoteStorageService, times(1)).uploadVideoFile(mockMultipartFile);
         verify(videoFactory, times(1)).createVideoFromDto(uploadVideoDTO, mockChannel);
         verify(videoRepository, times(1)).save(mockVideo);
     }
@@ -102,11 +102,11 @@ public class VideoServiceTest {
         String uuid = "video_uuid";
         Resource mockResource = mock(Resource.class);
 
-        when(remoteVideoStorageServiceImpl.getVideoFile(anyString())).thenReturn(mockResource);
+        when(remoteStorageService.getVideoFile(anyString())).thenReturn(mockResource);
 
         Resource result = videoService.getVideo(uuid);
 
-        verify(remoteVideoStorageServiceImpl, times(1)).getVideoFile(uuid);
+        verify(remoteStorageService, times(1)).getVideoFile(uuid);
         Assertions.assertEquals(mockResource, result);
     }
 

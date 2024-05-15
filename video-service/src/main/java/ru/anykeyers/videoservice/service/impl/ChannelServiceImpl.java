@@ -2,8 +2,10 @@ package ru.anykeyers.videoservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.Channel;
 import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
@@ -11,6 +13,7 @@ import ru.anykeyers.videoservice.factory.ChannelFactory;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.service.ChannelService;
+import ru.anykeyers.videoservice.service.remote.RemoteStorageService;
 import ru.krayseer.MessageQueue;
 
 import java.security.Principal;
@@ -28,6 +31,8 @@ public class ChannelServiceImpl implements ChannelService {
     private final UserRepository userRepository;
 
     private final ChannelFactory channelFactory;
+
+    private final RemoteStorageService remoteStorageService;
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -52,6 +57,21 @@ public class ChannelServiceImpl implements ChannelService {
         channelRepository.save(channelFromDto);
         log.info("Successful registration of channel with name: {}", createChannelDTO.getName());
         return channelFromDto;
+    }
+
+    @Override
+    public void addPhoto(String username, MultipartFile photo) {
+        Channel channel = channelRepository.findChannelByUserUsername(username);
+        if (channel == null) {
+            throw new RuntimeException("Channel doesn't exist");
+        }
+        ResponseEntity<String> photoResponse = remoteStorageService.uploadPhoto(photo);
+        if (photoResponse.getBody() == null) {
+            throw new RuntimeException("Error upload photo");
+        }
+        channel.setPhotoUrl(photoResponse.getBody());
+        channelRepository.save(channel);
+        log.info("Successful upload photo for channel: {}", channel.getName());
     }
 
     @Override

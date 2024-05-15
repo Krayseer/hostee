@@ -6,7 +6,7 @@ import ru.anykeyers.videoservice.domain.Channel;
 import ru.anykeyers.videoservice.domain.Video;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
-import ru.anykeyers.videoservice.service.RemoteStatisticsService;
+import ru.anykeyers.videoservice.service.remote.RemoteStatisticsService;
 import ru.anykeyers.videoservice.service.StatisticsService;
 import ru.krayseer.domain.dto.statistics.ChannelStatisticsDTO;
 import ru.krayseer.domain.dto.statistics.VideoStatisticsDTO;

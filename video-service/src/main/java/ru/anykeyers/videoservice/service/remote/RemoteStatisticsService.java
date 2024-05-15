@@ -1,4 +1,4 @@
-package ru.anykeyers.videoservice.service;
+package ru.anykeyers.videoservice.service.remote;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

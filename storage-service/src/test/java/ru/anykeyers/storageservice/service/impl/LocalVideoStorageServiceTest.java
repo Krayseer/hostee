@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.anykeyers.storageservice.ApplicationConfig;
+import ru.anykeyers.storageservice.context.ApplicationConfig;
 import ru.anykeyers.storageservice.domain.VideoFile;
 import ru.anykeyers.storageservice.service.CacheStorageService;
 

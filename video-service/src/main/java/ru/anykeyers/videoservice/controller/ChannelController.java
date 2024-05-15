@@ -2,6 +2,7 @@ package ru.anykeyers.videoservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.Channel;
 import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
 import ru.anykeyers.videoservice.service.ChannelService;
@@ -26,6 +27,11 @@ public class ChannelController {
     @PostMapping
     public Channel registerChannel(@RequestBody CreateChannelDTO createChannelDTO, Principal user) {
         return channelService.registerChannel(createChannelDTO, user);
+    }
+
+    @PostMapping("/photo")
+    public void addPhoto(@RequestParam("photo") MultipartFile file, Principal principal) {
+        channelService.addPhoto(principal.getName(), file);
     }
 
     @PutMapping

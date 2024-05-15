@@ -13,6 +13,17 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      -
+  cassandra:
+    image: 'cassandra'
+    container_name: cassandra-hostee
+    ports:
+      - '9042:9042'
+    env_file:
+      - .env
+    environment:
+      - CASSANDRA_USER=root
+      - CASSANDRA_PASSWORD=123456
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.2

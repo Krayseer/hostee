@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.anykeyers.videoservice.service.RemoteStatisticsService;
+import ru.anykeyers.videoservice.service.remote.RemoteStatisticsService;
 import ru.anykeyers.videoservice.service.StatisticsService;
 import ru.krayseer.domain.dto.statistics.ChannelStatisticsDTO;
 import ru.krayseer.domain.dto.statistics.VideoStatisticsDTO;

@@ -1,4 +1,4 @@
-package ru.anykeyers.storageservice;
+package ru.anykeyers.storageservice.context;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

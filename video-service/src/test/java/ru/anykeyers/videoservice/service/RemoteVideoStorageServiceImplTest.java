@@ -12,7 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.videoservice.service.impl.RemoteVideoStorageServiceImpl;
+import ru.anykeyers.videoservice.service.remote.RemoteStorageService;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import static org.mockito.Mockito.*;
 
 /**
- * Тесты для сервис {@link RemoteVideoStorageServiceImpl}
+ * Тесты для сервис {@link RemoteStorageService}
  */
 @ExtendWith(MockitoExtension.class)
 public class RemoteVideoStorageServiceImplTest {
@@ -29,7 +29,7 @@ public class RemoteVideoStorageServiceImplTest {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private RemoteVideoStorageServiceImpl remoteVideoStorageServiceImpl;
+    private RemoteStorageService remoteStorageService;
 
     /**
      * Тест загрузки видео в хранилище
@@ -44,7 +44,7 @@ public class RemoteVideoStorageServiceImplTest {
         when(restTemplate.postForEntity(anyString(), any(HttpEntity.class), eq(String.class)))
                 .thenReturn(mockResponseEntity);
 
-        ResponseEntity<String> result = remoteVideoStorageServiceImpl.uploadVideoFile(mockMultipartFile);
+        ResponseEntity<String> result = remoteStorageService.uploadVideoFile(mockMultipartFile);
 
         verify(restTemplate, times(1)).postForEntity(anyString(), any(HttpEntity.class), eq(String.class));
         Assertions.assertEquals(mockResponseEntity, result);
@@ -59,7 +59,7 @@ public class RemoteVideoStorageServiceImplTest {
         when(restTemplate.getForEntity(anyString(), eq(Resource.class)))
                 .thenReturn(mockResponseEntity);
 
-        Resource result = remoteVideoStorageServiceImpl.getVideoFile("video_uuid");
+        Resource result = remoteStorageService.getVideoFile("video_uuid");
 
         verify(restTemplate, times(1)).getForEntity(anyString(), eq(Resource.class));
         Assertions.assertEquals(mockResponseEntity.getBody(), result);
