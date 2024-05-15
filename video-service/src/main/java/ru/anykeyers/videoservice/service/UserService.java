@@ -1,5 +1,6 @@
 package ru.anykeyers.videoservice.service;
 
+import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
@@ -20,6 +21,11 @@ public interface UserService {
      * @param username имя пользователя
      */
     UserDTO getUser(String username);
+
+    /**
+     * Получить список всех пользователей
+     */
+    List<UserDTO> getAllUsers();
 
     /**
      * Зарегистрировать пользователя
@@ -52,5 +58,12 @@ public interface UserService {
      * @param roles     список ролей
      */
     void setUserRoles(String username, List<Role> roles);
+
+    /**
+     * Заблокировать пользователя
+     *
+     * @param id идентификатор пользователя
+     */
+    UserDTO blockUser(Long id);
 
 }

@@ -27,6 +27,7 @@ import ru.anykeyers.videoservice.service.UserService;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация сервиса для работы с пользователями
@@ -55,6 +56,12 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(username);
         }
         return userFactory.createUserDTO(user);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(userFactory::createUserDTO).toList();
     }
 
     @Override
@@ -114,6 +121,16 @@ public class UserServiceImpl implements UserService {
         }
         user.setRoles(new HashSet<>(roles));
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDTO blockUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException(id)
+        );
+        user.setBlocked(true);
+        userRepository.save(user);
+        return userFactory.createUserDTO(user);
     }
 
 }

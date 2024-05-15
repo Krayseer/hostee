@@ -10,17 +10,26 @@ import ru.anykeyers.videoservice.domain.dto.UploadVideoDTO;
 public interface VideoService {
 
     /**
+     * Получить видео из хранилища по его id
+     *
+     * @param uuid id видео в хранилище
+     */
+    Resource getVideo(String uuid);
+
+    /**
      * Загрузить видео в хранилище
-     * @param uploadVideoDTO данные DTO
-     * @param video видео
-     * @param username имя текущего пользователя
+     *
+     * @param uploadVideoDTO    данные DTO
+     * @param video             видео
+     * @param username          имя пользователя
      */
     void uploadVideo(UploadVideoDTO uploadVideoDTO, MultipartFile video, String username);
 
     /**
-     * Получить видео из хранилища по его id
-     * @param uuid id видео в хранилище
+     * Удалить видео
+     *
+     * @param uuid идентификатор видео
      */
-    Resource getVideo(String uuid);
+    void deleteVideo(String uuid);
 
 }

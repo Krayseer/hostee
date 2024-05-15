@@ -13,8 +13,6 @@ import java.util.List;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
 
-    void deleteByVideoUuid(String uuid);
-
     /**
      * Получить список видео канала
      *
@@ -28,5 +26,12 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
      * @param videoUuid идентификатор видео
      */
     Video findByVideoUuid(String videoUuid);
+
+    /**
+     * Удалить видео по идентификатору
+     *
+     * @param uuid идентификатор видео
+     */
+    void deleteByVideoUuid(String uuid);
 
 }

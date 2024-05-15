@@ -38,6 +38,12 @@ public class VideoServiceImpl implements VideoService {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
+    public Resource getVideo(String uuid) {
+        kafkaTemplate.send(MessageQueue.WATCHING_VIDEO, uuid);
+        return remoteStorageService.getVideoFile(uuid);
+    }
+
+    @Override
     public void uploadVideo(UploadVideoDTO uploadVideoDTO, MultipartFile video, String username) {
         User user = userRepository.findByUsername(username);
         Channel channel = channelRepository.findChannelByUser(user);
@@ -51,9 +57,8 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Resource getVideo(String uuid) {
-        kafkaTemplate.send(MessageQueue.WATCHING_VIDEO, uuid);
-        return remoteStorageService.getVideoFile(uuid);
+    public void deleteVideo(String uuid) {
+        videoRepository.deleteByVideoUuid(uuid);
     }
 
 }

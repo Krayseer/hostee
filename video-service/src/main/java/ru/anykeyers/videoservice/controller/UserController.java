@@ -2,6 +2,7 @@ package ru.anykeyers.videoservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
 import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
@@ -34,6 +35,12 @@ public class UserController {
         return userService.getUser(username);
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<UserDTO> getUsers() {
+        return userService.getAllUsers();
+    }
+
     @PostMapping("/sign-up")
     public TokenDTO registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         return userService.registerUser(registerDTO);
@@ -48,6 +55,12 @@ public class UserController {
     public void setNotificationSetting(@RequestBody NotificationSettingDTO notificationSetting,
                                        Principal user) {
         userService.setNotificationSetting(user.getName(), notificationSetting);
+    }
+
+    @PostMapping("/block/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public UserDTO blockUser(@PathVariable Long id) {
+        return userService.blockUser(id);
     }
 
     @PostMapping("/set-roles/{username}")
