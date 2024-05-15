@@ -3,6 +3,7 @@ package ru.anykeyers.videoservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.Channel;
@@ -14,6 +15,7 @@ import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.anykeyers.videoservice.service.VideoService;
+import ru.krayseer.MessageQueue;
 
 /**
  * Реализация сервиса для работы с видео
@@ -32,6 +34,8 @@ public class VideoServiceImpl implements VideoService {
 
     private final ChannelRepository channelRepository;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     @Override
     public void uploadVideo(UploadVideoDTO uploadVideoDTO, MultipartFile video, String username) {
         User user = userRepository.findByUsername(username);
@@ -47,6 +51,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Resource getVideo(String uuid) {
+        kafkaTemplate.send(MessageQueue.WATCHING_VIDEO, uuid);
         return remoteVideoStorageServiceImpl.getVideoFile(uuid);
     }
 

@@ -2,6 +2,7 @@ package ru.anykeyers.videoservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.videoservice.domain.Channel;
 import ru.anykeyers.videoservice.domain.User;
@@ -10,6 +11,7 @@ import ru.anykeyers.videoservice.factory.ChannelFactory;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.service.ChannelService;
+import ru.krayseer.MessageQueue;
 
 import java.security.Principal;
 
@@ -27,6 +29,8 @@ public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelFactory channelFactory;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     @Override
     public Channel getChannel(String username) {
         User user = userRepository.findByUsername(username);
@@ -34,6 +38,7 @@ public class ChannelServiceImpl implements ChannelService {
         if (channel == null) {
             throw new RuntimeException("Channel doesn't exist");
         }
+        kafkaTemplate.send(MessageQueue.WATCHING_CHANNEL, String.valueOf(channel.getId()));
         return channel;
     }
 
