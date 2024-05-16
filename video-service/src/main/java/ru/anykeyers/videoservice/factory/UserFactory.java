@@ -46,10 +46,11 @@ public final class UserFactory {
      */
     public UserDTO createUserDTO(User user) {
         UserSetting userSetting = userSettingRepository.findByUser(user);
-        NotificationSettingDTO notificationSettingDTO = new NotificationSettingDTO(
-                userSetting.getNotificationSetting().isPushEnabled(),
-                userSetting.getNotificationSetting().isEmailEnabled()
-        );
+
+        NotificationSettingDTO notificationSettingDTO = userSetting == null
+                ? null
+                : new NotificationSettingDTO(userSetting.getNotificationSetting().isPushEnabled(),
+                userSetting.getNotificationSetting().isEmailEnabled());
         return new UserDTO(
                 user.getId(), user.getUsername(), user.getEmail(), notificationSettingDTO
         );

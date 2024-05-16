@@ -11,7 +11,9 @@ import ru.anykeyers.videoservice.domain.setting.NotificationSetting;
 import ru.anykeyers.videoservice.domain.setting.UserSetting;
 import ru.anykeyers.videoservice.repository.NotificationUserSettingRepository;
 import ru.anykeyers.videoservice.repository.UserSettingRepository;
+import ru.anykeyers.videoservice.service.remote.RemoteNotificationsService;
 import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.PushNotificationDTO;
 import ru.krayseer.domain.dto.UserDTO;
 import ru.anykeyers.videoservice.exception.UserAuthenticateException;
 import ru.anykeyers.videoservice.repository.UserRepository;
@@ -48,6 +50,8 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
     private final NotificationUserSettingRepository notificationUserSettingRepository;
+
+    private final RemoteNotificationsService remoteNotificationsService;
 
     @Override
     public UserDTO getUser(String username) {
@@ -131,6 +135,16 @@ public class UserServiceImpl implements UserService {
         user.setBlocked(true);
         userRepository.save(user);
         return userFactory.createUserDTO(user);
+    }
+
+    @Override
+    public List<PushNotificationDTO> getUserPushNotifications(String name) {
+        User user = userRepository.findByUsername(name);
+        if (user == null) {
+            throw new UserNotFoundException(name);
+        }
+
+        return remoteNotificationsService.getPushNotifications(user.getId());
     }
 
 }

@@ -9,6 +9,7 @@ import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
 import ru.anykeyers.videoservice.domain.Role;
 import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.PushNotificationDTO;
 import ru.krayseer.domain.dto.UserDTO;
 import ru.anykeyers.videoservice.service.UserService;
 
@@ -67,6 +68,11 @@ public class UserController {
     public void setUserRoles(@PathVariable String username,
                              @RequestBody List<Role> roles) {
         userService.setUserRoles(username, roles);
+    }
+
+    @GetMapping("/notifications")
+    public List<PushNotificationDTO> getUserPushNotifications(Principal principal) {
+        return userService.getUserPushNotifications(principal.getName());
     }
 
 }

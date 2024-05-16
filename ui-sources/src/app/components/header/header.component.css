@@ -6,3 +6,7 @@
   border: 2px solid aqua;
   padding: 20px;
 }
+
+.notification {
+  background-color: black;
+}

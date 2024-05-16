@@ -17,6 +17,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { UsersViewComponent } from './layout/users-view/users-view.component';
 import { RegisterChannelComponent } from './layout/register-channel/register-channel.component';
 import { VideoComponent } from './layout/video/video.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { VideoComponent } from './layout/video/video.component';
     UserComponent,
     VideoComponent,
     HeaderComponent,
-    UsersViewComponent
+    UsersViewComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice;
+package ru.anykeyers.notificationservice.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

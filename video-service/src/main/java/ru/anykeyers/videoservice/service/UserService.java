@@ -6,6 +6,7 @@ import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
 import ru.anykeyers.videoservice.domain.Role;
 import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.dto.PushNotificationDTO;
 import ru.krayseer.domain.dto.UserDTO;
 
 import java.util.List;
@@ -66,4 +67,10 @@ public interface UserService {
      */
     UserDTO blockUser(Long id);
 
+    /**
+     * Получить уведомления для пользователя
+     *
+     * @param name имя пользователя
+     */
+    List<PushNotificationDTO> getUserPushNotifications(String name);
 }
