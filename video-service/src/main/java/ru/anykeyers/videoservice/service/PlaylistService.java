@@ -1,7 +1,7 @@
 package ru.anykeyers.videoservice.service;
 
 import ru.anykeyers.videoservice.domain.playlist.PlaylistRequest;
-import ru.anykeyers.videoservice.domain.playlist.PlaylistVideoResponse;
+import ru.anykeyers.videoservice.domain.playlist.PlaylistResponse;
 
 /**
  * Сервис обработки плейлистов
@@ -13,12 +13,12 @@ public interface PlaylistService {
      *
      * @param id идентификатор плейлиста
      */
-    PlaylistVideoResponse getVideos(Long id);
+    PlaylistResponse getVideos(Long id);
 
     /**
      * Создать плейлист
      *
-     * @param username      имя пользователя
+     * @param username          имя пользователя
      * @param playlistRequest   данные о плейлисте
      */
     void createPlaylist(String username, PlaylistRequest playlistRequest);
@@ -30,4 +30,5 @@ public interface PlaylistService {
      * @param videoId       идентификатор видео
      */
     void addVideoInPlaylist(Long playListId, Long videoId);
+
 }

@@ -1,13 +1,20 @@
 package ru.anykeyers.videoservice.service;
 
 import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.videoservice.domain.dto.UploadVideoDTO;
+import ru.anykeyers.videoservice.domain.video.VideoDTO;
+import ru.anykeyers.videoservice.domain.video.VideoRequest;
+
+import java.util.List;
 
 /**
  * Сервис для работы с видео
  */
 public interface VideoService {
+
+    /**
+     * Получить список видео
+     */
+    List<VideoDTO> getAllVideo();
 
     /**
      * Получить видео из хранилища по его id
@@ -19,11 +26,10 @@ public interface VideoService {
     /**
      * Загрузить видео в хранилище
      *
-     * @param uploadVideoDTO    данные DTO
-     * @param video             видео
-     * @param username          имя пользователя
+     * @param username  имя пользователя
+     * @param videoDTO  данные о видео
      */
-    void uploadVideo(UploadVideoDTO uploadVideoDTO, MultipartFile video, String username);
+    void uploadVideo(String username, VideoRequest videoDTO);
 
     /**
      * Удалить видео

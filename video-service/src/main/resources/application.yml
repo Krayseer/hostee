@@ -1,7 +1,6 @@
-application:
+jwt-config:
   jwt-secret-key: ${JWT_SECRET_KEY}
   jwt-token-lifecycle: ${JWT_TOKEN_LIFECYCLE}
-  storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}/
 
 server:
   port: ${VIDEO_SERVICE_PORT}
@@ -23,5 +22,9 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
+      max-file-size: 2GB
+      max-request-size: 2GB
+
+remote-configuration:
+  statistics-url: http://localhost:${STATISTICS_PORT}
+  storage-service-url: http://localhost:${STORAGE_SERVICE_PORT}

@@ -1,7 +1,7 @@
 package ru.anykeyers.videoservice.service;
 
-import ru.krayseer.domain.dto.statistics.ChannelStatisticsDTO;
-import ru.krayseer.domain.dto.statistics.VideoStatisticsDTO;
+import ru.krayseer.domain.statistics.ChannelStatisticsDTO;
+import ru.krayseer.domain.statistics.VideoStatisticsDTO;
 
 /**
  * Сервис сбора статистики

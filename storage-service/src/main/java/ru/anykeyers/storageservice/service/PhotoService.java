@@ -1,7 +1,5 @@
 package ru.anykeyers.storageservice.service;
 
-import java.util.List;
-
 /**
  * Сервис обработки фотографий
  */

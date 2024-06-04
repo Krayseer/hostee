@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.notificationservice.service.impl.EmailNotificationService;
 import ru.anykeyers.notificationservice.service.impl.PushNotificationService;
-import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.UserSettingDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ public class ServiceCompound {
     /**
      * Получить сервисы уведомлений
      *
-     * @param notificationSetting настройки уведомлений
+     * @param userSetting настройки уведомлений
      */
-    public List<NotificationService> getNotificationServices(NotificationSettingDTO notificationSetting) {
+    public List<NotificationService> getNotificationServices(UserSettingDTO userSetting) {
         List<NotificationService> services = new ArrayList<>();
-        if (notificationSetting.isPushEnabled()) {
+        if (userSetting.isPushEnabled()) {
             services.add(pushNotificationService);
         }
-        if (notificationSetting.isEmailEnabled()) {
+        if (userSetting.isEmailEnabled()) {
             services.add(emailNotificationService);
         }
         return services;

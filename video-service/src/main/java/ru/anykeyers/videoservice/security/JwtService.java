@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.videoservice.ApplicationConfig;
+import ru.anykeyers.videoservice.config.JwtConfig;
 
 import java.security.Key;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtService {
 
-    private final ApplicationConfig applicationConfig;
+    private final JwtConfig jwtConfig;
 
     /**
      * Получить имя пользователя из токена
@@ -41,7 +41,7 @@ public class JwtService {
      */
     public String generateToken(String username) {
         Date nowTime = new Date();
-        Date expirationTime = new Date(System.currentTimeMillis() + applicationConfig.getJwtTokenLifecycle());
+        Date expirationTime = new Date(System.currentTimeMillis() + jwtConfig.getJwtTokenLifecycle());
         return Jwts.builder()
                 .setClaims(Collections.emptyMap())
                 .setSubject(username)
@@ -67,7 +67,7 @@ public class JwtService {
      * Получить секретный ключ
      */
     private Key getSignInKey() {
-        String secretKey = applicationConfig.getJwtSecretKey();
+        String secretKey = jwtConfig.getJwtSecretKey();
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 

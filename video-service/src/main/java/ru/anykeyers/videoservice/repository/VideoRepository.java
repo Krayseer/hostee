@@ -2,8 +2,8 @@ package ru.anykeyers.videoservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.anykeyers.videoservice.domain.Channel;
-import ru.anykeyers.videoservice.domain.Video;
+import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.video.Video;
 
 import java.util.List;
 

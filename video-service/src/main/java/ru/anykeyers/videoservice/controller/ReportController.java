@@ -3,8 +3,8 @@ package ru.anykeyers.videoservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.anykeyers.videoservice.domain.report.ReportRequest;
 import ru.anykeyers.videoservice.domain.report.ReportDTO;
-import ru.anykeyers.videoservice.domain.report.ReportResponse;
 import ru.anykeyers.videoservice.service.ReportService;
 
 import java.security.Principal;
@@ -19,13 +19,13 @@ public class ReportController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<ReportResponse> getReports() {
+    public List<ReportDTO> getReports() {
         return reportService.getAllReports();
     }
 
     @PostMapping
-    public void createReport(@RequestBody ReportDTO reportDTO, Principal principal) {
-        reportService.createReport(principal.getName(), reportDTO);
+    public void createReport(@RequestBody ReportRequest reportRequest, Principal principal) {
+        reportService.createReport(principal.getName(), reportRequest);
     }
 
     @PostMapping("/process/{id}")

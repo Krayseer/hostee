@@ -27,7 +27,7 @@ public class Channel {
     /**
      * Идентификатор канала
      */
-    private String channelId;
+    private Long channelId;
 
     /**
      * Количество просмотров главной страницы канала

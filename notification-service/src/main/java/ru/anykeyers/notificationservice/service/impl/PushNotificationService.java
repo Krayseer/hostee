@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.anykeyers.notificationservice.PushNotification;
 import ru.anykeyers.notificationservice.PushNotificationRepository;
 import ru.anykeyers.notificationservice.service.NotificationService;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.krayseer.domain.UserDTO;
 
 import java.time.Instant;
 

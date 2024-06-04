@@ -2,8 +2,8 @@ package ru.anykeyers.videoservice.domain.playlist;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.anykeyers.videoservice.domain.Channel;
-import ru.anykeyers.videoservice.domain.Video;
+import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.video.Video;
 
 import java.util.ArrayList;
 import java.util.List;

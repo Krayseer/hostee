@@ -9,10 +9,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.notificationservice.service.impl.EmailNotificationService;
 import ru.anykeyers.notificationservice.service.impl.PushNotificationService;
-import ru.krayseer.domain.dto.ChannelDTO;
-import ru.krayseer.domain.dto.NotificationSettingDTO;
-import ru.krayseer.domain.dto.SubscriberDTO;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.krayseer.domain.ChannelDTO;
+import ru.krayseer.domain.UserSettingDTO;
+import ru.krayseer.domain.SubscriberDTO;
+import ru.krayseer.domain.UserDTO;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,11 +43,11 @@ class SubscriberServiceTest {
 
     @BeforeEach
     public void setUp() {
-        NotificationSettingDTO notificationSettingDTO = new NotificationSettingDTO(true, true);
+        UserSettingDTO userSettingDTO = new UserSettingDTO(true, true);
         userDTO = new UserDTO();
         userDTO.setId(0L);
         userDTO.setEmail("test@email.com");
-        userDTO.setNotificationSettingUser(notificationSettingDTO);
+        userDTO.setUserSetting(userSettingDTO);
         userDTO.setUsername("testUser");
         channelDTO = new ChannelDTO();
         channelDTO.setId(0L);
@@ -72,7 +72,7 @@ class SubscriberServiceTest {
     void doesntNotifySubscribe() {
         SubscriberDTO subscriberDTO = new SubscriberDTO(channelDTO, subscriberChannelDTO);
         Mockito
-                .when(serviceCompound.getNotificationServices(userDTO.getNotificationSettingUser()))
+                .when(serviceCompound.getNotificationServices(userDTO.getUserSetting()))
                 .thenReturn(Collections.emptyList());
         subscriberService.notifySubscribeChannel(subscriberDTO);
         Mockito.verify(pushNotificationService, Mockito.times(0)).notify(Mockito.any(), Mockito.any());
@@ -86,7 +86,7 @@ class SubscriberServiceTest {
     void notifySubscribeChannelPush() {
         SubscriberDTO subscriberDTO = new SubscriberDTO(channelDTO, subscriberChannelDTO);
         Mockito
-                .when(serviceCompound.getNotificationServices(userDTO.getNotificationSettingUser()))
+                .when(serviceCompound.getNotificationServices(userDTO.getUserSetting()))
                 .thenReturn(List.of(pushNotificationService));
         subscriberService.notifySubscribeChannel(subscriberDTO);
         String expectedContent = """
@@ -104,7 +104,7 @@ class SubscriberServiceTest {
     void notifySubscribeChannelPushAndEmail() {
         SubscriberDTO subscriberDTO = new SubscriberDTO(channelDTO, subscriberChannelDTO);
         Mockito
-                .when(serviceCompound.getNotificationServices(userDTO.getNotificationSettingUser()))
+                .when(serviceCompound.getNotificationServices(userDTO.getUserSetting()))
                 .thenReturn(List.of(pushNotificationService, emailNotificationService));
         subscriberService.notifySubscribeChannel(subscriberDTO);
         String expectedContent = """

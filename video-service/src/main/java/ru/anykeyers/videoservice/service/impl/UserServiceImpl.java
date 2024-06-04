@@ -5,21 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.videoservice.domain.Role;
-import ru.anykeyers.videoservice.domain.setting.NotificationSetting;
-import ru.anykeyers.videoservice.domain.setting.UserSetting;
-import ru.anykeyers.videoservice.repository.NotificationUserSettingRepository;
-import ru.anykeyers.videoservice.repository.UserSettingRepository;
-import ru.krayseer.domain.dto.NotificationSettingDTO;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.anykeyers.videoservice.domain.user.Role;
+import ru.anykeyers.videoservice.domain.user.UserSetting;
+import ru.krayseer.domain.UserSettingDTO;
+import ru.krayseer.domain.UserDTO;
 import ru.anykeyers.videoservice.exception.UserAuthenticateException;
 import ru.anykeyers.videoservice.repository.UserRepository;
-import ru.anykeyers.videoservice.domain.User;
+import ru.anykeyers.videoservice.domain.user.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
-import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
+import ru.anykeyers.videoservice.domain.user.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
-import ru.anykeyers.videoservice.factory.UserFactory;
+import ru.anykeyers.videoservice.domain.user.UserMapper;
 import ru.anykeyers.videoservice.exception.UserAlreadyExistsException;
 import ru.anykeyers.videoservice.exception.UserNotFoundException;
 import ru.anykeyers.videoservice.security.JwtService;
@@ -27,7 +25,6 @@ import ru.anykeyers.videoservice.service.UserService;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Реализация сервиса для работы с пользователями
@@ -39,15 +36,11 @@ public class UserServiceImpl implements UserService {
 
     private final JwtService jwtService;
 
-    private final UserFactory userFactory;
-
     private final UserRepository userRepository;
 
-    private final UserSettingRepository userSettingRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
-
-    private final NotificationUserSettingRepository notificationUserSettingRepository;
 
     @Override
     public UserDTO getUser(String username) {
@@ -55,13 +48,13 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserNotFoundException(username);
         }
-        return userFactory.createUserDTO(user);
+        return UserMapper.createDTO(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(userFactory::createUserDTO).toList();
+        return users.stream().map(UserMapper::createDTO).toList();
     }
 
     @Override
@@ -69,7 +62,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByUsername(registerDTO.getUsername()) != null) {
             throw new UserAlreadyExistsException(registerDTO.getUsername());
         }
-        User userFromDTO = userFactory.createUser(registerDTO);
+        User userFromDTO = UserMapper.createUser(registerDTO, passwordEncoder);
         userRepository.save(userFromDTO);
         String jwtToken = jwtService.generateToken(registerDTO.getUsername());
         log.info("Successful registration of user: {}. JWT token: {}", registerDTO.getUsername(), jwtToken);
@@ -94,23 +87,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setNotificationSetting(String username, NotificationSettingDTO notificationSettingDTO) {
+    public void setNotificationSetting(String username, UserSettingDTO userSettingDTO) {
         User user = userRepository.findByUsername(username);
-        UserSetting userSetting = userSettingRepository.findByUser(user);
-        userSetting = userSetting == null ? new UserSetting() : userSetting;
-        if (userSetting.getNotificationSetting() == null) {
-            NotificationSetting notificationSetting = NotificationSetting.builder()
-                    .pushEnabled(notificationSettingDTO.isPushEnabled())
-                    .emailEnabled(notificationSettingDTO.isEmailEnabled())
-                    .build();
-            notificationUserSettingRepository.save(notificationSetting);
-            userSetting.setUser(user);
-            userSetting.setNotificationSetting(notificationSetting);
+        UserSetting userSetting = user.getUserSetting();
+        if (userSetting == null) {
+            userSetting = new UserSetting();
         }
-        NotificationSetting userNotificationSetting = userSetting.getNotificationSetting();
-        userNotificationSetting.setPushEnabled(notificationSettingDTO.isPushEnabled());
-        userNotificationSetting.setEmailEnabled(notificationSettingDTO.isEmailEnabled());
-        userSettingRepository.save(userSetting);
+        userSetting.setPushEnabled(userSettingDTO.isPushEnabled());
+        userSetting.setEmailEnabled(userSettingDTO.isEmailEnabled());
+        user.setUserSetting(userSetting);
+        userRepository.save(user);
     }
 
     @Override
@@ -130,7 +116,7 @@ public class UserServiceImpl implements UserService {
         );
         user.setBlocked(true);
         userRepository.save(user);
-        return userFactory.createUserDTO(user);
+        return UserMapper.createDTO(user);
     }
 
 }

@@ -1,12 +1,11 @@
 package ru.anykeyers.videoservice.service;
 
-import ru.anykeyers.videoservice.domain.User;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
-import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
+import ru.anykeyers.videoservice.domain.user.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
-import ru.anykeyers.videoservice.domain.Role;
-import ru.krayseer.domain.dto.NotificationSettingDTO;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.anykeyers.videoservice.domain.user.Role;
+import ru.krayseer.domain.UserSettingDTO;
+import ru.krayseer.domain.UserDTO;
 
 import java.util.List;
 
@@ -47,9 +46,9 @@ public interface UserService {
      * Установить настройки уведомлений
      *
      * @param username                  имя пользователя
-     * @param notificationSettingDTO    данные о настройках уведомлений
+     * @param userSettingDTO    данные о настройках уведомлений
      */
-    void setNotificationSetting(String username, NotificationSettingDTO notificationSettingDTO);
+    void setNotificationSetting(String username, UserSettingDTO userSettingDTO);
 
     /**
      * Установить пользователю роли

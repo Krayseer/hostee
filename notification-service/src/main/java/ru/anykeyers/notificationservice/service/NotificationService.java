@@ -1,6 +1,6 @@
 package ru.anykeyers.notificationservice.service;
 
-import ru.krayseer.domain.dto.UserDTO;
+import ru.krayseer.domain.UserDTO;
 
 /**
  * Сервис отправки уведомлений

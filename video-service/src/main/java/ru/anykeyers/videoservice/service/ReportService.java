@@ -1,7 +1,7 @@
 package ru.anykeyers.videoservice.service;
 
+import ru.anykeyers.videoservice.domain.report.ReportRequest;
 import ru.anykeyers.videoservice.domain.report.ReportDTO;
-import ru.anykeyers.videoservice.domain.report.ReportResponse;
 
 import java.util.List;
 
@@ -13,15 +13,15 @@ public interface ReportService {
     /**
      * Получить список всех жалоб
      */
-    List<ReportResponse> getAllReports();
+    List<ReportDTO> getAllReports();
 
     /**
      * Создать жалобу
      *
-     * @param username  имя пользователя, который подал жалобу
-     * @param reportDTO данные о жалобе
+     * @param username      имя пользователя, который подал жалобу
+     * @param reportRequest данные о жалобе
      */
-    void createReport(String username, ReportDTO reportDTO);
+    void createReport(String username, ReportRequest reportRequest);
 
     /**
      * Взять жалобу в обработку

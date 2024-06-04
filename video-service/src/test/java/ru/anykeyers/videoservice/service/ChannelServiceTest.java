@@ -1,17 +1,15 @@
 package ru.anykeyers.videoservice.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.anykeyers.videoservice.domain.Channel;
-import ru.anykeyers.videoservice.domain.User;
-import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
-import ru.anykeyers.videoservice.factory.ChannelFactory;
+import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.user.User;
+import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.service.impl.ChannelServiceImpl;
@@ -32,40 +30,14 @@ public class ChannelServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private ChannelFactory channelFactory;
-
     @InjectMocks
     private ChannelServiceImpl channelService;
 
-    private User testUser;
+    private final User testUser = User.builder().username(USERNAME).build();
 
     private static final String USERNAME = "testUser";
 
     private static final Long CHANNEL_ID = 1L;
-
-    @BeforeEach
-    public void setUp() {
-        testUser = new User();
-        testUser.setUsername(USERNAME);
-    }
-
-
-    /**
-     * Тест на успешное получение канала
-     */
-    @Test
-    public void getChannelSuccessTest() {
-        Channel testChannel = new Channel();
-        Mockito.when(userRepository.findByUsername(USERNAME)).thenReturn(testUser);
-        Mockito.when(channelRepository.findChannelByUser(testUser)).thenReturn(testChannel);
-
-        Channel resultChannel = channelService.getChannel(USERNAME);
-
-        Mockito.verify(userRepository, Mockito.times(1)).findByUsername(USERNAME);
-        Mockito.verify(channelRepository, Mockito.times(1)).findChannelByUser(testUser);
-        Assertions.assertEquals(testChannel, resultChannel);
-    }
 
     /**
      * Тест на успешное получение канала которого не существует

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.statistics.service.ChannelStatisticsService;
 import ru.anykeyers.statistics.service.VideoStatisticsService;
 import ru.krayseer.MessageQueue;
-import ru.krayseer.domain.dto.SubscriberDTO;
+import ru.krayseer.domain.SubscriberDTO;
 
 /**
  * Обработчик сообщений, поступающих по Kafka
@@ -27,13 +27,11 @@ public class KafkaProcessor {
 
     private final ChannelStatisticsService channelStatisticsService;
 
-    @SneakyThrows
     @KafkaListener(topics = MessageQueue.WATCHING_VIDEO, groupId = GROUP_ID)
     public void receiveWatchingVideo(String videoUuid) {
         videoStatisticsService.handleWatchVideo(videoUuid);
     }
 
-    @SneakyThrows
     @KafkaListener(topics = MessageQueue.WATCHING_CHANNEL, groupId = GROUP_ID)
     public void receiveWatchingChannel(Long channelUuid) {
         channelStatisticsService.handleWatchChannel(channelUuid);

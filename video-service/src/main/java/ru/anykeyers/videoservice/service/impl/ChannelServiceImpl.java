@@ -3,18 +3,18 @@ package ru.anykeyers.videoservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.videoservice.domain.Channel;
-import ru.anykeyers.videoservice.domain.User;
-import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
-import ru.anykeyers.videoservice.factory.ChannelFactory;
+import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.user.User;
+import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.ChannelMapper;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.service.ChannelService;
-import ru.anykeyers.videoservice.service.remote.RemoteStorageService;
-import ru.krayseer.MessageQueue;
+import ru.anykeyers.videoservice.service.EventService;
+import ru.krayseer.service.RemoteStorageService;
+import ru.krayseer.domain.ChannelDTO;
 
 import java.security.Principal;
 
@@ -26,15 +26,13 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ChannelServiceImpl implements ChannelService {
 
-    private final ChannelRepository channelRepository;
+    private final EventService eventService;
 
     private final UserRepository userRepository;
 
-    private final ChannelFactory channelFactory;
+    private final ChannelRepository channelRepository;
 
     private final RemoteStorageService remoteStorageService;
-
-    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public Channel getChannel(String username) {
@@ -43,8 +41,13 @@ public class ChannelServiceImpl implements ChannelService {
         if (channel == null) {
             throw new RuntimeException("Channel doesn't exist");
         }
-        kafkaTemplate.send(MessageQueue.WATCHING_CHANNEL, String.valueOf(channel.getId()));
+        eventService.notifyWatchChannel(String.valueOf(channel.getId()));
         return channel;
+    }
+
+    @Override
+    public ChannelDTO getChannel(Long id) {
+        return ChannelMapper.createDTO(channelRepository.findChannelById(id));
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ChannelServiceImpl implements ChannelService {
         if (channelRepository.findChannelByName(createChannelDTO.getName()) != null) {
             throw new RuntimeException("Channel already exist");
         }
-        Channel channelFromDto = channelFactory.createChannelFromDTO(createChannelDTO, currentUser);
+        Channel channelFromDto = ChannelMapper.createChannel(createChannelDTO, currentUser);
         channelRepository.save(channelFromDto);
         log.info("Successful registration of channel with name: {}", createChannelDTO.getName());
         return channelFromDto;

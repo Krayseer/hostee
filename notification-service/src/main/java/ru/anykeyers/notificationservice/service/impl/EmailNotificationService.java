@@ -8,7 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.notificationservice.service.NotificationService;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.krayseer.domain.UserDTO;
 
 /**
  * Реализация отправки уведомлений по Email

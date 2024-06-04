@@ -8,7 +8,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.notificationservice.service.SubscriberService;
 import ru.krayseer.MessageQueue;
-import ru.krayseer.domain.dto.SubscriberDTO;
+import ru.krayseer.domain.SubscriberDTO;
 
 /**
  * Обработчик сообщений Kafka

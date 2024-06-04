@@ -3,11 +3,11 @@ package ru.anykeyers.videoservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.videoservice.domain.Channel;
+import ru.anykeyers.videoservice.domain.channel.Channel;
 import ru.anykeyers.videoservice.domain.playlist.Playlist;
-import ru.anykeyers.videoservice.domain.Video;
+import ru.anykeyers.videoservice.domain.video.Video;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistRequest;
-import ru.anykeyers.videoservice.domain.playlist.PlaylistVideoResponse;
+import ru.anykeyers.videoservice.domain.playlist.PlaylistResponse;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.PlaylistRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
@@ -27,11 +27,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final ChannelRepository channelRepository;
 
     @Override
-    public PlaylistVideoResponse getVideos(Long id) {
+    public PlaylistResponse getVideos(Long id) {
         List<Video> videos = playlistRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Playlist not found")
         ).getVideos();
-        return new PlaylistVideoResponse(videos);
+        return new PlaylistResponse(videos);
 
     }
 

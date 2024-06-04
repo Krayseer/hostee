@@ -18,14 +18,6 @@ public interface VideoStorageService {
     /**
      * Сохранить видео
      *
-     * @param content контент видео в байтах
-     * @return идентификатор видео
-     */
-    String saveVideo(byte[] content);
-
-    /**
-     * Сохранить видео
-     *
      * @param videoFile данные о видео-файле (id, content)
      */
     String saveVideo(VideoFile videoFile);

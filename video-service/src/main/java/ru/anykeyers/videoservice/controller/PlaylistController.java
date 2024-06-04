@@ -3,8 +3,8 @@ package ru.anykeyers.videoservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistRequest;
-import ru.anykeyers.videoservice.domain.playlist.PlaylistVideoRequest;
-import ru.anykeyers.videoservice.domain.playlist.PlaylistVideoResponse;
+import ru.anykeyers.videoservice.domain.playlist.PlaylistUpdateRequest;
+import ru.anykeyers.videoservice.domain.playlist.PlaylistResponse;
 import ru.anykeyers.videoservice.service.PlaylistService;
 
 import java.security.Principal;
@@ -17,7 +17,7 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @GetMapping("{id}")
-    public PlaylistVideoResponse getPlaylistVideo(@PathVariable("id") Long id) {
+    public PlaylistResponse getPlaylistVideo(@PathVariable("id") Long id) {
         return playlistService.getVideos(id);
     }
 
@@ -27,8 +27,8 @@ public class PlaylistController {
     }
 
     @PostMapping("/video")
-    public void addPlaylistVideo(@RequestBody PlaylistVideoRequest playlistVideoRequest) {
-        playlistService.addVideoInPlaylist(playlistVideoRequest.getPlaylistId(), playlistVideoRequest.getVideoId());
+    public void addPlaylistVideo(@RequestBody PlaylistUpdateRequest playlistUpdateRequest) {
+        playlistService.addVideoInPlaylist(playlistUpdateRequest.getPlaylistId(), playlistUpdateRequest.getVideoId());
     }
 
 }

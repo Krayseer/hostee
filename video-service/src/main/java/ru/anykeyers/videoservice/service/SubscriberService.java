@@ -1,6 +1,6 @@
 package ru.anykeyers.videoservice.service;
 
-import ru.krayseer.domain.dto.ChannelDTO;
+import ru.krayseer.domain.ChannelDTO;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package ru.anykeyers.videoservice.domain.report;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.anykeyers.videoservice.domain.User;
+import ru.anykeyers.videoservice.domain.user.User;
 
 /**
  * Жалоба

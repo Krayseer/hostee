@@ -60,7 +60,7 @@ public class ChannelStatisticsService implements BatchProcessor {
                 long subscribersCount = channelStatisticsMap.get(channelId).getSubscriberCount().longValue();
                 if (channel == null) {
                     channel = new Channel();
-                    channel.setId(channelId);
+                    channel.setChannelId(channelId);
                     channel.setCountWatches(countWatches);
                     channel.setSubscribersCount(subscribersCount);
                 } else {

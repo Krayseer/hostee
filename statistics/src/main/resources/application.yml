@@ -21,5 +21,9 @@ spring:
       ddl-auto: update
     database: postgresql
 
+
 server:
   port: ${STATISTICS_PORT}
+
+remote-configuration:
+  video-service-url: http://localhost:${VIDEO_SERVICE_PORT}

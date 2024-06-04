@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.anykeyers.statistics.service.StatisticsService;
-import ru.krayseer.domain.dto.statistics.ChannelStatisticsDTO;
-import ru.krayseer.domain.dto.statistics.VideoStatisticsDTO;
+import ru.krayseer.domain.statistics.ChannelStatisticsDTO;
+import ru.krayseer.domain.statistics.VideoStatisticsDTO;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;

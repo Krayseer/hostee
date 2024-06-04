@@ -7,13 +7,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.History;
-import ru.anykeyers.videoservice.domain.dto.UploadVideoDTO;
+import ru.anykeyers.videoservice.domain.video.VideoDTO;
+import ru.anykeyers.videoservice.domain.video.VideoRequest;
 import ru.anykeyers.videoservice.service.HistoryService;
 import ru.anykeyers.videoservice.service.VideoService;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * REST-контроллер для работы с видео
@@ -27,11 +28,6 @@ public class VideoController {
 
     private final HistoryService historyService;
 
-    /**
-     * Получить видео по его id в хранилище
-     *
-     * @param uuid id видео в сервисе хранилища
-     */
     @GetMapping("/{uuid}")
     public ResponseEntity<Resource> getVideo(@PathVariable("uuid") String uuid,
                                              Principal principal) {
@@ -39,30 +35,25 @@ public class VideoController {
         if (principal != null) {
             historyService.addHistory(principal.getName(), uuid);
         }
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("video/mp4")).body(videoResource);
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.parseMediaType("video/mp4"))
+                .body(videoResource);
     }
 
-    /**
-     * Получить историю просмотренных видео пользователя
-     *
-     * @param principal данные об атворизованном пользователе
-     */
+    @GetMapping
+    public List<VideoDTO> getAllVideo() {
+        return videoService.getAllVideo();
+    }
+
     @GetMapping("/history")
     public History getUserHistory(Principal principal) {
         return historyService.getHistory(principal.getName());
     }
 
-    /**
-     * Загрузить видео
-     *
-     * @param file видео
-     * @param user текуший пользователь
-     */
     @PostMapping
-    public void uploadVideo(@RequestParam("file") MultipartFile file, Principal user) {
-        // TODO: Разобраться, почему нельзя принять MultipartFile и DTO с данными одновременно
-        UploadVideoDTO uploadVideoDTO = new UploadVideoDTO("some video", "some descr");
-        videoService.uploadVideo(uploadVideoDTO, file, user.getName());
+    public void uploadVideo(VideoRequest videoDTO, Principal user) {
+        videoService.uploadVideo(user.getName(), videoDTO);
     }
 
     @DeleteMapping("/delete/video/{uuid}")

@@ -3,9 +3,11 @@ package ru.anykeyers.videoservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.videoservice.domain.Channel;
-import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.ChannelMapper;
 import ru.anykeyers.videoservice.service.ChannelService;
+import ru.krayseer.domain.ChannelDTO;
 
 import java.security.Principal;
 
@@ -17,11 +19,18 @@ import java.security.Principal;
 @RequestMapping("/channel")
 public class ChannelController {
 
+    private final ChannelMapper channelMapper;
+
     private final ChannelService channelService;
 
     @GetMapping
     public Channel getChannel(Principal user) {
         return channelService.getChannel(user.getName());
+    }
+
+    @GetMapping("/{channelId}")
+    public ChannelDTO getChannel(@PathVariable Long channelId) {
+        return channelService.getChannel(channelId);
     }
 
     @PostMapping

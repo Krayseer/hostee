@@ -2,8 +2,8 @@ package ru.anykeyers.notificationservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.krayseer.domain.dto.SubscriberDTO;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.krayseer.domain.SubscriberDTO;
+import ru.krayseer.domain.UserDTO;
 
 /**
  * Сервис обработки подписчиков
@@ -26,7 +26,7 @@ public class SubscriberService {
                 Канал: %s
                 """, subscriber.getSubscriberChannel().getName());
         serviceCompound
-                .getNotificationServices(user.getNotificationSettingUser())
+                .getNotificationServices(user.getUserSetting())
                 .forEach(service -> service.notify(user, content));
     }
 

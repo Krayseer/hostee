@@ -2,7 +2,7 @@ package ru.anykeyers.videoservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.krayseer.domain.dto.ChannelDTO;
+import ru.krayseer.domain.ChannelDTO;
 import ru.anykeyers.videoservice.service.SubscriberService;
 
 import java.security.Principal;

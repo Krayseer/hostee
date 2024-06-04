@@ -3,9 +3,10 @@ package ru.anykeyers.videoservice.domain.report;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.krayseer.domain.UserDTO;
 
 /**
- * DTO с данными о жалобе
+ * Данные для передачи ответа по жалобе
  */
 @Data
 @NoArgsConstructor
@@ -13,13 +14,38 @@ import lombok.NoArgsConstructor;
 public class ReportDTO {
 
     /**
-     * Имя пользователя на которого направлена жалоба
+     * Идентификатор заявки
      */
-    private String user;
+    private Long id;
+
+    /**
+     * Пользователь, на которого отправили жалобу
+     */
+    private UserDTO userTarget;
+
+    /**
+     * Отправитель жалобы
+     */
+    private UserDTO userSender;
+
+    /**
+     * Статус заявки
+     */
+    private ReportState reportState;
 
     /**
      * Текст жалобы
      */
     private String text;
+
+    /**
+     * Администратор, решающий проблему
+     */
+    private String solver;
+
+    /**
+     * Результат обработки жалобы
+     */
+    private String solveResult;
 
 }

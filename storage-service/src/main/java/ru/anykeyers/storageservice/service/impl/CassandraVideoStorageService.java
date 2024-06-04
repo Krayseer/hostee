@@ -12,7 +12,6 @@ import ru.anykeyers.storageservice.exception.VideoNotFoundException;
 import ru.anykeyers.storageservice.service.VideoStorageService;
 
 import java.nio.ByteBuffer;
-import java.util.UUID;
 
 /**
  * Реализация сервиса обработки видео в Cassandra
@@ -28,12 +27,6 @@ public class CassandraVideoStorageService implements VideoStorageService {
     public Resource getVideo(String uuid) {
         Video video = videoCassandraRepository.findById(uuid).orElseThrow(() -> new VideoNotFoundException(uuid));
         return new ByteArrayResource(video.getByteBuffer().array());
-    }
-
-    @Override
-    public String saveVideo(byte[] content) {
-        VideoFile videoFile = new VideoFile(UUID.randomUUID().toString(), content);
-        return saveVideo(videoFile);
     }
 
     @Override

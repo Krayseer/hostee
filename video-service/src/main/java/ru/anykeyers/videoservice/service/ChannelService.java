@@ -1,9 +1,9 @@
 package ru.anykeyers.videoservice.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.videoservice.domain.Channel;
-import ru.anykeyers.videoservice.domain.User;
-import ru.anykeyers.videoservice.domain.dto.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.krayseer.domain.ChannelDTO;
 
 import java.security.Principal;
 
@@ -13,13 +13,22 @@ import java.security.Principal;
 public interface ChannelService {
 
     /**
-     * Получить канал по имени пользователя
-     * @param username пользователь
+     * Получить канал
+     *
+     * @param username имя пользователя
      */
     Channel getChannel(String username);
 
     /**
+     * Получить канал
+     *
+     * @param id идентификатор канала
+     */
+    ChannelDTO getChannel(Long id);
+
+    /**
      * Зарегистрировать канал
+     *
      * @param createChannelDTO данные для регистрации канала
      */
     Channel registerChannel(CreateChannelDTO createChannelDTO, Principal user);
@@ -45,4 +54,5 @@ public interface ChannelService {
      * @param id идентификатор канала
      */
     Channel deleteChannel(Long id);
+
 }

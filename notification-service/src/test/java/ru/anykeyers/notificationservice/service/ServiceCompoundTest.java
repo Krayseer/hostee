@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.notificationservice.service.impl.EmailNotificationService;
 import ru.anykeyers.notificationservice.service.impl.PushNotificationService;
-import ru.krayseer.domain.dto.NotificationSettingDTO;
+import ru.krayseer.domain.UserSettingDTO;
 
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +40,7 @@ class ServiceCompoundTest {
      */
     @Test
     void getNotificationServices() {
-        NotificationSettingDTO notificationSetting = new NotificationSettingDTO(false, false);
+        UserSettingDTO notificationSetting = new UserSettingDTO(false, false);
         Assertions.assertEquals(Collections.emptyList(), serviceCompound.getNotificationServices(notificationSetting));
         notificationSetting.setPushEnabled(true);
         Assertions.assertEquals(

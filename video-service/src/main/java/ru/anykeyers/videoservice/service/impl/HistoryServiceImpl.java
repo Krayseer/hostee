@@ -3,7 +3,7 @@ package ru.anykeyers.videoservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.videoservice.domain.History;
-import ru.anykeyers.videoservice.domain.User;
+import ru.anykeyers.videoservice.domain.user.User;
 import ru.anykeyers.videoservice.repository.HistoryRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;

@@ -8,7 +8,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.storageservice.context.ObjectStorageConfig;
@@ -25,7 +24,6 @@ public class PhotoServiceImpl implements PhotoService {
     private final ObjectStorageConfig storageConfig;
 
     @Override
-    @SneakyThrows
     public String uploadPhoto(byte[] photoBytes) {
         String bucketName = storageConfig.getBucketName();
         AmazonS3 s3Client = createAmazonS3Client(storageConfig.getAccessKeyId(), storageConfig.getSecretAccessKey());

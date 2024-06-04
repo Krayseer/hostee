@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.dto.AuthDTO;
-import ru.anykeyers.videoservice.domain.dto.RegisterDTO;
+import ru.anykeyers.videoservice.domain.user.RegisterDTO;
 import ru.anykeyers.videoservice.domain.dto.TokenDTO;
-import ru.anykeyers.videoservice.domain.Role;
-import ru.krayseer.domain.dto.NotificationSettingDTO;
-import ru.krayseer.domain.dto.UserDTO;
+import ru.anykeyers.videoservice.domain.user.Role;
+import ru.krayseer.domain.UserSettingDTO;
+import ru.krayseer.domain.UserDTO;
 import ru.anykeyers.videoservice.service.UserService;
 
 import java.security.Principal;
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/notification-setting")
-    public void setNotificationSetting(@RequestBody NotificationSettingDTO notificationSetting,
+    public void setNotificationSetting(@RequestBody UserSettingDTO notificationSetting,
                                        Principal user) {
         userService.setNotificationSetting(user.getName(), notificationSetting);
     }

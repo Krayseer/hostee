@@ -1,11 +1,12 @@
 package ru.anykeyers.storageservice.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import ru.anykeyers.storageservice.context.ApplicationConfig;
 import ru.anykeyers.storageservice.domain.VideoFile;
+import ru.anykeyers.storageservice.service.impl.CassandraVideoStorageService;
 
 import java.util.Queue;
 import java.util.concurrent.*;
@@ -15,23 +16,18 @@ import java.util.concurrent.*;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CacheStorageService {
+
+    private final ExecutorService executorService;
+
+    private final ScheduledExecutorService scheduler;
 
     private final ApplicationConfig applicationConfig;
 
-    private final VideoStorageService videoStorageService;
+    private final CassandraVideoStorageService videoStorageService;
 
     private final Queue<VideoFile> filesCache = new LinkedBlockingDeque<>();
-
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-    private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
-
-    public CacheStorageService(@Qualifier("cassandraVideoStorageService") VideoStorageService videoStorageService,
-                               ApplicationConfig applicationConfig) {
-        this.videoStorageService = videoStorageService;
-        this.applicationConfig = applicationConfig;
-    }
 
     /**
      * Запуск работы сервиса кеширования видео в хранилище
