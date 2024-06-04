@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.channel.Channel;
 import ru.anykeyers.videoservice.domain.user.User;
-import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.ChannelRequest;
 import ru.anykeyers.videoservice.domain.channel.ChannelMapper;
+import ru.anykeyers.videoservice.exception.ChannelAlreadyExistsException;
+import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.service.ChannelService;
 import ru.anykeyers.videoservice.service.EventService;
 import ru.krayseer.service.RemoteStorageService;
 import ru.krayseer.domain.ChannelDTO;
-
-import java.security.Principal;
 
 /**
  * Реализация сервиса для работы с каналами
@@ -35,39 +35,40 @@ public class ChannelServiceImpl implements ChannelService {
     private final RemoteStorageService remoteStorageService;
 
     @Override
-    public Channel getChannel(String username) {
+    public ChannelDTO getChannel(String username) {
         User user = userRepository.findByUsername(username);
-        Channel channel = channelRepository.findChannelByUser(user);
-        if (channel == null) {
-            throw new RuntimeException("Channel doesn't exist");
-        }
+        Channel channel = channelRepository.findChannelByUser(user).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );
         eventService.notifyWatchChannel(String.valueOf(channel.getId()));
-        return channel;
+        return ChannelMapper.createDTO(channel);
     }
 
     @Override
     public ChannelDTO getChannel(Long id) {
-        return ChannelMapper.createDTO(channelRepository.findChannelById(id));
+        Channel channel = channelRepository.findChannelById(id).orElseThrow(
+                () -> new ChannelNotExistsException(id)
+        );
+        return ChannelMapper.createDTO(channel);
     }
 
     @Override
-    public Channel registerChannel(CreateChannelDTO createChannelDTO, Principal user) {
-        User currentUser= userRepository.findByUsername(user.getName());
-        if (channelRepository.findChannelByName(createChannelDTO.getName()) != null) {
-            throw new RuntimeException("Channel already exist");
+    public ChannelDTO registerChannel(String username, ChannelRequest channelRequest) {
+        User user = userRepository.findByUsername(username);
+        if (channelRepository.existsChannelByName(channelRequest.getName())) {
+            throw new ChannelAlreadyExistsException(username);
         }
-        Channel channelFromDto = ChannelMapper.createChannel(createChannelDTO, currentUser);
-        channelRepository.save(channelFromDto);
-        log.info("Successful registration of channel with name: {}", createChannelDTO.getName());
-        return channelFromDto;
+        Channel channel = ChannelMapper.createChannel(channelRequest, user);
+        channelRepository.save(channel);
+        log.info("Successful registration of channel with name: {}", channelRequest.getName());
+        return ChannelMapper.createDTO(channel);
     }
 
     @Override
     public void addPhoto(String username, MultipartFile photo) {
-        Channel channel = channelRepository.findChannelByUserUsername(username);
-        if (channel == null) {
-            throw new RuntimeException("Channel doesn't exist");
-        }
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );
         ResponseEntity<String> photoResponse = remoteStorageService.uploadPhoto(photo);
         if (photoResponse.getBody() == null) {
             throw new RuntimeException("Error upload photo");
@@ -78,21 +79,21 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel updateChannel(Channel channel) {
+    public ChannelDTO updateChannel(Long id, ChannelRequest channelRequest) {
+        Channel channel = channelRepository.findChannelById(id).orElseThrow(
+                () -> new ChannelNotExistsException(id)
+        );
+        channel.setName(channelRequest.getName());
+        channel.setDescription(channelRequest.getDescription());
         channelRepository.save(channel);
         log.info("Channel with id: {}, updated", channel.getId());
-        return channel;
+        return ChannelMapper.createDTO(channel);
     }
 
     @Override
-    public Channel deleteChannel(Long id) {
-        Channel channel = channelRepository.findChannelById(id);
-        if (channel == null) {
-            throw new RuntimeException("Channel doesn't exist");
-        }
-        channelRepository.delete(channel);
-        log.info("Deleted channel with id: {}", channel.getId());
-        return channel;
+    public void deleteChannel(Long id) {
+        channelRepository.deleteById(id);
+        log.info("Deleted channel with id: {}", id);
     }
 
 }

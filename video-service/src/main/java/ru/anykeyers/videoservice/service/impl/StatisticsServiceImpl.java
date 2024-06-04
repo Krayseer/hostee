@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.videoservice.domain.channel.Channel;
 import ru.anykeyers.videoservice.domain.video.Video;
+import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.krayseer.service.RemoteStatisticsService;
@@ -28,13 +29,17 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ChannelStatisticsDTO getUserChannelStatistics(String username) {
-        Channel channel = channelRepository.findChannelByUserUsername(username);
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );
         return remoteStatisticsService.getChannelStatistics(channel.getId());
     }
 
     @Override
     public VideoStatisticsDTO[] getUserVideoStatistics(String username) {
-        Channel channel = channelRepository.findChannelByUserUsername(username);
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );;
         List<Video> videos = videoRepository.findByChannel(channel);
         return remoteStatisticsService.getVideoStatistics(
                 videos.stream().map(Video::getVideoUuid).toArray(String[]::new)

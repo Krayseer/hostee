@@ -2,7 +2,7 @@ package ru.anykeyers.videoservice.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.channel.Channel;
-import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.ChannelRequest;
 import ru.krayseer.domain.ChannelDTO;
 
 import java.security.Principal;
@@ -17,7 +17,7 @@ public interface ChannelService {
      *
      * @param username имя пользователя
      */
-    Channel getChannel(String username);
+    ChannelDTO getChannel(String username);
 
     /**
      * Получить канал
@@ -29,9 +29,9 @@ public interface ChannelService {
     /**
      * Зарегистрировать канал
      *
-     * @param createChannelDTO данные для регистрации канала
+     * @param channelRequest данные для регистрации канала
      */
-    Channel registerChannel(CreateChannelDTO createChannelDTO, Principal user);
+    ChannelDTO registerChannel(String username, ChannelRequest channelRequest);
 
     /**
      * Добавить фотографию каналу
@@ -42,17 +42,18 @@ public interface ChannelService {
     void addPhoto(String username, MultipartFile photo);
 
     /**
-     * Изменить канал
+     * Изменить информацию о канале
      *
-     * @param channel обновленные данные о канале
+     * @param id                идентификатор канала
+     * @param channelRequest    данные о канале
      */
-    Channel updateChannel(Channel channel);
+    ChannelDTO updateChannel(Long id, ChannelRequest channelRequest);
 
     /**
      * Удалить канал
      *
      * @param id идентификатор канала
      */
-    Channel deleteChannel(Long id);
+    void deleteChannel(Long id);
 
 }

@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.videoservice.domain.channel.Channel;
 import ru.anykeyers.videoservice.domain.channel.ChannelMapper;
 import ru.anykeyers.videoservice.domain.user.User;
-import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.anykeyers.videoservice.domain.channel.ChannelRequest;
 import ru.anykeyers.videoservice.domain.user.UserMapper;
 
 /**
@@ -29,14 +29,14 @@ public class ChannelMapperTest {
      */
     @Test
     public void createChannelTest() {
-        CreateChannelDTO createChannelDTO = new CreateChannelDTO();
-        createChannelDTO.setName("Test Channel");
-        createChannelDTO.setDescription("Description");
+        ChannelRequest channelRequest = new ChannelRequest();
+        channelRequest.setName("Test Channel");
+        channelRequest.setDescription("Description");
 
         User user = new User();
         user.setUsername("testUser");
 
-        Channel channel = channelMapper.createChannel(createChannelDTO, user);
+        Channel channel = channelMapper.createChannel(channelRequest, user);
 
         Assertions.assertNotNull(channel);
         Assertions.assertEquals("Test Channel", channel.getName());

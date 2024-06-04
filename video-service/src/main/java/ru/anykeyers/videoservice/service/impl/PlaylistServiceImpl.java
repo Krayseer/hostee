@@ -8,6 +8,7 @@ import ru.anykeyers.videoservice.domain.playlist.Playlist;
 import ru.anykeyers.videoservice.domain.video.Video;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistRequest;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistResponse;
+import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.PlaylistRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
@@ -37,7 +38,9 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void createPlaylist(String username, PlaylistRequest playlistRequest) {
-        Channel channel = channelRepository.findChannelByUserUsername(username);
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );
         Playlist playlist = Playlist.builder()
                 .name(playlistRequest.getName())
                 .description(playlistRequest.getDescription())

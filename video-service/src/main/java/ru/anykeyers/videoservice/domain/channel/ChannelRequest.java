@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateChannelDTO {
+public class ChannelRequest {
 
     /**
      * Название канала
@@ -23,4 +23,5 @@ public class CreateChannelDTO {
      * Описание канала
      */
     private String description;
+
 }

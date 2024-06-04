@@ -10,6 +10,7 @@ import ru.anykeyers.videoservice.domain.video.Video;
 import ru.anykeyers.videoservice.domain.video.VideoDTO;
 import ru.anykeyers.videoservice.domain.video.VideoRequest;
 import ru.anykeyers.videoservice.domain.video.VideoMapper;
+import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
@@ -51,7 +52,9 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public void uploadVideo(String username, VideoRequest videoRequest) {
         User user = userRepository.findByUsername(username);
-        Channel channel = channelRepository.findChannelByUser(user);
+        Channel channel = channelRepository.findChannelByUser(user).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );;
         if (channel == null) {
             throw new RuntimeException("channel doesn't exist");
         }

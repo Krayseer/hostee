@@ -7,107 +7,164 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.channel.ChannelRequest;
 import ru.anykeyers.videoservice.domain.user.User;
-import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
+import ru.anykeyers.videoservice.exception.ChannelAlreadyExistsException;
+import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.service.impl.ChannelServiceImpl;
+import ru.krayseer.domain.ChannelDTO;
+import ru.krayseer.service.RemoteStorageService;
 
-import java.security.Principal;
-
-import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 /**
- * Тесты для сервиса {@link ChannelService}
+ * Тесты для {@link ChannelService}
  */
 @ExtendWith(MockitoExtension.class)
-public class ChannelServiceTest {
+class ChannelServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private ChannelRepository channelRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private RemoteStorageService remoteStorageService;
 
     @InjectMocks
     private ChannelServiceImpl channelService;
 
-    private final User testUser = User.builder().username(USERNAME).build();
-
-    private static final String USERNAME = "testUser";
-
-    private static final Long CHANNEL_ID = 1L;
+    private final User user = User.builder().username("test-user").build();
 
     /**
-     * Тест на успешное получение канала которого не существует
+     * Тест регистрации канала для пользователя, у которого уже существует канал
      */
     @Test
-    public void getChannelDoesntExistTest() {
-        Mockito.when(userRepository.findByUsername(USERNAME)).thenReturn(testUser);
-        Mockito.when(channelRepository.findChannelByUser(testUser)).thenReturn(null);
+    void registerChannelWithUserWhenAlreadyExistsChannel() {
+        ChannelRequest channelRequest = new ChannelRequest("test-channel", "description");
 
-        RuntimeException runtimeException = Assertions.assertThrows(
-                RuntimeException.class, () -> channelService.getChannel(USERNAME)
+        Mockito.when(userRepository.findByUsername("test-user")).thenReturn(user);
+        Mockito.when(channelRepository.existsChannelByName("test-channel")).thenReturn(true);
+
+        ChannelAlreadyExistsException exception = Assertions.assertThrows(
+                ChannelAlreadyExistsException.class, () -> channelService.registerChannel("test-user", channelRequest)
         );
+
+        Assertions.assertEquals("Channel already exists for user: test-user", exception.getMessage());
     }
 
     /**
-     * Тест на регистрацию канала который уже существует
+     * Тест успешного создания канала пользователю
      */
     @Test
-    public void registerChannelAlreadyExistTest() {
-        CreateChannelDTO createChannelDTO = new CreateChannelDTO();
-        createChannelDTO.setName("testChannel");
+    void registerChannel() {
+        ChannelRequest channelRequest = new ChannelRequest("test-channel", "description");
 
-        when(channelRepository.findChannelByName(anyString())).thenReturn(new Channel());
+        Mockito.when(userRepository.findByUsername("test-user")).thenReturn(user);
 
-        RuntimeException runtimeException = Assertions.assertThrows(
-                RuntimeException.class, () -> channelService.registerChannel(createChannelDTO, mock(Principal.class))
+        ChannelDTO channelDTO = channelService.registerChannel("test-user", channelRequest);
+
+        Mockito.verify(channelRepository, Mockito.times(1)).save(Mockito.any());
+        Assertions.assertEquals("test-channel", channelDTO.getName());
+        Assertions.assertEquals("description", channelDTO.getDescription());
+    }
+
+    /**
+     * Тест добавления фотографии несуществующему каналу
+     */
+    @Test
+    void addPhotoForNotExistingChannel() {
+        Mockito.when(channelRepository.findChannelByUserUsername("test-user")).thenReturn(Optional.empty());
+
+        ChannelNotExistsException exception = Assertions.assertThrows(
+                ChannelNotExistsException.class, () -> channelService.addPhoto("test-user", Mockito.mock(MultipartFile.class))
         );
+
+        Assertions.assertEquals("Channel not exists for user: test-user", exception.getMessage());
     }
 
     /**
-     * Тест на успешное удаление канала
+     * Тест неуспешного добавления фотографии из-за некорректного ответа с удаленного сервиса хранилища
      */
     @Test
-    public void deleteChannelSuccessTest() {
-        Channel testChannel = new Channel();
-        testChannel.setId(CHANNEL_ID);
+    void addPhotoWithIncorrectResponseFromRemoteStorageService() {
+        MultipartFile file = Mockito.mock(MultipartFile.class);
 
-        when(channelRepository.findChannelById(CHANNEL_ID)).thenReturn(testChannel);
+        Mockito.when(channelRepository.findChannelByUserUsername("test-user"))
+                .thenReturn(Optional.ofNullable(Mockito.mock(Channel.class)));
+        Mockito.when(remoteStorageService.uploadPhoto(file))
+                .thenReturn(new ResponseEntity<>(null, HttpStatus.BAD_GATEWAY));
 
-        Channel resultChannel = channelService.deleteChannel(CHANNEL_ID);
-
-        Assertions.assertNotNull(resultChannel);
-        verify(channelRepository, times(1)).delete(testChannel);
-    }
-
-    /**
-     * Тест на удаление канала которого не существует
-     */
-    @Test
-    public void deleteChannelDoesntExistTest() {
-        when(channelRepository.findChannelById(CHANNEL_ID)).thenReturn(null);
-
-        RuntimeException runtimeException = Assertions.assertThrows(
-                RuntimeException.class, () -> channelService.deleteChannel(CHANNEL_ID)
+        RuntimeException exception = Assertions.assertThrows(
+                RuntimeException.class, () -> channelService.addPhoto("test-user", file)
         );
+
+        Assertions.assertEquals("Error upload photo", exception.getMessage());
     }
 
     /**
-     * Тест на изменение канала
+     * Тест успешного добавления фотографии каналу
      */
     @Test
-    public void updateChannelTest() {
-        Channel testChannel = new Channel();
-        testChannel.setId(CHANNEL_ID);
+    void addPhoto() {
+        MultipartFile file = Mockito.mock(MultipartFile.class);
+        Channel channel = new Channel();
 
-        when(channelRepository.save(testChannel)).thenReturn(testChannel);
+        Mockito.when(channelRepository.findChannelByUserUsername("test-user")).thenReturn(Optional.of(channel));
+        Mockito.when(remoteStorageService.uploadPhoto(file))
+                .thenReturn(new ResponseEntity<>("uuid", HttpStatus.BAD_GATEWAY));
 
-        Channel resultChannel = channelService.updateChannel(testChannel);
+        channelService.addPhoto("test-user", file);
 
-        Assertions.assertNotNull(resultChannel);
-        verify(channelRepository, times(1)).save(testChannel);
+        Mockito.verify(channelRepository, Mockito.times(1)).save(Mockito.any());
+        Assertions.assertEquals("uuid", channel.getPhotoUrl());
     }
+
+    /**
+     * Тест обновления несуществующего канала
+     */
+    @Test
+    void updateNotExistingChannel() {
+        Mockito.when(channelRepository.findChannelById(1L)).thenReturn(Optional.empty());
+
+        ChannelNotExistsException exception = Assertions.assertThrows(
+                ChannelNotExistsException.class, () -> channelService.updateChannel(1L, Mockito.mock(ChannelRequest.class))
+        );
+
+        Assertions.assertEquals("Channel not exists with id: 1", exception.getMessage());
+    }
+
+    /**
+     * Тест успешного обновления данных о канале
+     */
+    @Test
+    void updateChannel() {
+        Channel channel = Channel.builder().user(user).name("first-name").description("description").build();
+        ChannelRequest channelRequest = new ChannelRequest("second-name", "description");
+
+        Mockito.when(channelRepository.findChannelById(1L)).thenReturn(Optional.of(channel));
+
+        ChannelDTO channelDTO = channelService.updateChannel(1L, channelRequest);
+
+        Mockito.verify(channelRepository, Mockito.times(1)).save(Mockito.any());
+        Assertions.assertEquals("second-name", channelDTO.getName());
+        Assertions.assertEquals("description", channelDTO.getDescription());
+    }
+
+    /**
+     * Тест удаления канала
+     */
+    @Test
+    void deleteChannel() {
+        channelService.deleteChannel(1L);
+        Mockito.verify(channelRepository, Mockito.times(1)).deleteById(1L);
+    }
+
 }

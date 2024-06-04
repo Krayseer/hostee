@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import ru.anykeyers.videoservice.domain.channel.Channel;
 import ru.anykeyers.videoservice.domain.user.User;
 
+import java.util.Optional;
+
 /**
  * DAO для работы с таблицей каналов
  */
@@ -16,27 +18,27 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
      *
      * @param user имя пользователя
      */
-    Channel findChannelByUser(User user);
+    Optional<Channel> findChannelByUser(User user);
 
     /**
      * Получить канал по пользователю пользователя
      *
      * @param username имя пользователя
      */
-    Channel findChannelByUserUsername(String username);
+    Optional<Channel> findChannelByUserUsername(String username);
 
     /**
      * Найти канал по имени
      *
      * @param name имя канала
      */
-    Channel findChannelByName(String name);
+    boolean existsChannelByName(String name);
 
     /**
      * Найти канал по его  id
      *
      * @param id id канала
      */
-    Channel findChannelById(Long id);
+    Optional<Channel> findChannelById(Long id);
 
 }

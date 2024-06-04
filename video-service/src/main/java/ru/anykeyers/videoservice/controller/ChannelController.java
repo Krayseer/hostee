@@ -3,9 +3,7 @@ package ru.anykeyers.videoservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.videoservice.domain.channel.Channel;
-import ru.anykeyers.videoservice.domain.channel.CreateChannelDTO;
-import ru.anykeyers.videoservice.domain.channel.ChannelMapper;
+import ru.anykeyers.videoservice.domain.channel.ChannelRequest;
 import ru.anykeyers.videoservice.service.ChannelService;
 import ru.krayseer.domain.ChannelDTO;
 
@@ -19,12 +17,10 @@ import java.security.Principal;
 @RequestMapping("/channel")
 public class ChannelController {
 
-    private final ChannelMapper channelMapper;
-
     private final ChannelService channelService;
 
     @GetMapping
-    public Channel getChannel(Principal user) {
+    public ChannelDTO getChannel(Principal user) {
         return channelService.getChannel(user.getName());
     }
 
@@ -34,8 +30,8 @@ public class ChannelController {
     }
 
     @PostMapping
-    public Channel registerChannel(@RequestBody CreateChannelDTO createChannelDTO, Principal user) {
-        return channelService.registerChannel(createChannelDTO, user);
+    public ChannelDTO registerChannel(@RequestBody ChannelRequest channelRequest, Principal user) {
+        return channelService.registerChannel(user.getName(), channelRequest);
     }
 
     @PostMapping("/photo")
@@ -43,14 +39,14 @@ public class ChannelController {
         channelService.addPhoto(principal.getName(), file);
     }
 
-    @PutMapping
-    public Channel updateChannel(@RequestBody Channel channel) {
-        return channelService.updateChannel(channel);
+    @PutMapping("/{id}")
+    public ChannelDTO updateChannel(@PathVariable Long id, @RequestBody ChannelRequest channelRequest) {
+        return channelService.updateChannel(id, channelRequest);
     }
 
     @DeleteMapping("/{id}")
-    public Channel deleteChannel(@PathVariable("id") Long id) {
-        return channelService.deleteChannel(id);
+    public void deleteChannel(@PathVariable("id") Long id) {
+        channelService.deleteChannel(id);
     }
 
 }

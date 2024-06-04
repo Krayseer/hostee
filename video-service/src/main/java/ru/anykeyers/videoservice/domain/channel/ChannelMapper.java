@@ -16,13 +16,13 @@ public final class ChannelMapper {
     /**
      * Создать канал на основе запроса DTO
      *
-     * @param createChannelDTO запрос с данными о канале
+     * @param channelRequest запрос с данными о канале
      */
-    public static Channel createChannel(CreateChannelDTO createChannelDTO, User user) {
+    public static Channel createChannel(ChannelRequest channelRequest, User user) {
         return Channel.builder()
-                .name(createChannelDTO.getName())
+                .name(channelRequest.getName())
                 .user(user)
-                .description(createChannelDTO.getDescription())
+                .description(channelRequest.getDescription())
                 .build();
     }
 

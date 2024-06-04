@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.anykeyers.videoservice.domain.channel.Channel;
 import ru.anykeyers.videoservice.domain.subscriber.Subscriber;
 import ru.anykeyers.videoservice.domain.subscriber.SubscriberMapper;
+import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
 import ru.anykeyers.videoservice.service.EventService;
 import ru.krayseer.domain.ChannelDTO;
 import ru.anykeyers.videoservice.domain.channel.ChannelMapper;
@@ -38,10 +39,15 @@ public class SubscriberServiceImpl implements SubscriberService {
 
     @Override
     public void subscribe(Long channelId, String username) {
-        Channel channel = channelRepository.findChannelById(channelId);
+        Channel channel = channelRepository.findChannelById(channelId).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );
+        Channel subscriberChannel = channelRepository.findChannelByUserUsername(username).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );
         Subscriber subscriber = Subscriber.builder()
                 .channel(channel)
-                .subscriberChannel(channelRepository.findChannelByUserUsername(username))
+                .subscriberChannel(subscriberChannel)
                 .build();
         subscriberRepository.save(subscriber);
         eventService.notifySubscribeChannel(SubscriberMapper.createDTO(subscriber));
