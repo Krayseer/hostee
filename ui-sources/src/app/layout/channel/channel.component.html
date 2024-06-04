@@ -14,8 +14,8 @@
       <input type="text" id="description" formControlName="description">
     </div>
     <div>
-      <label for="file">Файл видео:</label>
-      <input type="file" id="file" (change)="onFileChange($event)" accept="video/*" formControlName="file">
+      <label for="video">Файл видео:</label>
+      <input type="file" id="video" (change)="onFileChange($event)" accept="video/*" formControlName="video">
     </div>
     <button type="submit" [disabled]="uploadForm.invalid">Отправить</button>
   </form>

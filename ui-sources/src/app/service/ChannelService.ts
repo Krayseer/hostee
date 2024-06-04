@@ -2,23 +2,48 @@ import {Injectable, Optional} from "@angular/core";
 import {Observable, take} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Channel} from "../models/channel";
+import {VideoRequest} from "../layout/channel/channel.component";
 
 @Injectable()
 export class ChannelService {
   constructor(private http: HttpClient) {
   }
 
-  public getChannel(): Observable<Channel> {
-    return this.http.get<Channel>("api/channel");
+  public getChannel(token: string): Observable<Channel> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<Channel>("api/channel", {headers: headers});
 }
 
-  public registerChannel(userData: string) {
+  public registerChannel(userData: string, token: string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
     this.http.post("api/channel", userData, {
-      headers: {'Content-Type': 'application/json'}
+      headers: headers
     }).pipe(take(1)).subscribe();
   }
 
-  uploadVideo(formData: FormData): void {
-    this.http.post("api/video", formData);
+  uploadVideo(videoRequest: VideoRequest, token: string): void {
+    const formData = new FormData();
+    formData.append('name', videoRequest.name);
+    formData.append('description', videoRequest.description);
+    formData.append('video', videoRequest.video);
+
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    this.http.post("api/video", formData, { headers: headers }).subscribe(
+      () => {
+        // Обработка успешной загрузки видео
+      },
+      error => {
+        // Обработка ошибки загрузки видео
+      }
+    );
   }
 }

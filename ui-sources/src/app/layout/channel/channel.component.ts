@@ -3,6 +3,14 @@ import {ChannelService} from "../../service/ChannelService";
 import {Channel} from "../../models/channel";
 import {UserService} from "../../service/UserService";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+export interface VideoRequest {
+  name: string;
+  description: string;
+  video: File;
+}
 
 @Component({
   selector: 'app-channel',
@@ -11,22 +19,33 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class ChannelComponent implements OnInit{
   channel!: Channel;
-  selectedFile: any;
+  selectedFile!: File;
   uploadForm: FormGroup = new FormGroup({});
+  token: string | null = null;
 
-  constructor(private channelService: ChannelService, private fb: FormBuilder) {}
+  constructor(private channelService: ChannelService, private fb: FormBuilder,
+              private router: Router, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.getChannel();
+    this.token = localStorage.getItem('token');
+    console.log('token', this.token);
+    if (this.token == null || this.token == '') {
+      this.router.navigate(['sign-in']);
+      this.snackBar.open('Пожалуйста, войдите для доступа к этой странице', 'Закрыть', {
+        duration: 3000 // Длительность уведомления в миллисекундах (3 секунды)
+      });
+      return;
+    }
+    this.getChannel(this.token);
     this.uploadForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      file: [null, Validators.required]
+      video: [null, Validators.required]
     });
   }
 
-  getChannel(): void {
-    this.channelService.getChannel()
+  getChannel(token: string): void {
+    this.channelService.getChannel(token)
       .subscribe(channel => this.channel = channel);
   }
 
@@ -35,12 +54,15 @@ export class ChannelComponent implements OnInit{
       return;
     }
 
-    const formData : FormData = new FormData();
-    formData.append('name', this.uploadForm.get("name")?.value);
-    formData.append('description', this.uploadForm.get('description')?.value);
-    formData.append('file', this.selectedFile);
+    const videoRequest: VideoRequest = {
+      name: this.uploadForm.get("name")?.value,
+      description: this.uploadForm.get('description')?.value,
+      video: this.selectedFile
+    };
 
-    this.channelService.uploadVideo(formData);
+    if (this.token != null) {
+      this.channelService.uploadVideo(videoRequest, this.token);
+    }
   }
 
   onFileChange(event: any) {

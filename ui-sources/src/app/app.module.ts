@@ -17,6 +17,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { UsersViewComponent } from './layout/users-view/users-view.component';
 import { RegisterChannelComponent } from './layout/register-channel/register-channel.component';
 import { VideoComponent } from './layout/video/video.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { VideoComponent } from './layout/video/video.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [UserService, ChannelService, ReportService],
+  providers: [UserService, ChannelService, ReportService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

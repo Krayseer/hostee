@@ -1,14 +1,15 @@
 <app-header></app-header>
-<form [formGroup]="registerChannelForm" (ngSubmit)="onSubmit()">
-  <div class="register-labels">
-    <div class="register-label">
-      <label for="name">Название канала:</label>
-      <input type="text" id="name" formControlName="name">
-    </div>
-    <div class="register-label">
-      <label for="description">Описание канала:</label>
-      <input type="text" id="description" formControlName="description">
-    </div>
-    <button type="submit">Зарегистрироваться</button>
+<div class="container">
+  <div class="registration-container">
+    <h1 class="registration-title">Создание канала</h1>
+    <form class="form" [formGroup]="registerChannelForm" (ngSubmit)="onSubmit()">
+      <div class="input-div">
+        <input formControlName="name" placeholder="Название канала" class="input" type="text" id="name" name="name" ngModel required>
+      </div>
+      <div class="input-div">
+        <textarea formControlName="description" placeholder="Описание канала" class="input-area" type="text" id="description" name="description" ngModel required></textarea>
+      </div>
+      <button type="submit" [disabled]="!registerChannelForm.valid"  [ngStyle]="{ 'opacity': registerChannelForm.valid ? 1 : 0.5 }" class="submit-button">Создать</button>
+    </form>
   </div>
-</form>
+</div>

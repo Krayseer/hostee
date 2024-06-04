@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../service/UserService";
 import {User} from "../../models/user";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user',
@@ -10,14 +11,20 @@ import {User} from "../../models/user";
 export class UserComponent implements OnInit{
   user!: User;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.getUser();
   }
 
   getUser(): void {
-    this.userService.getUser()
+    let token = localStorage.getItem('token');
+    console.log('token', token);
+    if (token == null || token == '') {
+      this.router.navigate(['sign-in']);
+      return;
+    }
+    this.userService.getUser(token)
       .subscribe(user => this.user = user);
   }
 }
