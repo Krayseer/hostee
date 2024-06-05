@@ -11,6 +11,9 @@ import ru.krayseer.RemoteConfiguration;
 import ru.krayseer.service.RemoteStatisticsService;
 import ru.krayseer.service.RemoteStorageService;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Контекст приложения
  */
@@ -26,6 +29,11 @@ public class ApplicationContext {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
+    }
+
+    @Bean
+    public ExecutorService executorService() {
+        return Executors.newVirtualThreadPerTaskExecutor();
     }
 
     @Bean

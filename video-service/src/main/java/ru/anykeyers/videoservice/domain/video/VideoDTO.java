@@ -25,7 +25,7 @@ public class VideoDTO {
     private String name;
 
     /**
-     * Опиасание
+     * Описание
      */
     private String description;
 

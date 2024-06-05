@@ -17,6 +17,7 @@ public final class VideoMapper {
         return Video.builder()
                 .name(videoRequest.getName())
                 .description(videoRequest.getDescription())
+                .uploadStatus(UploadStatus.PROCESSING)
                 .channel(channel)
                 .build();
     }

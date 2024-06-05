@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.videoservice.AsyncWorker;
 import ru.anykeyers.videoservice.domain.channel.Channel;
-import ru.anykeyers.videoservice.domain.user.User;
-import ru.anykeyers.videoservice.domain.video.Video;
-import ru.anykeyers.videoservice.domain.video.VideoDTO;
-import ru.anykeyers.videoservice.domain.video.VideoRequest;
-import ru.anykeyers.videoservice.domain.video.VideoMapper;
+import ru.anykeyers.videoservice.domain.video.*;
 import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
+import ru.anykeyers.videoservice.exception.VideoNotFoundException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
-import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.anykeyers.videoservice.service.EventService;
 import ru.anykeyers.videoservice.service.VideoService;
@@ -27,9 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
 
-    private final EventService eventService;
+    private final AsyncWorker worker;
 
-    private final UserRepository userRepository;
+    private final EventService eventService;
 
     private final VideoRepository videoRepository;
 
@@ -54,15 +52,32 @@ public class VideoServiceImpl implements VideoService {
         Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
                 () -> new ChannelNotExistsException(username)
         );
-        ResponseEntity<String> video_uuid = remoteStorageService.uploadVideoFile(videoRequest.getVideo());
         Video video = VideoMapper.createVideo(videoRequest, channel);
-        video.setVideoUuid(video_uuid.getBody());
-        videoRepository.save(video);
+        Video savedVideo = videoRepository.save(video);
+        uploadVideo(savedVideo.getId(), videoRequest.getVideo());
     }
 
     @Override
     public void deleteVideo(String uuid) {
         videoRepository.deleteByVideoUuid(uuid);
+    }
+
+    /**
+     * Загрузить видео в удаленное хранилище
+     *
+     * @param videoId   идентификатор видео
+     * @param videoFile файл видео
+     */
+    private void uploadVideo(Long videoId, MultipartFile videoFile) {
+        worker.addTask(() -> {
+            Video video = videoRepository.findById(videoId).orElseThrow(
+                    () -> new VideoNotFoundException(videoId)
+            );
+            ResponseEntity<String> videoUuid = remoteStorageService.uploadVideoFile(videoFile);
+            video.setVideoUuid(videoUuid.getBody());
+            video.setUploadStatus(UploadStatus.FINISH);
+            videoRepository.save(video);
+        });
     }
 
 }

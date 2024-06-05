@@ -48,4 +48,7 @@ public class Video {
     @Column(name = "video_uuid")
     private String videoUuid;
 
+    @Enumerated(EnumType.STRING)
+    private UploadStatus uploadStatus;
+
 }

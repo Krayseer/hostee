@@ -74,17 +74,4 @@ public class RemoteStorageService {
         }
     }
 
-    /**
-     * Ковертировать {@link MultipartFile} в {@link File}
-     */
-    private File convert(MultipartFile file) {
-        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        try {
-            file.transferTo(convFile);
-        } catch (IOException exception) {
-            throw new RuntimeException("Cant convert file");
-        }
-        return convFile;
-    }
-
 }
