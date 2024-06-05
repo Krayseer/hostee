@@ -47,7 +47,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(name = "blocked")
-    private boolean isBlocked;
+    private boolean blocked;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserSetting userSetting;
@@ -98,7 +98,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !isBlocked;
+        return !blocked;
     }
 
 }

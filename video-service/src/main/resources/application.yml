@@ -25,6 +25,10 @@ spring:
       max-file-size: 2GB
       max-request-size: 2GB
 
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+
 remote-configuration:
   statistics-url: http://localhost:${STATISTICS_PORT}
   storage-service-url: http://localhost:${STORAGE_SERVICE_PORT}

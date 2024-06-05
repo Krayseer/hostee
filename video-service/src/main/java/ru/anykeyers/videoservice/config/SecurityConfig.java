@@ -35,10 +35,15 @@ public class SecurityConfig {
                                                    HttpSecurity http) {
         return http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/v3/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+
                         .requestMatchers("/user/sign-in").permitAll()
                         .requestMatchers("/user/sign-up").permitAll()
+
                         .requestMatchers("/channel/**").permitAll()
                         .requestMatchers("/channel/user").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

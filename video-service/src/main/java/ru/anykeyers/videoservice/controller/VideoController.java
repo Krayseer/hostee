@@ -1,5 +1,8 @@
 package ru.anykeyers.videoservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -16,9 +19,7 @@ import ru.anykeyers.videoservice.service.VideoService;
 import java.security.Principal;
 import java.util.List;
 
-/**
- * REST-контроллер для работы с видео
- */
+@Tag(name = "Обработка видеороликов")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/video")
@@ -28,8 +29,12 @@ public class VideoController {
 
     private final HistoryService historyService;
 
+    @Operation(summary = "Получить видео")
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> getVideo(@PathVariable("id") Long id, Principal principal) {
+    public ResponseEntity<Resource> getVideo(
+            @Parameter(description = "Идентификатор видео") @PathVariable("id") Long id,
+            Principal principal
+    ) {
         Resource videoResource = videoService.getVideo(id);
         if (principal != null) {
             historyService.addHistory(principal.getName(), id);
@@ -40,30 +45,40 @@ public class VideoController {
                 .body(videoResource);
     }
 
+    @Operation(summary = "Получить список всех видео")
     @GetMapping
     public List<VideoDTO> getAllVideo() {
         return videoService.getAllVideo();
     }
 
+    @Operation(summary = "Получить список видео авторизованного пользователя")
     @GetMapping("/user")
     public List<VideoDTO> getUserVideos(Principal principal) {
         return videoService.getVideos(principal.getName());
     }
 
+    @Operation(summary = "Получить историю просмотра видео атворизованного пользователя")
     @GetMapping("/history")
     public History getUserHistory(Principal principal) {
         return historyService.getHistory(principal.getName());
     }
 
+    @Operation(summary = "Загрузить видео")
     @PostMapping
-    public void uploadVideo(VideoRequest videoDTO, Principal user) {
+    public void uploadVideo(
+            @Parameter(description = "Данные о видео") VideoRequest videoDTO,
+            Principal user
+    ) {
         videoService.uploadVideo(user.getName(), videoDTO);
     }
 
-    @DeleteMapping("/delete/video/{uuid}")
+    @Operation(summary = "Удалить видео")
+    @DeleteMapping("/{uuid}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Transactional
-    public void deleteVideo(@PathVariable String uuid) {
+    public void deleteVideo(
+            @Parameter(description = "Идентификатор видео") @PathVariable String uuid
+    ) {
         videoService.deleteVideo(uuid);
     }
 

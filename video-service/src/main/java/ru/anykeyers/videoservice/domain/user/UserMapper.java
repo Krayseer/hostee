@@ -25,7 +25,7 @@ public final class UserMapper {
                 .username(registerDTO.getUsername())
                 .password(passwordEncoder.encode(registerDTO.getPassword()))
                 .email(registerDTO.getEmail())
-                .isBlocked(false)
+                .blocked(false)
                 .userSetting(new UserSetting())
                 .roles(Set.of(Role.USER))
                 .build();

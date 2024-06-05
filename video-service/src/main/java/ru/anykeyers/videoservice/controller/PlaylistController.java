@@ -1,5 +1,8 @@
 package ru.anykeyers.videoservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistRequest;
@@ -9,6 +12,7 @@ import ru.anykeyers.videoservice.service.PlaylistService;
 
 import java.security.Principal;
 
+@Tag(name = "Обработка плейлистов")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/playlist")
@@ -16,18 +20,28 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
-    @GetMapping("{id}")
-    public PlaylistDTO getPlaylistVideo(@PathVariable("id") Long id) {
+    @Operation(summary = "Получить данные о плейлисте")
+    @GetMapping("/{id}")
+    public PlaylistDTO getPlaylistVideo(
+            @Parameter(description = "Идентификатор плейлиста") @PathVariable("id") Long id
+    ) {
         return playlistService.getVideos(id);
     }
 
+    @Operation(summary = "Создать плейлист")
     @PostMapping
-    public void createPlaylist(@RequestBody PlaylistRequest playlist, Principal principal) {
+    public void createPlaylist(
+            @Parameter(description = "Данные о плейлисте") @RequestBody PlaylistRequest playlist,
+            Principal principal
+    ) {
         playlistService.createPlaylist(principal.getName(), playlist);
     }
 
+    @Operation(summary = "Добавить видео в плейлист")
     @PostMapping("/video")
-    public void addPlaylistVideo(@RequestBody PlaylistUpdateRequest playlistUpdateRequest) {
+    public void addPlaylistVideo(
+            @Parameter(description = "Данные для добавления видео") @RequestBody PlaylistUpdateRequest playlistUpdateRequest
+    ) {
         playlistService.addVideoInPlaylist(playlistUpdateRequest.getPlaylistId(), playlistUpdateRequest.getVideoId());
     }
 
