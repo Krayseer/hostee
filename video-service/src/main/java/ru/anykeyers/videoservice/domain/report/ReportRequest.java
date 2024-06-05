@@ -15,7 +15,7 @@ public class ReportRequest {
     /**
      * Имя пользователя на которого направлена жалоба
      */
-    private String user;
+    private String username;
 
     /**
      * Текст жалобы

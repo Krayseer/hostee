@@ -14,31 +14,24 @@ import java.util.Optional;
 public interface ChannelRepository extends JpaRepository<Channel, Long> {
 
     /**
-     * Получить канал по пользователю пользователя
+     * Найти канал
      *
-     * @param user имя пользователя
+     * @param id id канала
      */
-    Optional<Channel> findChannelByUser(User user);
+    Optional<Channel> findChannelById(Long id);
 
     /**
-     * Получить канал по пользователю пользователя
+     * Получить канал
      *
      * @param username имя пользователя
      */
     Optional<Channel> findChannelByUserUsername(String username);
 
     /**
-     * Найти канал по имени
+     * Существует ли канал
      *
      * @param name имя канала
      */
     boolean existsChannelByName(String name);
-
-    /**
-     * Найти канал по его  id
-     *
-     * @param id id канала
-     */
-    Optional<Channel> findChannelById(Long id);
 
 }

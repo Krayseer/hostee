@@ -51,13 +51,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public void uploadVideo(String username, VideoRequest videoRequest) {
-        User user = userRepository.findByUsername(username);
-        Channel channel = channelRepository.findChannelByUser(user).orElseThrow(
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
                 () -> new ChannelNotExistsException(username)
-        );;
-        if (channel == null) {
-            throw new RuntimeException("channel doesn't exist");
-        }
+        );
         ResponseEntity<String> video_uuid = remoteStorageService.uploadVideoFile(videoRequest.getVideo());
         Video video = VideoMapper.createVideo(videoRequest, channel);
         video.setVideoUuid(video_uuid.getBody());

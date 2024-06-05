@@ -13,7 +13,7 @@ import java.util.List;
 public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
 
     /**
-     * Получить подписиков канала
+     * Получить подписчиков канала
      *
      * @param id идентификатор канала
      */

@@ -25,9 +25,6 @@ class LocalVideoStorageServiceTest {
     @Mock
     private ApplicationConfig applicationConfig;
 
-    @Mock
-    private CacheStorageService cacheStorageService;
-
     @InjectMocks
     private LocalVideoStorageService localVideoStorageService;
 
@@ -39,13 +36,12 @@ class LocalVideoStorageServiceTest {
     @Test
     @SneakyThrows
     void saveVideo(@TempDir Path tempDir) {
-        VideoFile videoFile = new VideoFile("test-uuid", new byte[]{1,2,3,});
+        VideoFile videoFile = new VideoFile("test-uuid", new byte[]{1,2,3});
         String storagePath = tempDir.toString() + "\\";
         Mockito.when(applicationConfig.getStoragePath()).thenReturn(storagePath);
 
         String uuid = localVideoStorageService.saveVideo(videoFile);
 
-        Mockito.verify(cacheStorageService, Mockito.times(1)).addFile(videoFile);
         byte[] actualFileBytes = Files.readAllBytes(Path.of(storagePath + "test-uuid.mp4"));
         Assertions.assertArrayEquals(new byte[]{1, 2, 3}, actualFileBytes);
         Assertions.assertEquals("test-uuid", uuid);

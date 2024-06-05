@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.anykeyers.videoservice.domain.video.Video;
+import ru.anykeyers.videoservice.domain.video.VideoDTO;
 
 import java.util.List;
 
@@ -13,11 +14,26 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlaylistResponse {
+public class PlaylistDTO {
+
+    /**
+     * Идентификатор
+     */
+    private Long id;
+
+    /**
+     * Название
+     */
+    private String name;
+
+    /**
+     * Описание
+     */
+    private String description;
 
     /**
      * Список видеороликов
      */
-    private List<Video> videos;
+    private List<VideoDTO> videos;
 
 }

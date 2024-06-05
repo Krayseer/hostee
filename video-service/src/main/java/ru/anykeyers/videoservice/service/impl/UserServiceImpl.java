@@ -90,9 +90,6 @@ public class UserServiceImpl implements UserService {
     public void setNotificationSetting(String username, UserSettingDTO userSettingDTO) {
         User user = userRepository.findByUsername(username);
         UserSetting userSetting = user.getUserSetting();
-        if (userSetting == null) {
-            userSetting = new UserSetting();
-        }
         userSetting.setPushEnabled(userSettingDTO.isPushEnabled());
         userSetting.setEmailEnabled(userSettingDTO.isEmailEnabled());
         user.setUserSetting(userSetting);

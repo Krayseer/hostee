@@ -36,8 +36,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public ChannelDTO getChannel(String username) {
-        User user = userRepository.findByUsername(username);
-        Channel channel = channelRepository.findChannelByUser(user).orElseThrow(
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
                 () -> new ChannelNotExistsException(username)
         );
         eventService.notifyWatchChannel(String.valueOf(channel.getId()));

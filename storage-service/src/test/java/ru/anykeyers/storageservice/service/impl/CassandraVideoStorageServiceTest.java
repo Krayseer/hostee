@@ -41,7 +41,7 @@ class CassandraVideoStorageServiceTest {
                 VideoNotFoundException.class, () -> cassandraVideoStorageService.getVideo(uuid)
         );
 
-        Assertions.assertEquals(videoNotFoundException.getMessage(), "Video could not be found: test-uuid");
+        Assertions.assertEquals("Video could not be found: test-uuid", videoNotFoundException.getMessage());
     }
 
     /**

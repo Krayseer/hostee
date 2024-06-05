@@ -31,7 +31,7 @@ public class VideoController {
     @GetMapping("/{uuid}")
     public ResponseEntity<Resource> getVideo(@PathVariable("uuid") String uuid,
                                              Principal principal) {
-        Resource videoResource = videoService.getVideo(uuid);
+        Resource videoResource = videoService.getVideo(uuid); //TODO: Получать непосредственно id,а не uuid
         if (principal != null) {
             historyService.addHistory(principal.getName(), uuid);
         }

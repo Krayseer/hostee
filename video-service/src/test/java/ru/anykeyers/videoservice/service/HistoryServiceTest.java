@@ -13,6 +13,9 @@ import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.anykeyers.videoservice.service.impl.HistoryServiceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Тесты для {@link HistoryService}
  */
@@ -37,10 +40,10 @@ class HistoryServiceTest {
     private final User user = User.builder().username("test-user").build();
 
     /**
-     * Тест добавления видео в историю
+     * Тест добавления видео в еще не созданную историю пользователя
      */
     @Test
-    void addHistory() {
+    void addVideoInNewHistory() {
         String videoUuid = "uuid";
         Video video = Video.builder().videoUuid(videoUuid).build();
 
@@ -55,6 +58,30 @@ class HistoryServiceTest {
         Assertions.assertEquals(user, history.getUser());
         Assertions.assertEquals(1, history.getVideos().size());
         Assertions.assertEquals(videoUuid, history.getVideos().getFirst().getVideoUuid());
+    }
+
+    /**
+     * Тест добавления видео в существующую историю пользователя
+     */
+    @Test
+    void addVideoInExistingHistory() {
+        String videoUuid = "uuid";
+        Video video = Video.builder().videoUuid(videoUuid).build();
+        List<Video> existingVideos = new ArrayList<>();
+        existingVideos.add(new Video());
+        History existingHistory = History.builder().user(user).videos(existingVideos).build();
+
+        Mockito.when(userRepository.findByUsername("test-user")).thenReturn(user);
+        Mockito.when(historyRepository.findByUser(user)).thenReturn(existingHistory);
+        Mockito.when(videoRepository.findByVideoUuid(videoUuid)).thenReturn(video);
+
+        historyService.addHistory("test-user", videoUuid);
+
+        Mockito.verify(historyRepository, Mockito.times(1)).save(historyCaptor.capture());
+        History history = historyCaptor.getValue();
+        Assertions.assertEquals(user, history.getUser());
+        Assertions.assertEquals(2, history.getVideos().size());
+        Assertions.assertEquals(videoUuid, history.getVideos().getLast().getVideoUuid());
     }
 
 }

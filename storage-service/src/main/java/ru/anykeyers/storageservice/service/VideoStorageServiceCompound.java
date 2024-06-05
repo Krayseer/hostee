@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.storageservice.domain.VideoFile;
-import ru.anykeyers.storageservice.service.impl.CassandraVideoStorageService;
 import ru.anykeyers.storageservice.service.impl.LocalVideoStorageService;
 
 import java.util.UUID;
@@ -20,8 +19,6 @@ public class VideoStorageServiceCompound {
 
     private final LocalVideoStorageService localVideoStorageService;
 
-    private final CassandraVideoStorageService cassandraVideoStorageService;
-
     /**
      * Получить видео
      *
@@ -31,7 +28,7 @@ public class VideoStorageServiceCompound {
         try {
             return localVideoStorageService.getVideo(uuid);
         } catch (Exception ex) {
-            return cassandraVideoStorageService.getVideo(uuid);
+            return cacheStorageService.getVideo(uuid);
         }
     }
 

@@ -2,6 +2,7 @@ package ru.anykeyers.storageservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import ru.anykeyers.storageservice.context.ApplicationConfig;
@@ -48,6 +49,15 @@ public class CacheStorageService {
             stopWatch.stop();
             log.info("Process {} videos from cache storage in {} ms", cacheSize, stopWatch.getTotalTimeMillis());
         }, 0, applicationConfig.getStorageCacheProcessDelayMs(), TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Получить видео
+     *
+     * @param videoUuid идентификатор видео
+     */
+    public Resource getVideo(String videoUuid) {
+        return videoStorageService.getVideo(videoUuid);
     }
 
     /**

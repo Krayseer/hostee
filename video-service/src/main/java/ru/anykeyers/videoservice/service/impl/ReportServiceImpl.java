@@ -39,9 +39,9 @@ public class ReportServiceImpl implements ReportService {
         if (userSender == null) {
             throw new UserNotFoundException(username);
         }
-        User userTarget = userRepository.findByUsername(reportRequest.getUser());
+        User userTarget = userRepository.findByUsername(reportRequest.getUsername());
         if (userTarget == null) {
-            throw new UserNotFoundException(reportRequest.getUser());
+            throw new UserNotFoundException(reportRequest.getUsername());
         }
         Report report = ReportMapper.createReport(userSender, userTarget, reportRequest);
         report.setReportState(reportStateService.nextState(report));

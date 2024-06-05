@@ -40,7 +40,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Override
     public void subscribe(Long channelId, String username) {
         Channel channel = channelRepository.findChannelById(channelId).orElseThrow(
-                () -> new ChannelNotExistsException(username)
+                () -> new ChannelNotExistsException(channelId)
         );
         Channel subscriberChannel = channelRepository.findChannelByUserUsername(username).orElseThrow(
                 () -> new ChannelNotExistsException(username)
