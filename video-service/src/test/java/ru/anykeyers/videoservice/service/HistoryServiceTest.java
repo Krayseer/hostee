@@ -15,6 +15,7 @@ import ru.anykeyers.videoservice.service.impl.HistoryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Тесты для {@link HistoryService}
@@ -45,13 +46,13 @@ class HistoryServiceTest {
     @Test
     void addVideoInNewHistory() {
         String videoUuid = "uuid";
-        Video video = Video.builder().videoUuid(videoUuid).build();
+        Video video = Video.builder().id(1L).videoUuid(videoUuid).build();
 
         Mockito.when(userRepository.findByUsername("test-user")).thenReturn(user);
         Mockito.when(historyRepository.findByUser(user)).thenReturn(null);
-        Mockito.when(videoRepository.findByVideoUuid(videoUuid)).thenReturn(video);
+        Mockito.when(videoRepository.findById(1L)).thenReturn(Optional.of(video));
 
-        historyService.addHistory("test-user", videoUuid);
+        historyService.addHistory("test-user", 1L);
 
         Mockito.verify(historyRepository, Mockito.times(1)).save(historyCaptor.capture());
         History history = historyCaptor.getValue();
@@ -66,16 +67,16 @@ class HistoryServiceTest {
     @Test
     void addVideoInExistingHistory() {
         String videoUuid = "uuid";
-        Video video = Video.builder().videoUuid(videoUuid).build();
+        Video video = Video.builder().id(1L).videoUuid(videoUuid).build();
         List<Video> existingVideos = new ArrayList<>();
         existingVideos.add(new Video());
         History existingHistory = History.builder().user(user).videos(existingVideos).build();
 
         Mockito.when(userRepository.findByUsername("test-user")).thenReturn(user);
         Mockito.when(historyRepository.findByUser(user)).thenReturn(existingHistory);
-        Mockito.when(videoRepository.findByVideoUuid(videoUuid)).thenReturn(video);
+        Mockito.when(videoRepository.findById(1L)).thenReturn(Optional.of(video));
 
-        historyService.addHistory("test-user", videoUuid);
+        historyService.addHistory("test-user", 1L);
 
         Mockito.verify(historyRepository, Mockito.times(1)).save(historyCaptor.capture());
         History history = historyCaptor.getValue();

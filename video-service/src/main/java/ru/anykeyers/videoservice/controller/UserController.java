@@ -52,8 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/notification-setting")
-    public void setNotificationSetting(@RequestBody UserSettingDTO notificationSetting,
-                                       Principal user) {
+    public void setNotificationSetting(@RequestBody UserSettingDTO notificationSetting, Principal user) {
         userService.setNotificationSetting(user.getName(), notificationSetting);
     }
 
@@ -64,8 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/set-roles/{username}")
-    public void setUserRoles(@PathVariable String username,
-                             @RequestBody List<Role> roles) {
+    public void setUserRoles(@PathVariable String username, @RequestBody List<Role> roles) {
         userService.setUserRoles(username, roles);
     }
 

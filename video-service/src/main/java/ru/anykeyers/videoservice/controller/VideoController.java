@@ -28,12 +28,11 @@ public class VideoController {
 
     private final HistoryService historyService;
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<Resource> getVideo(@PathVariable("uuid") String uuid,
-                                             Principal principal) {
-        Resource videoResource = videoService.getVideo(uuid); //TODO: Получать непосредственно id,а не uuid
+    @GetMapping("/{id}")
+    public ResponseEntity<Resource> getVideo(@PathVariable("id") Long id, Principal principal) {
+        Resource videoResource = videoService.getVideo(id);
         if (principal != null) {
-            historyService.addHistory(principal.getName(), uuid);
+            historyService.addHistory(principal.getName(), id);
         }
         return ResponseEntity
                 .ok()

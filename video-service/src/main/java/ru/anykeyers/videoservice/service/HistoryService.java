@@ -18,8 +18,8 @@ public interface HistoryService {
      * Добавить видео в историю
      *
      * @param username  имя пользователя
-     * @param videoUuid идентификатор видео
+     * @param id        идентификатор видео
      */
-    void addHistory(String username, String videoUuid);
+    void addHistory(String username, Long id);
 
 }

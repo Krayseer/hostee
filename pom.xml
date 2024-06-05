@@ -22,6 +22,8 @@
     <kafka.version>3.1.2</kafka.version>
     <junit.version>4.13.2</junit.version>
     <lombok.version>1.18.32</lombok.version>
+    <openapi.version>2.5.0</openapi.version>
+    <amazon.version>1.12.429</amazon.version>
     <postgres.version>42.7.3</postgres.version>
     <commons-api.version>1.0.0</commons-api.version>
     <spring-boot.version>3.2.5</spring-boot.version>
@@ -66,6 +68,16 @@
         <groupId>jakarta.validation</groupId>
         <artifactId>jakarta.validation-api</artifactId>
         <version>${jakarta.validation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>${openapi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk</artifactId>
+        <version>${amazon.version}</version>
       </dependency>
       <dependency>
         <groupId>io.jsonwebtoken</groupId>

@@ -19,9 +19,9 @@ public interface VideoService {
     /**
      * Получить видео из хранилища по его id
      *
-     * @param uuid id видео в хранилище
+     * @param id идентификатор видео
      */
-    Resource getVideo(String uuid);
+    Resource getVideo(Long id);
 
     /**
      * Загрузить видео в хранилище

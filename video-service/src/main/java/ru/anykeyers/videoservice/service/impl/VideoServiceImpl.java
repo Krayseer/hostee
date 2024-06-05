@@ -1,8 +1,10 @@
 package ru.anykeyers.videoservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.AsyncWorker;
@@ -42,9 +44,12 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Resource getVideo(String uuid) {
-        eventService.notifyWatchVideo(uuid);
-        return remoteStorageService.getVideoFile(uuid);
+    public Resource getVideo(Long id) {
+        Video video = videoRepository.findById(id).orElseThrow(
+                () -> new VideoNotFoundException(id)
+        );
+        eventService.notifyWatchVideo(video.getVideoUuid());
+        return remoteStorageService.getVideoFile(video.getVideoUuid());
     }
 
     @Override
@@ -54,7 +59,7 @@ public class VideoServiceImpl implements VideoService {
         );
         Video video = VideoMapper.createVideo(videoRequest, channel);
         Video savedVideo = videoRepository.save(video);
-        uploadVideo(savedVideo.getId(), videoRequest.getVideo());
+        worker.addTask(() -> uploadVideo(savedVideo.getId(), copyMultipartFile(videoRequest.getVideo())));
     }
 
     @Override
@@ -69,15 +74,22 @@ public class VideoServiceImpl implements VideoService {
      * @param videoFile файл видео
      */
     private void uploadVideo(Long videoId, MultipartFile videoFile) {
-        worker.addTask(() -> {
-            Video video = videoRepository.findById(videoId).orElseThrow(
-                    () -> new VideoNotFoundException(videoId)
-            );
-            ResponseEntity<String> videoUuid = remoteStorageService.uploadVideoFile(videoFile);
-            video.setVideoUuid(videoUuid.getBody());
-            video.setUploadStatus(UploadStatus.FINISH);
-            videoRepository.save(video);
-        });
+        ResponseEntity<String> videoUuid = remoteStorageService.uploadVideoFile(videoFile);
+        Video video = videoRepository.findById(videoId).orElseThrow(
+                () -> new VideoNotFoundException(videoId)
+        );
+        video.setVideoUuid(videoUuid.getBody());
+        video.setUploadStatus(UploadStatus.FINISH);
+        videoRepository.save(video);
+    }
+
+    @SneakyThrows
+    private MultipartFile copyMultipartFile(MultipartFile original) {
+        return new MockMultipartFile(
+                original.getName(),
+                original.getOriginalFilename(),
+                original.getContentType(),
+                original.getBytes());
     }
 
 }
