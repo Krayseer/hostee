@@ -44,6 +44,15 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    public List<VideoDTO> getVideos(String username) {
+        Channel channel = channelRepository.findChannelByUserUsername(username).orElseThrow(
+                () -> new ChannelNotExistsException(username)
+        );;
+        List<Video> videos = videoRepository.findByChannel(channel);
+        return videos.stream().map(VideoMapper::createDTO).toList();
+    }
+
+    @Override
     public Resource getVideo(Long id) {
         Video video = videoRepository.findById(id).orElseThrow(
                 () -> new VideoNotFoundException(id)
@@ -60,6 +69,9 @@ public class VideoServiceImpl implements VideoService {
         Video video = VideoMapper.createVideo(videoRequest, channel);
         Video savedVideo = videoRepository.save(video);
         worker.addTask(() -> uploadVideo(savedVideo.getId(), copyMultipartFile(videoRequest.getVideo())));
+        if (videoRequest.getPreview() != null) {
+            worker.addTask(() -> uploadPhoto(savedVideo.getId(), copyMultipartFile(videoRequest.getPreview())));
+        }
     }
 
     @Override
@@ -80,6 +92,21 @@ public class VideoServiceImpl implements VideoService {
         );
         video.setVideoUuid(videoUuid.getBody());
         video.setUploadStatus(UploadStatus.FINISH);
+        videoRepository.save(video);
+    }
+
+    /**
+     * Загрузить превью в удаленное хранилище
+     *
+     * @param videoId   идентификатор видео
+     * @param preview   фотография - превью
+     */
+    private void uploadPhoto(Long videoId, MultipartFile preview) {
+        ResponseEntity<String> photoUuid = remoteStorageService.uploadPhoto(preview);
+        Video video = videoRepository.findById(videoId).orElseThrow(
+                () -> new VideoNotFoundException(videoId)
+        );
+        video.setPreviewUuid(photoUuid.getBody());
         videoRepository.save(video);
     }
 

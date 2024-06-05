@@ -48,6 +48,11 @@ public class Video {
     @Column(name = "video_uuid")
     private String videoUuid;
 
+    /**
+     * Идентификатор превью видео
+     */
+    private String previewUuid;
+
     @Enumerated(EnumType.STRING)
     private UploadStatus uploadStatus;
 

@@ -45,6 +45,11 @@ public class VideoController {
         return videoService.getAllVideo();
     }
 
+    @GetMapping("/user")
+    public List<VideoDTO> getUserVideos(Principal principal) {
+        return videoService.getVideos(principal.getName());
+    }
+
     @GetMapping("/history")
     public History getUserHistory(Principal principal) {
         return historyService.getHistory(principal.getName());

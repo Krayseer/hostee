@@ -17,6 +17,13 @@ public interface VideoService {
     List<VideoDTO> getAllVideo();
 
     /**
+     * Получить видеоролики пользователя
+     *
+     * @param username имя пользователя
+     */
+    List<VideoDTO> getVideos(String username);
+
+    /**
      * Получить видео из хранилища по его id
      *
      * @param id идентификатор видео
@@ -37,5 +44,4 @@ public interface VideoService {
      * @param uuid идентификатор видео
      */
     void deleteVideo(String uuid);
-
 }

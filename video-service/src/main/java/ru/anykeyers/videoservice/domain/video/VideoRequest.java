@@ -30,4 +30,9 @@ public class VideoRequest {
      */
     private MultipartFile video;
 
+    /**
+     * Превью видео
+     */
+    private MultipartFile preview;
+
 }
