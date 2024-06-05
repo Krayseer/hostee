@@ -3,6 +3,7 @@ package ru.anykeyers.videoservice.config;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,16 +36,23 @@ public class SecurityConfig {
                                                    HttpSecurity http) {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v3/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/video/user").authenticated()
+                        .requestMatchers("/video/history").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/video").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/video/**").authenticated()
 
-                        .requestMatchers("/user/sign-in").permitAll()
-                        .requestMatchers("/user/sign-up").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/channel").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/channel").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/channel/photo").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/channel/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/channel/**").authenticated()
 
-                        .requestMatchers("/channel/**").permitAll()
-                        .requestMatchers("/channel/user").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/user").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/user/set-roles/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/user/user-setting/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/user/user-setting/**").authenticated()
 
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
