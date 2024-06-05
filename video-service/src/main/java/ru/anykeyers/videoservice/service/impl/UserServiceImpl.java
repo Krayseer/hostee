@@ -116,4 +116,14 @@ public class UserServiceImpl implements UserService {
         return UserMapper.createDTO(user);
     }
 
+    @Override
+    public UserDTO unblockUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException(id)
+        );
+        user.setBlocked(false);
+        userRepository.save(user);
+        return UserMapper.createDTO(user);
+    }
+
 }

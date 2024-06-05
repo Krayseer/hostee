@@ -6,6 +6,7 @@ import {User} from "../models/user";
 import {Channel} from "../models/channel";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import {UserDTO} from "../layout/users-view/users-view.component";
 
 @Injectable()
 export class UserService {
@@ -82,12 +83,30 @@ export class UserService {
     return this.http.get<User>("api/user", {headers: headers});
   }
 
-  public getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>("api/admin/users");
+  public getAllUsers(token: string): Observable<UserDTO[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<UserDTO[]>("api/user/all", {headers: headers});
   }
 
-  blockUser(userId: number): Observable<any> {
-    return this.http.post(`api/admin/block/` + userId, null, {
+  blockUser(userId: number, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.post(`api/user/block/` + userId, null, {
+      headers: {'Content-Type': 'application/json'}
+    });
+  }
+
+  unblockUser(userId: number, token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.post(`api/user/unblock/` + userId, null, {
       headers: {'Content-Type': 'application/json'}
     });
   }

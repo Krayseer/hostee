@@ -5,6 +5,7 @@ import {UserService} from "../../service/UserService";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {VideoDTO} from "../main-page/main-page.component";
 
 export interface VideoRequest {
   name: string;
@@ -22,6 +23,7 @@ export class ChannelComponent implements OnInit{
   selectedFile!: File;
   uploadForm: FormGroup = new FormGroup({});
   token: string | null = null;
+  videos: VideoDTO[] = [];
 
   constructor(private channelService: ChannelService, private fb: FormBuilder,
               private router: Router, private snackBar: MatSnackBar) {}
@@ -36,7 +38,7 @@ export class ChannelComponent implements OnInit{
       });
       return;
     }
-    this.getChannel(this.token);
+    this.getChannelAndVideos(this.token);
     this.uploadForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -44,9 +46,15 @@ export class ChannelComponent implements OnInit{
     });
   }
 
-  getChannel(token: string): void {
+  getChannelAndVideos(token: string): void {
     this.channelService.getChannel(token)
       .subscribe(channel => this.channel = channel);
+    this.channelService.getVideos(token).subscribe(
+        videos => {
+          this.videos = videos;
+          console.log("Видео канала: ", this.videos)
+        }
+      );
   }
 
   onSubmit(): void {
@@ -67,5 +75,9 @@ export class ChannelComponent implements OnInit{
 
   onFileChange(event: any) {
     this.selectedFile = event.target.files[0];
+  }
+
+  openVideo(uuid: string) {
+    this.router.navigate(['/video', uuid])
   }
 }

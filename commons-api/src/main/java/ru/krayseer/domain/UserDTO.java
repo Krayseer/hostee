@@ -32,4 +32,9 @@ public class UserDTO {
      */
     private UserSettingDTO userSetting;
 
+    /**
+     * Заблокирован ли пользователь
+     */
+    private boolean blocked;
+
 }

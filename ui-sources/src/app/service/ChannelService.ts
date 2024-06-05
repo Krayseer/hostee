@@ -3,6 +3,7 @@ import {Observable, take} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Channel} from "../models/channel";
 import {VideoRequest} from "../layout/channel/channel.component";
+import {VideoDTO} from "../layout/main-page/main-page.component";
 
 @Injectable()
 export class ChannelService {
@@ -16,6 +17,14 @@ export class ChannelService {
     });
     return this.http.get<Channel>("api/channel", {headers: headers});
 }
+
+  public getVideos(token: string): Observable<VideoDTO[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<VideoDTO[]>("api/video", {headers: headers});
+  }
 
   public registerChannel(userData: string, token: string) {
     const headers = new HttpHeaders({

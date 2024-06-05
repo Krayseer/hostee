@@ -18,6 +18,19 @@ import { UsersViewComponent } from './layout/users-view/users-view.component';
 import { RegisterChannelComponent } from './layout/register-channel/register-channel.component';
 import { VideoComponent } from './layout/video/video.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {
+  MatCell, MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow, MatHeaderRowDef,
+  MatRow, MatRowDef,
+  MatTable
+} from "@angular/material/table";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatButton} from "@angular/material/button";
+import {MatSort} from "@angular/material/sort";
+import { MainPageComponent } from './layout/main-page/main-page.component';
 
 @NgModule({
   declarations: [
@@ -33,13 +46,27 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     UserComponent,
     VideoComponent,
     HeaderComponent,
-    UsersViewComponent
+    UsersViewComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTable,
+    MatPaginator,
+    MatRow,
+    MatHeaderRow,
+    MatButton,
+    MatCell,
+    MatHeaderCell,
+    MatSort,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatHeaderRowDef,
+    MatRowDef
   ],
   providers: [UserService, ChannelService, ReportService, provideAnimationsAsync()],
   bootstrap: [AppComponent]

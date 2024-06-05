@@ -65,4 +65,10 @@ public interface UserService {
      */
     UserDTO blockUser(Long id);
 
+    /**
+     * Разблокировать пользователя
+     *
+     * @param id идентификатор пользователя
+     */
+    UserDTO unblockUser(Long id);
 }

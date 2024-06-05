@@ -81,6 +81,12 @@ public class UserController {
         return userService.blockUser(id);
     }
 
+    @PostMapping("/unblock/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public UserDTO unblockUser(@PathVariable Long id) {
+        return userService.unblockUser(id);
+    }
+
     @Operation(summary = "Установить роли пользователю")
     @PostMapping("/set-roles/{username}")
     public void setUserRoles(
