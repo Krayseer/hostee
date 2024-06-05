@@ -5,11 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
-import ru.anykeyers.storageservice.context.ApplicationConfig;
 import ru.anykeyers.storageservice.domain.VideoFile;
 import ru.anykeyers.storageservice.service.impl.CassandraVideoStorageService;
 
-import java.util.Queue;
 import java.util.concurrent.*;
 
 /**
@@ -22,34 +20,7 @@ public class CacheStorageService {
 
     private final ExecutorService executorService;
 
-    private final ScheduledExecutorService scheduler;
-
-    private final ApplicationConfig applicationConfig;
-
     private final CassandraVideoStorageService videoStorageService;
-
-    private final Queue<VideoFile> filesCache = new LinkedBlockingDeque<>();
-
-    /**
-     * Запуск работы сервиса кеширования видео в хранилище
-     */
-    public void start() {
-        log.info("Starting cache storage service");
-        StopWatch stopWatch = new StopWatch();
-        scheduler.scheduleAtFixedRate(() -> {
-            int cacheSize = filesCache.size();
-            stopWatch.start();
-            while (!filesCache.isEmpty()) {
-                VideoFile file = filesCache.poll();
-                if (file == null) {
-                    continue;
-                }
-                executorService.execute(() -> videoStorageService.saveVideo(file));
-            }
-            stopWatch.stop();
-            log.info("Process {} videos from cache storage in {} ms", cacheSize, stopWatch.getTotalTimeMillis());
-        }, 0, applicationConfig.getStorageCacheProcessDelayMs(), TimeUnit.MILLISECONDS);
-    }
 
     /**
      * Получить видео
@@ -67,7 +38,13 @@ public class CacheStorageService {
      */
     public void addFile(VideoFile videoFile) {
         log.info("Add video in cache: {}", videoFile.getFileName());
-        filesCache.add(videoFile);
+        executorService.execute(() -> {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            videoStorageService.saveVideo(videoFile);
+            stopWatch.stop();
+            log.info("Process videoFile {} in cache in {} ms", videoFile.getFileName(), stopWatch.getTotalTimeMillis());
+        });
     }
 
 }

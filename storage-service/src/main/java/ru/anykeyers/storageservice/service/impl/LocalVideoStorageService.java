@@ -39,13 +39,13 @@ public class LocalVideoStorageService implements VideoStorageService {
 
     @Override
     public String saveVideo(VideoFile videoFile) {
-        log.info("Saving video: {}", videoFile.getFileName());
         try {
             Path videoPath = Path.of(applicationConfig.getStoragePath() + videoFile.getFileName() + ".mp4");
             Files.write(videoPath.toFile().toPath(), videoFile.getContent());
         } catch (IOException ex) {
             throw new VideoUploadError(videoFile.getFileName());
         }
+        log.info("Saving video in local storage: {}", videoFile.getFileName());
         return videoFile.getFileName();
     }
 

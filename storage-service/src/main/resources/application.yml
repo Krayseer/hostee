@@ -1,6 +1,5 @@
 application:
   storage-path: ${STORAGE_PATH}
-  storage-cache-process-delay-ms: 40000
 
 server:
   port: ${STORAGE_SERVICE_PORT}
@@ -15,6 +14,11 @@ spring:
     port: ${CASSANDRA_PORT}
     local-datacenter: datacenter1
     schema-action: create_if_not_exists
+    request:
+      timeout: 5s
+    connection:
+      connect-timeout: 10s
+      init-query-timeout: 10s
 
   servlet:
     multipart:

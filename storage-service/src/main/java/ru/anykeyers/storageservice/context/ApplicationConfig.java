@@ -19,9 +19,4 @@ public class ApplicationConfig {
      */
     private String storagePath;
 
-    /**
-     * Период задержки процесса кеширования в миллисекундах
-     */
-    private long storageCacheProcessDelayMs;
-
 }

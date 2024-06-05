@@ -35,4 +35,10 @@ public class VideoRequest {
      */
     private MultipartFile preview;
 
+    public VideoRequest(String name, String description, MultipartFile video) {
+        this.name = name;
+        this.description = description;
+        this.video = video;
+    }
+
 }

@@ -68,9 +68,9 @@ public class VideoServiceImpl implements VideoService {
         );
         Video video = VideoMapper.createVideo(videoRequest, channel);
         Video savedVideo = videoRepository.save(video);
-        worker.addTask(() -> uploadVideo(savedVideo.getId(), copyMultipartFile(videoRequest.getVideo())));
+        uploadVideo(savedVideo.getId(), copyMultipartFile(videoRequest.getVideo()));
         if (videoRequest.getPreview() != null) {
-            worker.addTask(() -> uploadPhoto(savedVideo.getId(), copyMultipartFile(videoRequest.getPreview())));
+            uploadPhoto(savedVideo.getId(), copyMultipartFile(videoRequest.getPreview()));
         }
     }
 
@@ -86,13 +86,15 @@ public class VideoServiceImpl implements VideoService {
      * @param videoFile файл видео
      */
     private void uploadVideo(Long videoId, MultipartFile videoFile) {
-        ResponseEntity<String> videoUuid = remoteStorageService.uploadVideoFile(videoFile);
-        Video video = videoRepository.findById(videoId).orElseThrow(
-                () -> new VideoNotFoundException(videoId)
-        );
-        video.setVideoUuid(videoUuid.getBody());
-        video.setUploadStatus(UploadStatus.FINISH);
-        videoRepository.save(video);
+        worker.addTask(() -> {
+            ResponseEntity<String> videoUuid = remoteStorageService.uploadVideoFile(videoFile);
+            Video video = videoRepository.findById(videoId).orElseThrow(
+                    () -> new VideoNotFoundException(videoId)
+            );
+            video.setVideoUuid(videoUuid.getBody());
+            video.setUploadStatus(UploadStatus.FINISH);
+            videoRepository.save(video);
+        });
     }
 
     /**
@@ -102,12 +104,14 @@ public class VideoServiceImpl implements VideoService {
      * @param preview   фотография - превью
      */
     private void uploadPhoto(Long videoId, MultipartFile preview) {
-        ResponseEntity<String> photoUuid = remoteStorageService.uploadPhoto(preview);
-        Video video = videoRepository.findById(videoId).orElseThrow(
-                () -> new VideoNotFoundException(videoId)
-        );
-        video.setPreviewUuid(photoUuid.getBody());
-        videoRepository.save(video);
+        worker.addTask(() -> {
+            ResponseEntity<String> photoUuid = remoteStorageService.uploadPhoto(preview);
+            Video video = videoRepository.findById(videoId).orElseThrow(
+                    () -> new VideoNotFoundException(videoId)
+            );
+            video.setPreviewUuid(photoUuid.getBody());
+            videoRepository.save(video);
+        });
     }
 
     @SneakyThrows
