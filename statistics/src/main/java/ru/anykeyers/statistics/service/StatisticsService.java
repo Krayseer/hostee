@@ -52,20 +52,20 @@ public class StatisticsService {
     /**
      * Получить статистику видео
      *
-     * @param videoUuid идентификатор видео
+     * @param videoId идентификатор видео
      */
-    public VideoStatisticsDTO getVideoStatistics(String videoUuid) {
-        Video video = videoRepository.findByUuid(videoUuid);
-        return new VideoStatisticsDTO(videoUuid, video.getCountWatches());
+    public VideoStatisticsDTO getVideoStatistics(Long videoId) {
+        Video video = videoRepository.findByVideoId(videoId);
+        return new VideoStatisticsDTO(videoId, video.getCountWatches());
     }
 
     /**
      * Получить статистику списка видео
      *
-     * @param videosUuid идентификаторы видео
+     * @param videoIds идентификаторы видео
      */
-    public List<VideoStatisticsDTO> getVideoStatistics(String[] videosUuid) {
-        return Arrays.stream(videosUuid).map(this::getVideoStatistics).toList();
+    public List<VideoStatisticsDTO> getVideoStatistics(Long[] videoIds) {
+        return Arrays.stream(videoIds).map(this::getVideoStatistics).toList();
     }
 
     /**

@@ -15,7 +15,7 @@ public class VideoStatisticsDTO {
     /**
      * Идентификатор видео
      */
-    private String videoUuid;
+    private Long videoId;
 
     /**
      * Количество просмотров

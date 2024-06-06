@@ -57,7 +57,7 @@ public class VideoServiceImpl implements VideoService {
         Video video = videoRepository.findById(id).orElseThrow(
                 () -> new VideoNotFoundException(id)
         );
-        eventService.notifyWatchVideo(video.getVideoUuid());
+        eventService.notifyWatchVideo(id);
         return remoteStorageService.getVideoFile(video.getVideoUuid());
     }
 

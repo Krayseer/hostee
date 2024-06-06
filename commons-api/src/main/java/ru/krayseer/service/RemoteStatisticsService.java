@@ -34,19 +34,19 @@ public class RemoteStatisticsService {
     /**
      * Получить статистику для видео
      *
-     * @param videoUuid идентификатор видео
+     * @param videoId идентификатор видео
      */
-    public VideoStatisticsDTO getVideoStatistics(String videoUuid) {
-        return restTemplate.getForObject(URL + "/video/" + videoUuid, VideoStatisticsDTO.class);
+    public VideoStatisticsDTO getVideoStatistics(String videoId) {
+        return restTemplate.getForObject(URL + "/video/" + videoId, VideoStatisticsDTO.class);
     }
 
     /**
      * Получить статистику списка видео
      *
-     * @param videoUuids идентификаторы видеороликов
+     * @param videoIds идентификаторы видеороликов
      */
-    public VideoStatisticsDTO[] getVideoStatistics(String[] videoUuids) {
-        return restTemplate.getForObject(URL + "/video/" + Arrays.toString(videoUuids), VideoStatisticsDTO[].class);
+    public VideoStatisticsDTO[] getVideoStatistics(Long[] videoIds) {
+        return restTemplate.getForObject(URL + "/video/" + Arrays.toString(videoIds), VideoStatisticsDTO[].class);
     }
 
 }

@@ -20,20 +20,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class VideoStatisticsService implements BatchProcessor {
 
-    private final Map<String, AtomicInteger> videoCache = new ConcurrentHashMap<>();
+    private final Map<Long, AtomicInteger> videoCache = new ConcurrentHashMap<>();
 
     private final VideoRepository videoRepository;
 
     /**
      * Обработка просмотра видео
      *
-     * @param uuid идентификатор видео
+     * @param videoId идентификатор видео
      */
-    public void handleWatchVideo(String uuid) {
-        if (!videoCache.containsKey(uuid)) {
-            videoCache.put(uuid, new AtomicInteger());
+    public void handleWatchVideo(Long videoId) {
+        if (!videoCache.containsKey(videoId)) {
+            videoCache.put(videoId, new AtomicInteger());
         }
-        videoCache.get(uuid).incrementAndGet();
+        videoCache.get(videoId).incrementAndGet();
     }
 
     @Override
@@ -41,11 +41,11 @@ public class VideoStatisticsService implements BatchProcessor {
         return () -> {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            videoCache.forEach((uuid, count) -> {
-                Video video = videoRepository.findByUuid(uuid);
+            videoCache.forEach((videoId, count) -> {
+                Video video = videoRepository.findByVideoId(videoId);
                 if (video == null) {
                     video = new Video();
-                    video.setUuid(uuid);
+                    video.setVideoId(videoId);
                     video.setCountWatches(count.longValue());
                 } else {
                     video.setCountWatches(video.getCountWatches() + count.longValue());

@@ -13,8 +13,8 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     /**
      * Получить видео
      *
-     * @param uuid идентификатор видео
+     * @param id идентификатор видео
      */
-    Video findByUuid(String uuid);
+    Video findByVideoId(Long id);
 
 }

@@ -41,14 +41,14 @@ public class StatisticsController {
         return new ResponseEntity<>(document.toByteArray(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/video/{videoUuid}")
-    public VideoStatisticsDTO getVideoStatistics(@PathVariable String videoUuid) {
-        return statisticsService.getVideoStatistics(videoUuid);
+    @GetMapping("/video/{videoId}")
+    public VideoStatisticsDTO getVideoStatistics(@PathVariable Long videoId) {
+        return statisticsService.getVideoStatistics(videoId);
     }
 
-    @GetMapping("/video/{videosUuid}")
-    public List<VideoStatisticsDTO> getVideoStatistics(@PathVariable String[] videosUuid) {
-        return statisticsService.getVideoStatistics(videosUuid);
+    @GetMapping("/video/{videoIds}")
+    public List<VideoStatisticsDTO> getVideoStatistics(@PathVariable Long[] videoIds) {
+        return statisticsService.getVideoStatistics(videoIds);
     }
 
 }

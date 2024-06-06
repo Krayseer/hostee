@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import ru.anykeyers.videoservice.domain.channel.Channel;
 
+import java.time.Instant;
+
 /**
  * Сущность видео для БД
  */
@@ -53,7 +55,16 @@ public class Video {
      */
     private String previewUuid;
 
+    /**
+     * Статус загрузки видео в хранилище
+     */
     @Enumerated(EnumType.STRING)
     private UploadStatus uploadStatus;
+
+    /**
+     * Время загрузки
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant createdAt;
 
 }

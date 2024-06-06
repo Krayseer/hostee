@@ -22,10 +22,10 @@ public class EventService {
     /**
      * Уведомление о просмотре видео
      *
-     * @param videoUuid идентификатор видео
+     * @param id идентификатор видео
      */
-    public void notifyWatchVideo(String videoUuid) {
-        kafkaTemplate.send(MessageQueue.WATCHING_VIDEO, videoUuid);
+    public void notifyWatchVideo(Long id) {
+        kafkaTemplate.send(MessageQueue.WATCHING_VIDEO, String.valueOf(id));
     }
 
     /**

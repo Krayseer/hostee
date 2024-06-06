@@ -28,8 +28,8 @@ public class KafkaProcessor {
     private final ChannelStatisticsService channelStatisticsService;
 
     @KafkaListener(topics = MessageQueue.WATCHING_VIDEO, groupId = GROUP_ID)
-    public void receiveWatchingVideo(String videoUuid) {
-        videoStatisticsService.handleWatchVideo(videoUuid);
+    public void receiveWatchingVideo(String videoId) {
+        videoStatisticsService.handleWatchVideo(Long.valueOf(videoId));
     }
 
     @KafkaListener(topics = MessageQueue.WATCHING_CHANNEL, groupId = GROUP_ID)

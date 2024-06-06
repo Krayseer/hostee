@@ -1,7 +1,9 @@
 package ru.anykeyers.videoservice.service;
 
+import ru.anykeyers.videoservice.domain.video.VideoDTO;
 import ru.krayseer.domain.statistics.ChannelStatisticsDTO;
-import ru.krayseer.domain.statistics.VideoStatisticsDTO;
+
+import java.util.List;
 
 /**
  * Сервис сбора статистики
@@ -20,6 +22,6 @@ public interface StatisticsService {
      *
      * @param username имя пользователя
      */
-    VideoStatisticsDTO[] getUserVideoStatistics(String username);
+    List<VideoDTO> getUserVideoStatistics(String username);
 
 }

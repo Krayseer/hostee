@@ -27,7 +27,7 @@ public class Video {
     /**
      * Идентификатор видео
      */
-    private String uuid;
+    private Long videoId;
 
     /**
      * Количество просмотров видео

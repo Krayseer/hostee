@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.anykeyers.videoservice.domain.video.VideoDTO;
 import ru.krayseer.service.RemoteStatisticsService;
 import ru.anykeyers.videoservice.service.StatisticsService;
 import ru.krayseer.domain.statistics.ChannelStatisticsDTO;
 import ru.krayseer.domain.statistics.VideoStatisticsDTO;
 
 import java.security.Principal;
+import java.util.List;
 
 @Tag(name = "Статистика")
 @RestController
@@ -33,7 +35,7 @@ public class StatisticsController {
 
     @Operation(summary = "Получить статистику по видеороликам")
     @GetMapping("/video")
-    public VideoStatisticsDTO[] getVideoStatistics(Principal principal) {
+    public List<VideoDTO> getVideoStatistics(Principal principal) {
         return statisticsService.getUserVideoStatistics(principal.getName());
     }
 
