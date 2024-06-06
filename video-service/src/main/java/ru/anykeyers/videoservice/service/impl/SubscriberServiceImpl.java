@@ -32,7 +32,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     public List<ChannelDTO> getSubscribers(Long channelId) {
         List<Subscriber> subscribers = subscriberRepository.findByChannelId(channelId);
         return subscribers.stream()
-                .map(Subscriber::getChannel)
+                .map(Subscriber::getSubscriberChannel)
                 .map(ChannelMapper::createDTO)
                 .toList();
     }
