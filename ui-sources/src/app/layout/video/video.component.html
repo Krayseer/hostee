@@ -4,3 +4,11 @@
     Your browser does not support the video tag.
   </video>
 </div>
+<div>
+  <label for="playlist">Выберите плейлист:</label>
+  <select id="playlist" (change)="changePlaylistId($event)">
+    <option value="" disabled selected>Выберите плейлист</option>
+    <option *ngFor="let playlist of playlists" [value]="playlist.id">{{ playlist.name }}</option>
+  </select>
+  <button [disabled]="selectedPlaylistId == null" (click)="onPlaylistSelect()">Добавить в плейлист</button>
+</div>

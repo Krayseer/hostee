@@ -84,12 +84,7 @@ export class ChannelService {
     return this.http.get<Channel[]>("api/subscribe/" + channelId, {headers: headers});
   }
 
-  uploadVideo(videoRequest: VideoRequest, token: string): void {
-    const formData = new FormData();
-    formData.append('name', videoRequest.name);
-    formData.append('description', videoRequest.description);
-    formData.append('video', videoRequest.video);
-
+  uploadVideo(formData: FormData, token: string): void {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });

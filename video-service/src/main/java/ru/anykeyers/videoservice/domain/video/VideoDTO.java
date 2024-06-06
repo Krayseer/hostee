@@ -48,5 +48,7 @@ public class VideoDTO {
 
     private Channel channel;
 
+    private String photoUrl;
+
 }
 

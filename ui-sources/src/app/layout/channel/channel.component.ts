@@ -10,29 +10,41 @@ import {UserDTO} from "../users-view/users-view.component";
 import {User} from "../../models/user";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {DatePipe} from "@angular/common";
 
 export interface VideoRequest {
   name: string;
   description: string;
   video: File;
+
+}
+
+export interface PlaylistDTO {
+  id: number;
+  name: string;
+  description: string;
 }
 
 @Component({
   selector: 'app-channel',
   templateUrl: './channel.component.html',
-  styleUrl: './channel.component.css'
+  styleUrl: './channel.component.css',
+  providers: [DatePipe]
 })
 export class ChannelComponent implements OnInit{
   channel!: Channel;
+  thumbnailFile: File | null = null;
   selectedFile!: File;
   uploadForm: FormGroup = new FormGroup({});
   token: string | null = null;
   videos: VideoDTO[] = [];
+  sortOptions = ['Дата (новые)', 'Дата (старые)', 'Просмотры (возрастание)', 'Просмотры (убывание)'];
+  selectedSortOption: string = this.sortOptions[0];
   user!: User;
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private channelService: ChannelService, private fb: FormBuilder, private userService: UserService,
-              private router: Router, private snackBar: MatSnackBar, private http: HttpClient) {}
+              private router: Router, private snackBar: MatSnackBar, private http: HttpClient, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.token = localStorage.getItem('token');
@@ -55,7 +67,8 @@ export class ChannelComponent implements OnInit{
     this.uploadForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      video: [null, Validators.required]
+      video: [null, Validators.required],
+      thumbnail: [null, Validators.required]
     });
   }
 
@@ -85,19 +98,31 @@ export class ChannelComponent implements OnInit{
       return;
     }
 
-    const videoRequest: VideoRequest = {
-      name: this.uploadForm.get("name")?.value,
-      description: this.uploadForm.get('description')?.value,
-      video: this.selectedFile
-    };
+    const formData = new FormData();
+    formData.append('name', this.uploadForm.get('name')?.value);
+    formData.append('description', this.uploadForm.get('description')?.value);
+
+    if (this.selectedFile) {
+      formData.append('video', this.selectedFile);
+    }
+    if (this.thumbnailFile) {
+      formData.append('preview', this.thumbnailFile);
+    }
 
     if (this.token != null) {
-      this.channelService.uploadVideo(videoRequest, this.token);
+      this.channelService.uploadVideo(formData, this.token);
     }
   }
 
-  onFileChange(event: any) {
-    this.selectedFile = event.target.files[0];
+  onFileChange(event: Event, fileType: string): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      if (fileType === 'video') {
+        this.selectedFile = input.files[0];
+      } else if (fileType === 'thumbnail') {
+        this.thumbnailFile = input.files[0];
+      }
+    }
   }
 
   triggerFileInput(): void {
@@ -135,7 +160,39 @@ export class ChannelComponent implements OnInit{
     );
   }
 
-  openVideo(uuid: string) {
-    this.router.navigate(['/video', uuid])
+  sortVideos() {
+    switch (this.selectedSortOption) {
+      case 'Дата (новые)':
+        this.videos.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+      case 'Дата (старые)':
+        this.videos.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        break;
+      case 'Просмотры (возрастание)':
+        this.videos.sort((a, b) => a.statistics.countWatches - b.statistics.countWatches);
+        break;
+      case 'Просмотры (убывание)':
+        this.videos.sort((a, b) => b.statistics.countWatches - a.statistics.countWatches);
+        break;
+      default:
+        break;
+    }
+  }
+
+  onSortChange(): void {
+    this.sortVideos();
+  }
+
+  convertToDate(dateString: string) {
+    const date = new Date(dateString);
+    return this.datePipe.transform(date, 'd MMMM y', 'ru-RU') || '';
+  }
+
+  openVideo(id: number) {
+    this.router.navigate(['/video', id])
+  }
+
+  download(id: number) {
+    this.http.get("api/statistics/channel/" + id + "/pdf").subscribe();
   }
 }

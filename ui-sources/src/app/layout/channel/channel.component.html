@@ -4,6 +4,7 @@
     <h2>Channel Info</h2>
     <button *ngIf="user.id !== channel.user.id">Подписаться</button>
   </div>
+  <a [href]="'http://localhost:8083/statistics/channel/' + channel.id + '/pdf'" download="channel_statistics.pdf">Скачать статистику канала</a>
   <div style="display: flex; justify-content: space-between;">
     <p>Channel Name: {{ channel.name }}</p>
     <div class="upload-photo-container" *ngIf="user.id === channel.user.id">
@@ -24,14 +25,26 @@
     </div>
     <div>
       <label for="video">Файл видео:</label>
-      <input type="file" id="video" (change)="onFileChange($event)" accept="video/*" formControlName="video">
+      <input type="file" id="video" (change)="onFileChange($event, 'video')" accept="video/*" formControlName="video">
+    </div>
+    <div>
+      <label for="thumbnail">Картинка:</label>
+      <input type="file" id="thumbnail" (change)="onFileChange($event, 'thumbnail')" accept="image/*" formControlName="thumbnail">
     </div>
     <button type="submit" [disabled]="uploadForm.invalid">Отправить</button>
   </form>
 </div>
+<div>
+  <label for="sortOption">Сортировать по:</label>
+  <select id="sortOption" [(ngModel)]="selectedSortOption" (change)="onSortChange()">
+    <option *ngFor="let option of sortOptions" [value]="option">{{ option }}</option>
+  </select>
+</div>
 <div class="videos">
-  <div class="video" *ngFor="let video of videos" (click)="openVideo(video.uuid)">
-    <img class="preview-image" src="assets/images/noimage.png" alt="{{ video.name }}}"/>
+  <div class="video" *ngFor="let video of videos" (click)="openVideo(video.id)">
+    <img class="preview-image" [src]="video.channel.photoUrl || 'assets/images/noimage.png'" alt="{{ video.name }}}"/>
     <a>{{ video.name }}</a>
+    <label>{{ video.statistics.countWatches }} просмотров</label>
+    <label>{{ convertToDate(video.createdAt) }}</label>
   </div>
 </div>

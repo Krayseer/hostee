@@ -1,13 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  selector: 'app-notification',
+  templateUrl: './notification.component.html',
+  styleUrl: './notification.component.css'
 })
-export class HeaderComponent implements OnInit{
-
+export class NotificationComponent {
   notifications: any[] = [];
   showNotifications: boolean = false;
 
@@ -26,5 +25,4 @@ export class HeaderComponent implements OnInit{
   toggleNotifications(): void {
     this.showNotifications = !this.showNotifications;
   }
-
 }

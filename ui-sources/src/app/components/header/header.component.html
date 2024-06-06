@@ -8,5 +8,18 @@
     <button routerLink="/report">Жалобы</button>
     <button routerLink="/register-channel">Создать канал</button>
     <button routerLink="/users">Пользователи</button>
+    <button routerLink="/playlist">Плейлисты</button>
+  </div>
+  <div class="notification-container">
+    <div class="notification-icon" (click)="toggleNotifications()">
+      <span>🔔</span>
+    </div>
+    <div *ngIf="showNotifications" class="notification-dropdown">
+      <ul>
+        <li *ngFor="let notification of notifications">
+          {{ notification.message }}
+        </li>
+      </ul>
+    </div>
   </div>
 </header>

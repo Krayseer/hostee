@@ -38,6 +38,8 @@ public final class VideoMapper {
                 .name(video.getName())
                 .description(video.getDescription())
                 .createdAt(video.getCreatedAt().toString())
+                .channel(video.getChannel())
+                .photoUrl(video.getPreviewUuid())
                 .build();
     }
 
@@ -56,6 +58,7 @@ public final class VideoMapper {
                 .createdAt(video.getCreatedAt().toString())
                 .statistics(videoStatistic)
                 .channel(video.getChannel())
+                .photoUrl(video.getPreviewUuid())
                 .build();
     }
 

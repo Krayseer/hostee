@@ -57,7 +57,7 @@ public class VideoServiceImpl implements VideoService {
                 () -> new ChannelNotExistsException(username)
         );;
         List<Video> videos = videoRepository.findByChannel(channel);
-        return videos.stream().map(VideoMapper::createDTO).toList();
+        return statisticsService.getVideoStatistics(videos);
     }
 
     public List<VideoDTO> getVideosByUserId(Long userId) {

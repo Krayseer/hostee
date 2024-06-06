@@ -1,0 +1,12 @@
+<div class="notification-container">
+  <div class="notification-icon" (click)="toggleNotifications()">
+    <span>🔔</span>
+  </div>
+  <div *ngIf="showNotifications" class="notification-dropdown">
+    <ul>
+      <li *ngFor="let notification of notifications">
+        {{ notification.message }}
+      </li>
+    </ul>
+  </div>
+</div>

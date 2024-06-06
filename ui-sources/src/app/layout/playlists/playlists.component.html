@@ -1,0 +1,9 @@
+<app-header></app-header>
+<button (click)="openPlaylistDialog()" style="margin-bottom: 30px;">Добавить плейлист</button>
+<div style="display: flex;">
+  <div *ngFor="let playlist of playlists" class="playlist" (click)="openPlaylist(playlist.id)">
+    <label>{{ playlist.name }}</label>
+    <label>{{ playlist.description }}</label>
+    <label>Кол-во видео: {{ playlist.videos.length }}</label>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegistrationComponent } from './layout/registration/registration.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UserService} from "./service/UserService";
 import {HttpClientModule} from "@angular/common/http";
 import { AuthorizationComponent } from './layout/authorization/authorization.component';
@@ -33,6 +33,9 @@ import {MatSort} from "@angular/material/sort";
 import { MainPageComponent } from './layout/main-page/main-page.component';
 import { UploadVideoModalComponent } from './upload-video-modal/upload-video-modal.component';
 import { OtherChannelComponent } from './layout/other-channel/other-channel.component';
+import { PlaylistsComponent } from './layout/playlists/playlists.component';
+import { PlaylistAddModalComponent } from './playlist-add-modal/playlist-add-modal.component';
+import { VideosComponent } from './layout/videos/videos.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { OtherChannelComponent } from './layout/other-channel/other-channel.comp
     UsersViewComponent,
     MainPageComponent,
     UploadVideoModalComponent,
-    OtherChannelComponent
+    OtherChannelComponent,
+    PlaylistsComponent,
+    PlaylistAddModalComponent,
+    VideosComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +76,8 @@ import { OtherChannelComponent } from './layout/other-channel/other-channel.comp
     MatHeaderCellDef,
     MatCellDef,
     MatHeaderRowDef,
-    MatRowDef
+    MatRowDef,
+    FormsModule
   ],
   providers: [UserService, ChannelService, ReportService, provideAnimationsAsync()],
   bootstrap: [AppComponent]

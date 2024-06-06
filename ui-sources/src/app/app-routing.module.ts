@@ -12,6 +12,9 @@ import {UsersViewComponent} from "./layout/users-view/users-view.component";
 import {MainPageComponent} from "./layout/main-page/main-page.component";
 import {VideoComponent} from "./layout/video/video.component";
 import {OtherChannelComponent} from "./layout/other-channel/other-channel.component";
+import {PlaylistsComponent} from "./layout/playlists/playlists.component";
+import {VideosComponent} from "./layout/videos/videos.component";
+import {NotificationComponent} from "./components/notification/notification.component";
 
 const routes: Routes = [
 
@@ -26,15 +29,20 @@ const routes: Routes = [
   {path: 'register-channel', component: RegisterChannelComponent},
   {path: 'main', component: MainPageComponent},
   {path: 'video/:uuid', component: VideoComponent},
-  {path: 'channel/:id', component: OtherChannelComponent}
+  {path: 'channel/:id', component: OtherChannelComponent},
+  {path: 'playlist', component: PlaylistsComponent},
+  {path: 'playlist-videos/:id', component: VideosComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
-  ]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule, NotificationComponent],
+    declarations: [
+        NotificationComponent
+    ],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+    ]
 })
 export class AppRoutingModule {
 }

@@ -8,6 +8,7 @@ import {Channel} from "../../models/channel";
 import {forkJoin} from "rxjs";
 import {VideoDTO} from "../main-page/main-page.component";
 import {UserSettingDTO} from "../users-view/users-view.component";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 export interface UserDTOWithRoles {
   id: number;
@@ -34,7 +35,7 @@ export class OtherChannelComponent {
   isSubscribed = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar,
-              private userService: UserService, private channelService: ChannelService) {
+              private userService: UserService, private channelService: ChannelService, private http: HttpClient) {
     this.token = localStorage.getItem('token');
     console.log('token', this.token);
 
@@ -65,7 +66,7 @@ export class OtherChannelComponent {
           this.router.navigate(['/channel']);
         }
         if (this.token != null) {
-          this.channelService.getUserVideosById(this.token, this.user.id).subscribe(
+          this.channelService.getUserVideosById(this.token, channel.user.id).subscribe(
             videos => {
               this.videos = videos;
               console.log("Текущие видео: ", this.videos);
@@ -94,8 +95,8 @@ export class OtherChannelComponent {
     );
   }
 
-  openVideo(uuid: string) {
-    this.router.navigate(['/video', uuid])
+  openVideo(id: number) {
+    this.router.navigate(['/video', id])
   }
 
   isAdmin(): boolean {
@@ -112,4 +113,14 @@ export class OtherChannelComponent {
     console.log('Отписка');
   }
 
+  deleteVideo(uuid: string) {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + this.token
+    });
+    this.http.delete("api/video/" + uuid, {headers: headers}).subscribe(
+      data => {
+        this.router.navigate(['/main']);
+      }
+    );
+  }
 }

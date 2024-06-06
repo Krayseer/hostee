@@ -14,11 +14,9 @@
   </div>
 </div>
 <div class="videos">
-  <div style="display: flex; flex-direction: column;">
-    <div class="video" *ngFor="let video of videos" (click)="openVideo(video.uuid)">
-      <img class="preview-image" src="assets/images/noimage.png" alt="{{ video.name }}}"/>
-      <a>{{ video.name }}</a>
-    </div>
-    <button *ngIf="isAdmin()" style="background-color: red;">Удалить</button>
+  <div class="video" *ngFor="let video of videos" (click)="openVideo(video.id)">
+    <img class="preview-image" src="assets/images/noimage.png" alt="{{ video.name }}}"/>
+    <a>{{ video.name }}</a>
+    <button *ngIf="isAdmin()" style="background-color: red;" (click)="deleteVideo(video.uuid)">Удалить</button>
   </div>
 </div>

@@ -63,6 +63,7 @@ export class UserService {
     ).subscribe({
       next: next => {
         localStorage.setItem('token', next.jwtToken);
+        this.router.navigate(['/main']);
       },
       error: error => {
         // Обработка ошибки
