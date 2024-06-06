@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
+import {Channel} from "../../models/channel";
 
 export interface VideoDTO {
   uuid: string;
   name: string;
   description: string;
+  channel: Channel
 }
 
 
@@ -16,8 +19,8 @@ export interface VideoDTO {
 export class MainPageComponent {
 
   videos: VideoDTO[] = [];
-  constructor(private http: HttpClient) {
-    this.http.get<VideoDTO[]>("api/video/").subscribe(
+  constructor(private http: HttpClient, private router: Router) {
+    this.http.get<VideoDTO[]>("api/video").subscribe(
       videos => {
         this.videos = videos;
         console.log('Список видео: ', this.videos);
@@ -25,6 +28,14 @@ export class MainPageComponent {
         console.error('Ошибка при получении видео');
       }
     );
+  }
+
+  openVideo(uuid: string) {
+    this.router.navigate(['/video', uuid])
+  }
+
+  openChannel(id: number) {
+    this.router.navigate(['/channel', id]);
   }
 
 }

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * DTO с данными о пользователе
  */
@@ -36,5 +38,7 @@ public class UserDTO {
      * Заблокирован ли пользователь
      */
     private boolean blocked;
+
+    private List<String> roles;
 
 }

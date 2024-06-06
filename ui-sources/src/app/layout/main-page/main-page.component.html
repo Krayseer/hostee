@@ -1,1 +1,10 @@
 <app-header></app-header>
+<div class="videos">
+  <div class="video" *ngFor="let video of videos">
+    <img (click)="openVideo(video.uuid)" style="cursor: pointer;" class="preview-image" src="assets/images/noimage.png" alt="{{ video.name }}"/>
+    <div style="display: flex; justify-content: space-between; padding: 5px; align-items: center;">
+      <a>{{ video.name }}</a>
+      <img (click)="openChannel(video.channel.id)" style="cursor: pointer;" class="channel-photo" [src]="video.channel.photoUrl || 'assets/images/noimage.png'" alt="Channel Photo">
+    </div>
+  </div>
+</div>

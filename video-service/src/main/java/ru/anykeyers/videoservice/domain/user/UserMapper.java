@@ -42,7 +42,7 @@ public final class UserMapper {
                 : new UserSettingDTO(
                         user.getUserSetting().isPushEnabled(), user.getUserSetting().isEmailEnabled()
         );
-        return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), userSetting, user.isBlocked());
+        return new UserDTO(user.getId(), user.getUsername(), user.getEmail(), userSetting, user.isBlocked(), user.getRoles().stream().map(Enum::toString).toList());
     }
 
 }

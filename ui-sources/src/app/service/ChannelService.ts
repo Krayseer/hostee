@@ -18,12 +18,36 @@ export class ChannelService {
     return this.http.get<Channel>("api/channel", {headers: headers});
 }
 
+  public getChannelFromId(token: string, id: number): Observable<Channel> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<Channel>("api/channel/" + id, {headers: headers});
+  }
+
   public getVideos(token: string): Observable<VideoDTO[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     });
     return this.http.get<VideoDTO[]>("api/video", {headers: headers});
+  }
+
+  public getUserVideos(token: string): Observable<VideoDTO[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<VideoDTO[]>("api/video/user", {headers: headers});
+  }
+
+  public getUserVideosById(token: string, userId: number): Observable<VideoDTO[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<VideoDTO[]>("api/video/user/" + userId, {headers: headers});
   }
 
   public registerChannel(userData: string, token: string) {
@@ -34,6 +58,30 @@ export class ChannelService {
     this.http.post("api/channel", userData, {
       headers: headers
     }).pipe(take(1)).subscribe();
+  }
+
+  uploadPhoto(formData: FormData, token: string) {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    this.http.post("api/channel/photo", formData, {headers: headers}).subscribe();
+  }
+
+  subscribe(token: string, channelId: number) {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    this.http.post("api/subscribe", channelId, {headers: headers}).subscribe();
+  }
+
+  getSubscribers(token: string, channelId: number): Observable<Channel[]> {
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token
+    });
+
+    return this.http.get<Channel[]>("api/subscribe/" + channelId, {headers: headers});
   }
 
   uploadVideo(videoRequest: VideoRequest, token: string): void {

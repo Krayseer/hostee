@@ -58,6 +58,12 @@ public class VideoController {
     }
 
     @Operation(summary = "Получить историю просмотра видео авторизованного пользователя")
+    @GetMapping("/user/{userId}")
+    public List<VideoDTO> getVideosByUserId(@PathVariable Long userId) {
+        return videoService.getVideosByUserId(userId);
+    }
+
+    @Operation(summary = "Получить историю просмотра видео атворизованного пользователя")
     @GetMapping("/history")
     public History getUserHistory(Principal principal) {
         return historyService.getHistory(principal.getName());

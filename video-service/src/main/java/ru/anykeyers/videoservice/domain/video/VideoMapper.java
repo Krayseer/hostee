@@ -55,6 +55,7 @@ public final class VideoMapper {
                 .description(video.getDescription())
                 .createdAt(video.getCreatedAt().toString())
                 .statistics(videoStatistic)
+                .channel(video.getChannel())
                 .build();
     }
 

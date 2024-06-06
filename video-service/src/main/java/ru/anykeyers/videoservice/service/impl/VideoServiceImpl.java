@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.videoservice.AsyncWorker;
 import ru.anykeyers.videoservice.domain.channel.Channel;
+import ru.anykeyers.videoservice.domain.user.User;
 import ru.anykeyers.videoservice.domain.video.*;
 import ru.anykeyers.videoservice.exception.ChannelNotExistsException;
+import ru.anykeyers.videoservice.exception.UserNotFoundException;
 import ru.anykeyers.videoservice.exception.VideoNotFoundException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
+import ru.anykeyers.videoservice.repository.UserRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.anykeyers.videoservice.service.EventService;
 import ru.anykeyers.videoservice.service.StatisticsService;
@@ -34,6 +37,8 @@ public class VideoServiceImpl implements VideoService {
 
     private final VideoRepository videoRepository;
 
+    private final UserRepository userRepository;
+
     private final ChannelRepository channelRepository;
 
     private final StatisticsService statisticsService;
@@ -53,6 +58,13 @@ public class VideoServiceImpl implements VideoService {
         );;
         List<Video> videos = videoRepository.findByChannel(channel);
         return videos.stream().map(VideoMapper::createDTO).toList();
+    }
+
+    public List<VideoDTO> getVideosByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException(userId)
+        );
+        return getVideos(user.getUsername());
     }
 
     @Override

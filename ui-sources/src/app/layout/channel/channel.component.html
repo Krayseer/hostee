@@ -1,7 +1,16 @@
 <app-header></app-header>
 <div *ngIf="channel">
-  <h2>Channel Info</h2>
-  <p>Channel Name: {{ channel.channelName }}</p>
+  <div style="display: flex; justify-content: space-between;">
+    <h2>Channel Info</h2>
+    <button *ngIf="user.id !== channel.user.id">Подписаться</button>
+  </div>
+  <div style="display: flex; justify-content: space-between;">
+    <p>Channel Name: {{ channel.name }}</p>
+    <div class="upload-photo-container" *ngIf="user.id === channel.user.id">
+      <img [src]="channel.photoUrl || 'assets/images/noimage.png'" alt="Channel Photo" (click)="triggerFileInput()">
+      <input type="file" #fileInput (change)="onPhotoChange($event)" style="display: none;" accept="image/*">
+    </div>
+  </div>
   <p>Description: {{ channel.description }}</p>
   <!-- Другие поля, которые вы хотите отобразить -->
   <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">

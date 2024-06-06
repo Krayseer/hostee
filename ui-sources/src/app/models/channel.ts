@@ -1,3 +1,5 @@
+import {UserDTO} from "../layout/users-view/users-view.component";
+
 export class Channel {
-  constructor(public channelName: string, public description: string) {}
+  constructor(public id: number, public user: UserDTO, public name: string, public description: string, public photoUrl: string) {}
 }

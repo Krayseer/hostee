@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.krayseer.domain.statistics.VideoStatisticsDTO;
+import ru.anykeyers.videoservice.domain.channel.Channel;
 
 /**
  * DTO с данными о видео
@@ -44,6 +45,8 @@ public class VideoDTO {
      * Статистика канала
      */
     private VideoStatisticsDTO statistics;
+
+    private Channel channel;
 
 }
 

@@ -24,6 +24,13 @@ public interface VideoService {
     List<VideoDTO> getVideos(String username);
 
     /**
+     * Получить видеоролики пользователя по его id
+     *
+     * @param userId id пользователя
+     */
+    List<VideoDTO> getVideosByUserId(Long userId);
+
+    /**
      * Получить видео из хранилища по его id
      *
      * @param id идентификатор видео

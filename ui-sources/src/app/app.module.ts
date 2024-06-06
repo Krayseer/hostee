@@ -31,6 +31,8 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatButton} from "@angular/material/button";
 import {MatSort} from "@angular/material/sort";
 import { MainPageComponent } from './layout/main-page/main-page.component';
+import { UploadVideoModalComponent } from './upload-video-modal/upload-video-modal.component';
+import { OtherChannelComponent } from './layout/other-channel/other-channel.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { MainPageComponent } from './layout/main-page/main-page.component';
     VideoComponent,
     HeaderComponent,
     UsersViewComponent,
-    MainPageComponent
+    MainPageComponent,
+    UploadVideoModalComponent,
+    OtherChannelComponent
   ],
   imports: [
     BrowserModule,

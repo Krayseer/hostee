@@ -1,0 +1,24 @@
+<app-header></app-header>
+<div *ngIf="channel" style="display: flex; justify-content: space-between;">
+  <div style="display: flex; flex-direction: column;">
+    <h2>Channel Info</h2>
+    <p>Channel Name: {{ channel.name }}</p>
+    <p>Description: {{ channel.description }}</p>
+  </div>
+  <div style="display: flex; flex-direction: column;">
+    <div class="upload-photo-container">
+      <img [src]="channel.photoUrl || 'assets/images/noimage.png'" alt="Channel Photo">
+    </div>
+    <button [hidden]="isSubscribed" (click)="subscribe(channel.id)" *ngIf="user.id !== channel.user.id">Подписаться</button>
+    <button [hidden]="!isSubscribed" (click)="unsubscribe(channel.id)" *ngIf="user.id !== channel.user.id">Подписаться</button>
+  </div>
+</div>
+<div class="videos">
+  <div style="display: flex; flex-direction: column;">
+    <div class="video" *ngFor="let video of videos" (click)="openVideo(video.uuid)">
+      <img class="preview-image" src="assets/images/noimage.png" alt="{{ video.name }}}"/>
+      <a>{{ video.name }}</a>
+    </div>
+    <button *ngIf="isAdmin()" style="background-color: red;">Удалить</button>
+  </div>
+</div>

@@ -7,6 +7,7 @@ import {Channel} from "../models/channel";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {UserDTO} from "../layout/users-view/users-view.component";
+import {UserDTOWithRoles} from "../layout/other-channel/other-channel.component";
 
 @Injectable()
 export class UserService {
@@ -81,6 +82,14 @@ export class UserService {
       'Authorization': 'Bearer ' + token
     });
     return this.http.get<User>("api/user", {headers: headers});
+  }
+
+  public getUserWithRoles(token: string):Observable<UserDTOWithRoles> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    });
+    return this.http.get<UserDTOWithRoles>("api/user", {headers: headers});
   }
 
   public getAllUsers(token: string): Observable<UserDTO[]> {

@@ -11,6 +11,7 @@ import {RegisterChannelComponent} from "./layout/register-channel/register-chann
 import {UsersViewComponent} from "./layout/users-view/users-view.component";
 import {MainPageComponent} from "./layout/main-page/main-page.component";
 import {VideoComponent} from "./layout/video/video.component";
+import {OtherChannelComponent} from "./layout/other-channel/other-channel.component";
 
 const routes: Routes = [
 
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path: 'user', component: UserComponent},
   {path: 'register-channel', component: RegisterChannelComponent},
   {path: 'main', component: MainPageComponent},
-  {path: 'video/:uuid', component: VideoComponent}
+  {path: 'video/:uuid', component: VideoComponent},
+  {path: 'channel/:id', component: OtherChannelComponent}
 ];
 
 @NgModule({
