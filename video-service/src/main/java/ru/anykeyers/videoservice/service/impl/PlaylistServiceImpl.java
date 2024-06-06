@@ -31,7 +31,14 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final ChannelRepository channelRepository;
 
     @Override
-    public PlaylistDTO getVideos(Long id) {
+    public List<PlaylistDTO> getPlaylists(String username) {
+        return playlistRepository.findByChannelUserUsername(username).stream()
+                .map(PlaylistMapper::createDTO)
+                .toList();
+    }
+
+    @Override
+    public PlaylistDTO getPlaylist(Long id) {
         Playlist playlist = playlistRepository.findById(id).orElseThrow(
                 () -> new PlaylistNotFoundException(id)
         );

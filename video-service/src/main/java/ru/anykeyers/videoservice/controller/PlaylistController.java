@@ -11,6 +11,7 @@ import ru.anykeyers.videoservice.domain.playlist.PlaylistDTO;
 import ru.anykeyers.videoservice.service.PlaylistService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Tag(name = "Обработка плейлистов")
 @RestController
@@ -20,12 +21,10 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
-    @Operation(summary = "Получить данные о плейлисте")
-    @GetMapping("/{id}")
-    public PlaylistDTO getPlaylistVideo(
-            @Parameter(description = "Идентификатор плейлиста") @PathVariable("id") Long id
-    ) {
-        return playlistService.getVideos(id);
+    @Operation(summary = "Получить список всех плейлистов")
+    @GetMapping
+    public List<PlaylistDTO> getAllPlaylists(Principal principal){
+        return playlistService.getPlaylists(principal.getName());
     }
 
     @Operation(summary = "Создать плейлист")
@@ -35,6 +34,14 @@ public class PlaylistController {
             Principal principal
     ) {
         playlistService.createPlaylist(principal.getName(), playlist);
+    }
+
+    @Operation(summary = "Получить данные о плейлисте")
+    @GetMapping("/{id}")
+    public PlaylistDTO getPlaylistVideo(
+            @Parameter(description = "Идентификатор плейлиста") @PathVariable("id") Long id
+    ) {
+        return playlistService.getPlaylist(id);
     }
 
     @Operation(summary = "Добавить видео в плейлист")

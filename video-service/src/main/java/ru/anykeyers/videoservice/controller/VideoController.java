@@ -57,7 +57,7 @@ public class VideoController {
         return videoService.getVideos(principal.getName());
     }
 
-    @Operation(summary = "Получить историю просмотра видео атворизованного пользователя")
+    @Operation(summary = "Получить историю просмотра видео авторизованного пользователя")
     @GetMapping("/history")
     public History getUserHistory(Principal principal) {
         return historyService.getHistory(principal.getName());

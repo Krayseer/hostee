@@ -45,6 +45,11 @@ public class StatisticsServiceImpl implements StatisticsService {
                 () -> new ChannelNotExistsException(username)
         );
         List<Video> videos = videoRepository.findByChannel(channel);
+        return getVideoStatistics(videos);
+    }
+
+    @Override
+    public List<VideoDTO> getVideoStatistics(List<Video> videos) {
         VideoStatisticsDTO[] videoStatistics = remoteStatisticsService.getVideoStatistics(
                 videos.stream().map(Video::getId).map(Object::toString).toArray(String[]::new)
         );

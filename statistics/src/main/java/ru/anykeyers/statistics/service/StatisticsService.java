@@ -56,10 +56,7 @@ public class StatisticsService {
      */
     public VideoStatisticsDTO getVideoStatistics(String videoId) {
         Video video = videoRepository.findByVideoId(Long.valueOf(videoId));
-        if (video == null) {
-            return null;
-        }
-        return new VideoStatisticsDTO(Long.valueOf(videoId), video.getCountWatches());
+        return new VideoStatisticsDTO(Long.valueOf(videoId), video == null ? 0L : video.getCountWatches());
     }
 
     /**
@@ -70,7 +67,6 @@ public class StatisticsService {
     public List<VideoStatisticsDTO> getVideoStatistics(String[] videoIds) {
         return Arrays.stream(videoIds)
                 .map(this::getVideoStatistics)
-                .filter(Objects::nonNull)
                 .toList();
     }
 

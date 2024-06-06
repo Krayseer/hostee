@@ -15,6 +15,7 @@ import ru.anykeyers.videoservice.exception.VideoNotFoundException;
 import ru.anykeyers.videoservice.repository.ChannelRepository;
 import ru.anykeyers.videoservice.repository.VideoRepository;
 import ru.anykeyers.videoservice.service.EventService;
+import ru.anykeyers.videoservice.service.StatisticsService;
 import ru.anykeyers.videoservice.service.VideoService;
 import ru.krayseer.service.RemoteStorageService;
 
@@ -35,12 +36,14 @@ public class VideoServiceImpl implements VideoService {
 
     private final ChannelRepository channelRepository;
 
+    private final StatisticsService statisticsService;
+
     private final RemoteStorageService remoteStorageService;
 
     @Override
     public List<VideoDTO> getAllVideo() {
         List<Video> videos = videoRepository.findAll();
-        return videos.stream().map(VideoMapper::createDTO).toList();
+        return statisticsService.getVideoStatistics(videos);
     }
 
     @Override

@@ -3,17 +3,26 @@ package ru.anykeyers.videoservice.service;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistRequest;
 import ru.anykeyers.videoservice.domain.playlist.PlaylistDTO;
 
+import java.util.List;
+
 /**
  * Сервис обработки плейлистов
  */
 public interface PlaylistService {
 
     /**
+     * Получить список плейлистов пользователя
+     *
+     * @param username имя пользователя
+     */
+    List<PlaylistDTO> getPlaylists(String username);
+
+    /**
      * Получить список видео
      *
      * @param id идентификатор плейлиста
      */
-    PlaylistDTO getVideos(Long id);
+    PlaylistDTO getPlaylist(Long id);
 
     /**
      * Создать плейлист
@@ -30,5 +39,4 @@ public interface PlaylistService {
      * @param videoId       идентификатор видео
      */
     void addVideoInPlaylist(Long playListId, Long videoId);
-
 }
