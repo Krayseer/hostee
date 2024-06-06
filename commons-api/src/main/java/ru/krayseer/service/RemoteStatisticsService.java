@@ -1,11 +1,13 @@
 package ru.krayseer.service;
 
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.krayseer.RemoteConfiguration;
 import ru.krayseer.domain.statistics.ChannelStatisticsDTO;
 import ru.krayseer.domain.statistics.VideoStatisticsDTO;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Удаленный сервис обработки статистики
@@ -45,8 +47,13 @@ public class RemoteStatisticsService {
      *
      * @param videoIds идентификаторы видеороликов
      */
-    public VideoStatisticsDTO[] getVideoStatistics(Long[] videoIds) {
-        return restTemplate.getForObject(URL + "/video/" + Arrays.toString(videoIds), VideoStatisticsDTO[].class);
+    public VideoStatisticsDTO[] getVideoStatistics(String[] videoIds) {
+        String url = UriComponentsBuilder
+                .fromHttpUrl(URL + "/video")
+                .queryParam("videoIds", Arrays.stream(videoIds).toArray())
+                .encode()
+                .toUriString();
+        return restTemplate.getForObject(url, VideoStatisticsDTO[].class);
     }
 
 }

@@ -46,7 +46,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         );
         List<Video> videos = videoRepository.findByChannel(channel);
         VideoStatisticsDTO[] videoStatistics = remoteStatisticsService.getVideoStatistics(
-                videos.stream().map(Video::getId).toArray(Long[]::new)
+                videos.stream().map(Video::getId).map(Object::toString).toArray(String[]::new)
         );
         return Arrays.stream(videoStatistics)
                 .map(videoStatistic -> {

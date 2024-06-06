@@ -54,9 +54,12 @@ public class StatisticsService {
      *
      * @param videoId идентификатор видео
      */
-    public VideoStatisticsDTO getVideoStatistics(Long videoId) {
-        Video video = videoRepository.findByVideoId(videoId);
-        return new VideoStatisticsDTO(videoId, video.getCountWatches());
+    public VideoStatisticsDTO getVideoStatistics(String videoId) {
+        Video video = videoRepository.findByVideoId(Long.valueOf(videoId));
+        if (video == null) {
+            return null;
+        }
+        return new VideoStatisticsDTO(Long.valueOf(videoId), video.getCountWatches());
     }
 
     /**
@@ -64,8 +67,11 @@ public class StatisticsService {
      *
      * @param videoIds идентификаторы видео
      */
-    public List<VideoStatisticsDTO> getVideoStatistics(Long[] videoIds) {
-        return Arrays.stream(videoIds).map(this::getVideoStatistics).toList();
+    public List<VideoStatisticsDTO> getVideoStatistics(String[] videoIds) {
+        return Arrays.stream(videoIds)
+                .map(this::getVideoStatistics)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     /**

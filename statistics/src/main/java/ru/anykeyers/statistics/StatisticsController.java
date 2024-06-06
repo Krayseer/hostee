@@ -5,10 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.statistics.service.StatisticsService;
 import ru.krayseer.domain.statistics.ChannelStatisticsDTO;
 import ru.krayseer.domain.statistics.VideoStatisticsDTO;
@@ -42,12 +39,12 @@ public class StatisticsController {
     }
 
     @GetMapping("/video/{videoId}")
-    public VideoStatisticsDTO getVideoStatistics(@PathVariable Long videoId) {
+    public VideoStatisticsDTO getVideoStatistics(@PathVariable String videoId) {
         return statisticsService.getVideoStatistics(videoId);
     }
 
-    @GetMapping("/video/{videoIds}")
-    public List<VideoStatisticsDTO> getVideoStatistics(@PathVariable Long[] videoIds) {
+    @GetMapping("/video")
+    public List<VideoStatisticsDTO> getVideoStatistics(@RequestParam String[] videoIds) {
         return statisticsService.getVideoStatistics(videoIds);
     }
 
